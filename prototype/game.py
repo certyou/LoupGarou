@@ -2,7 +2,7 @@ from random import randint
 from cartes import *
 from player import Player
 
-# tesdt
+# tesdt nope
 class Game:
     def __init__(self):
         self.TabPlayerInLife = []
