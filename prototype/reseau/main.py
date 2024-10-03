@@ -1,3 +1,4 @@
+import threading
 import client
 import host
 import useful_functions as utils
@@ -23,6 +24,9 @@ joli texte d'introduction avec plein d'ascii art
     if choice == "1":
         NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])
         GameHost = host.Host(NbOfPlayers)
+        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(1,), daemon=True).start() # replace 1 by NbOfPlayers
+        GameHost.TCPConnect(1) # replace 1 by NbOfPlayers
+        print(GameHost.IPDict)
     elif choice == "2":
         You = client.Client()
 
