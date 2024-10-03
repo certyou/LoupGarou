@@ -24,7 +24,7 @@ joli texte d'introduction avec plein d'ascii art
         NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])
         GameHost = host.Host(NbOfPlayers)
     elif choice == "2":
-        client.main()
+        You = client.Client()
 
 if __name__ == "__main__":
     main()
