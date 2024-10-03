@@ -29,30 +29,31 @@ class Host:
             compteur += 1 # incrémentation du compteur
 
 
-def TCPConnect(self, PlayerNumber) :
-    """ Fonction de création de sockets pour une connexion tcp avec les joueurs
-    Prend en paramètre : 
-        - PlayerNumber (int) : le nombre de joueurs attendus
+    def TCPConnect(self, PlayerNumber) :
+        """ Fonction de création de sockets pour une connexion tcp avec les joueurs
+        Prend en paramètre : 
+            - PlayerNumber (int) : le nombre de joueurs attendus
 
-    Renvoie :
-        - IPDict (list) : une liste des socket TCP de chaque joueurs 
-    """
-    HostSocket = socket.socket() # créer un socket avec les valeurs de base (TCP) (Socket de connexion)
-    HostSocket.bind((self.HostIP, self.HostPort)) # définit l'adresse réseau de notre socket de connexion
-    HostSocket.listen(PlayerNumber) # définition de la taille du backlog du socket
-    # nombre de connexion qui peuvent être stocké dans le tampon du socket avant qu'elle soit refusée
-    
+        Renvoie :
+            - IPDict (list) : une liste des socket TCP de chaque joueurs 
+        """
+        HostSocket = socket.socket() # créer un socket avec les valeurs de base (TCP) (Socket de connexion)
+        HostSocket.bind((self.HostIP, self.HostPort)) # définit l'adresse réseau de notre socket de connexion
+        HostSocket.listen(PlayerNumber) # définition de la taille du backlog du socket
+        # nombre de connexion qui peuvent être stocké dans le tampon du socket avant qu'elle soit refusée
+        
 
-    while len(self.IPDict) < PlayerNumber : # boucle de connexion TCP      
-        print("TCPConnect : waiting for new connection") # Affichage de l'état de la fonction (en attente de connexion)
-        NewSocket, NewAddr = HostSocket.accept() # Méthode bloquante : le programme se stop en attente d'une nouvelle connexion
-        # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
-        print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
-        self.IPDict.append(NewSocket) # ajout du nouveau socket dans la liste
+        while len(self.IPDict) < PlayerNumber : # boucle de connexion TCP      
+            print("TCPConnect : waiting for new connection") # Affichage de l'état de la fonction (en attente de connexion)
+            NewSocket, NewAddr = HostSocket.accept() # Méthode bloquante : le programme se stop en attente d'une nouvelle connexion
+            # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
+            print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
+            self.IPDict.append(NewSocket) # ajout du nouveau socket dans la liste
                  
-
+"""
 thread1 = threading.Thread(target=IPBroadcaster, args=(1,), daemon=True)
 thread1.start()
 
 TCPConnect(1)
 print(IPDict)
+"""
