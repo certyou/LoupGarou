@@ -49,11 +49,3 @@ class Host:
             # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
             print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
             self.IPDict.append(NewSocket) # ajout du nouveau socket dans la liste
-                 
-"""
-thread1 = threading.Thread(target=IPBroadcaster, args=(1,), daemon=True)
-thread1.start()
-
-TCPConnect(1)
-print(IPDict)
-"""

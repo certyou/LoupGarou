@@ -1,4 +1,4 @@
-class Wearwolf:
+class Wearwolf: # test commit
     def __init__(self, id):
         self.name = "Loup garou"
         self.id = id

@@ -29,6 +29,7 @@ joli texte d'introduction avec plein d'ascii art
         print(GameHost.IPDict)
     elif choice == "2":
         You = client.Client()
+        You.WithHostConnection()
 
 if __name__ == "__main__":
     main()
