@@ -2,33 +2,32 @@ from random import randint
 from cartes import *
 from player import Player
 
-#new push
-# tesdt nope
+
 class Game:
     def __init__(self):
         self.TabPlayerInLife = []
-        self.DicoRole = {}
-        self.DicoDistibCard = {2:[Wearwolf(0), Villager(0)]}
+        self.DictRole = {}
+        self.DictDistibCard = {2:[Wearwolf(0), Villager(0)]}
     
     def GameStater(self):
 
         while True:
             try:
                 ChoiseNbPlayer = int(input("Choisissez le nombre de joueurs pour cette partie: "))
-                assert ChoiseNbPlayer in self.DicoDistibCard.keys() 
+                assert ChoiseNbPlayer in self.DictDistibCard.keys() 
                 break
             except:
                 print(f"Vous ne pouvez pas jouer avec {ChoiseNbPlayer} joueurs. Veuillez ressayer.\n\n")
 
-        TabAvailableCard = self.DicoDistibCard[ChoiseNbPlayer]
+        TabAvailableCard = self.DictDistibCard[ChoiseNbPlayer]
         for i in range(1, ChoiseNbPlayer+1):
             card = randint(0,len(TabAvailableCard)-1)
             player = Player(i, input(f"Entré le nom du joueur {i}: "), TabAvailableCard[card]) 
             self.TabPlayerInLife.append(player)
-            if TabAvailableCard[card].name in self.DicoRole.keys():
-                self.DicoRole[TabAvailableCard[card].name].append(player)
+            if TabAvailableCard[card].name in self.DictRole.keys():
+                self.DictRole[TabAvailableCard[card].name].append(player)
             else:
-                self.DicoRole[TabAvailableCard[card].name] = [player]
+                self.DictRole[TabAvailableCard[card].name] = [player]
             TabAvailableCard.pop(card)
 
     
