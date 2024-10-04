@@ -5,7 +5,7 @@ import useful_functions as utils
 
 
 MAX_PLAYER = 16
-MIN_PLAYER = 4
+MIN_PLAYER = 1
 
 
 def main():
@@ -21,13 +21,14 @@ joli texte d'introduction avec plein d'ascii art
 
     choice = utils.PlayerChoice("Votre choix : ", ["1", "2"])
     print()
-    if choice == "1":
+    if choice == 1:
         NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])
         GameHost = host.Host(NbOfPlayers)
-        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(1,), daemon=True).start() # replace 1 by NbOfPlayers
-        GameHost.TCPConnect(1) # replace 1 by NbOfPlayers
+        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
+        BroadcastThread.start()
+        GameHost.TCPConnect(NbOfPlayers)
         print(GameHost.IPDict)
-    elif choice == "2":
+    elif choice == 2:
         You = client.Client()
         You.WithHostConnection()
 

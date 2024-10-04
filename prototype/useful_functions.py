@@ -14,4 +14,4 @@ def PlayerChoice(prompt, expected_results):
             choice = input(prompt)
         else:
             break
-    return choice
+    return int(choice)

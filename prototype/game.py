@@ -1,6 +1,7 @@
 from random import randint
 from cartes import *
 from player import Player
+import useful_functions as utils
 
 
 class Game:
