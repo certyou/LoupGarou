@@ -1,5 +1,5 @@
 from random import randint
-from cartes import *
+from prototype.role import *
 from player import Player
 import useful_functions as utils
 
@@ -8,20 +8,28 @@ class Game:
     def __init__(self, NbPlayer):
         self.NbPlayer = NbPlayer
         self.TabPlayerInLife = []
-        self.ListRole = [Wearwolf(i) for i in range((NbPlayer)//4)] + [Villager(j) for j in range(((NbPlayer)//4)*3)]
-        print(self.ListRole)
+        self.DictRole = {
+            2:[Wearwolf(0), Villager(0)], # use for test only
+            3:[Wearwolf(0), Villager(0), Villager(0)], # use for test only
+            4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
+            5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
+            6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
+            7:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)],
+            8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
+        }
     
     def GameStater(self):
 
+        TabAvailableCard = self.DictDistibCard[self.NbPlayer]
         for i in range(1, self.NbPlayer+1):
-            card = randint(0,len(self.ListRole)-1)
-            player = Player(i, input(f"Entré le nom du joueur {i}: "), self.ListRole[card]) 
+            card = randint(0,len(TabAvailableCard)-1)
+            player = Player(i, input(f"Entré le nom du joueur {i}: "), TabAvailableCard[card]) 
             self.TabPlayerInLife.append(player)
-            if self.ListRole[card].name in self.DictRole.keys():
-                self.DictRole[self.ListRole[card].name].append(player)
+            if TabAvailableCard[card].name in self.DictRole.keys():
+                self.DictRole[TabAvailableCard[card].name].append(player)
             else:
-                self.DictRole[self.ListRole[card].name] = [player]
-            self.ListRole.pop(card)
+                self.DictRole[TabAvailableCard[card].name] = [player]
+            TabAvailableCard.pop(card)
 
     
     def GameLoop(self):
