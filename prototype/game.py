@@ -5,31 +5,23 @@ import useful_functions as utils
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, NbPlayer):
+        self.NbPlayer = NbPlayer
         self.TabPlayerInLife = []
-        self.DictRole = {}
-        self.DictDistibCard = {2:[Wearwolf(0), Villager(0)]}
+        self.ListRole = [Wearwolf(i) for i in range((NbPlayer)//4)] + [Villager(j) for j in range(((NbPlayer)//4)*3)]
+        print(self.ListRole)
     
     def GameStater(self):
 
-        while True:
-            try:
-                ChoiseNbPlayer = int(input("Choisissez le nombre de joueurs pour cette partie: "))
-                assert ChoiseNbPlayer in self.DictDistibCard.keys() 
-                break
-            except:
-                print(f"Vous ne pouvez pas jouer avec {ChoiseNbPlayer} joueurs. Veuillez ressayer.\n\n")
-
-        TabAvailableCard = self.DictDistibCard[ChoiseNbPlayer]
-        for i in range(1, ChoiseNbPlayer+1):
-            card = randint(0,len(TabAvailableCard)-1)
-            player = Player(i, input(f"Entré le nom du joueur {i}: "), TabAvailableCard[card]) 
+        for i in range(1, self.NbPlayer+1):
+            card = randint(0,len(self.ListRole)-1)
+            player = Player(i, input(f"Entré le nom du joueur {i}: "), self.ListRole[card]) 
             self.TabPlayerInLife.append(player)
-            if TabAvailableCard[card].name in self.DictRole.keys():
-                self.DictRole[TabAvailableCard[card].name].append(player)
+            if self.ListRole[card].name in self.DictRole.keys():
+                self.DictRole[self.ListRole[card].name].append(player)
             else:
-                self.DictRole[TabAvailableCard[card].name] = [player]
-            TabAvailableCard.pop(card)
+                self.DictRole[self.ListRole[card].name] = [player]
+            self.ListRole.pop(card)
 
     
     def GameLoop(self):
