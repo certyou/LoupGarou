@@ -1,28 +1,61 @@
-import useful_functions
+from useful_functions import *
 
 class Wearwolf: # test commit
     def __init__(self, id):
         self.name = "Loup garou"
         self.id = id
 
-    """
-    Input: int length (number of players in life)
-    Output: int choisePlayer (number of the player voted)
-    Action: Werewolves must choose one person to kill each night.
-    """
-    def ActionWearwolf(self, length):
+
+    def actionWearwolf(self, length):
+        """
+        Input: int length (number of players in life)
+        Output: int choisePlayer (number of the player voted)
+        Action: Werewolves must choose one person to kill each night.
+        """
         expected_results = [i for i in range(1,length+1)]
-        choisePlayer = PlayerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
-        return choisePlayer
+        choicePlayer = PlayerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
+        return choicePlayer
 
 class Villager:
     def __init__(self, id):
         self.name = "Villageoi"
         self.id = id
 
-    def ActionVillager(self):
+    def actionVillager(self):
         "A voir plus tard"
         return 0
+    
+class Seer:
+    def __init__(self, id):
+        self.name="Voyante"
+        self.id = id
+
+    def actionWearwolf(self, tabPlayerInLife):
+        """
+        Input: lst tabPlayerInLife (table listing the player objects of living players)
+        Output: str choicePlayer (return the name of the choosing person and his associate card)
+        Action: The seer can choose to see the card of a person of her choice each night. 
+        """
+        expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
+        choicePlayer = PlayerChoice("Entrez le numéro du joueur dont vous shouaitez voir la carte: ", expected_results)
+        playerVoted = tabPlayerInLife[choicePlayer-1]
+        return f"Le rôle de {playerVoted.name} est: {playerVoted.card.name}"
+    
+class Thief:
+    def __init__(self, id):
+        self.name="Voleur"
+        self.id = id
+
+    def actionTief(self, tabPlayerInLife):
+        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non", [1,2])
+        if choicePlayer == 1:
+            expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
+            choicePlayer = PlayerChoice("Entrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
+            return tabPlayerInLife[choicePlayer-1]
+
+        
+        return None
+
 
 class Hunter:
     def __init__(self, id):
