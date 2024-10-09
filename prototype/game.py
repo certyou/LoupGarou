@@ -19,6 +19,7 @@ class Game:
         }
     
     def GameStater(self):
+        
 
         TabAvailableCard = self.DictDistibCard[self.NbPlayer]
         for i in range(1, self.NbPlayer+1):
