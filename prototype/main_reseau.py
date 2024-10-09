@@ -5,7 +5,7 @@ from game import Game
 from player import Player
 import useful_functions as utils
 
-
+#test
 MAX_PLAYER = 16
 MIN_PLAYER = 1
 
