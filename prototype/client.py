@@ -24,3 +24,15 @@ class Client:
         ToHostConnect.connect((Ip, Port))
         print(f"Conneced to Host <--> {ToHostConnect.getpeername()}")
         return ToHostConnect
+    
+    def SendResponse(self, socket, message=""):
+        """
+        Arg :
+            - :socket: socket, socket use to send the message
+            - :message: str, the message displayed to the host player
+        Out : 
+            /
+        """
+        host_request = socket.recv(1024).decode()
+        print(host_request)
+        socket.sendall(input("votre rep :").encode())

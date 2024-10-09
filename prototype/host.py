@@ -1,51 +1,65 @@
+
 import threading
 import socket
 import time
 
 class Host:
-    def __init__(self, PlayerNumber):
-        self.HostIP = socket.gethostbyname(socket.gethostname()) # permet d'avoir l'ip locale de l'hôte (la machine executante)
-        self.HostPort = 50000 # port définit par convention
-        self.BroadcastIP = '255.255.255.255' # ip sur lequel les messages broadcast vont apparaitre (255*4 signifie que toutes les adresses sont contactés)
-        self.BroadcastPort = 65000 # port définit par convention
-        self.IPBroadcasterSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # créer un socket utilisant IPV4 et un datagrame (UDP)
-        self.IPBroadcasterSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1) # paramètre le socket pour une utilisation en broadcast
-        self.IPDict = list() #creation de la liste des IP et de leurs sockets
+    def __init__(self):
+        self.HostIP = socket.gethostbyname(socket.gethostname()) # retrieves the local IP of the host (the executing machine)
+        self.HostPort = 50000 # port defined by convention
+        self.BroadcastIP = '255.255.255.255' # IP where broadcast messages will appear (255*4 means all addresses are contacted)
+        self.BroadcastPort = 65000 # port defined by convention
+        self.IPBroadcasterSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # creates a socket using IPV4 and a datagram (UDP)
+        self.IPBroadcasterSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1) # configures the socket for broadcasting
+        self.IPList = list() # creation of the list of IPs and their sockets
 
     def IPBroadcaster(self, PlayerNumber) :
-        """ Fonction de diffusion de l'ip privé de la machine pour que les clients puissent ensuite se connecter en TCP (TCPConnect())
-        la fonction se termine quand la fonction il y a autant de connexion TCP que de joueurs attendus
-        Cette fonction doit être lancée avec TCPConnect
+        """ Function to broadcast the private IP of the machine so that clients can later connect via TCP (TCPConnect()).
+        The function terminates when there are as many TCP connections as expected players.
+        This function must be run alongside TCPConnect.
 
-        Prend en paramètre : 
-            - PlayerNumber (int) : le nombre de joueurs attendus
+        Takes the following parameter:
+            - PlayerNumber (int): the number of expected players
         """
-        compteur = 1
-        while len(self.IPDict) < PlayerNumber : # boucle de diffusion de l'IP jusqu'à ce qu'il y ai assez de joueurs connectés
-            message = "{" + self.HostIP + "," + str(self.HostPort) + "}" # message : coordonnées de la machine
-            self.IPBroadcasterSocket.sendto(message.encode(), (self.BroadcastIP, self.BroadcastPort)) # méthode d'envoi du message en broadcast à tous les ip locaux sur le port 65000
-            print(f"IPBroadcaster : packet send to --> IP : {self.BroadcastIP} | Port : {self.BroadcastPort} ({compteur})", end='\r') # affichage de l'état de la fonction
-            time.sleep(3) # envoi du message toutes les 3 secondes est largement suffisant
-            compteur += 1 # incrémentation du compteur
+        counter = 1
+        while len(self.IPList) < PlayerNumber : # loop to broadcast the IP until enough players are connected
+            message = "{" + self.HostIP + "," + str(self.HostPort) + "}" # message: machine coordinates
+            self.IPBroadcasterSocket.sendto(message.encode(), (self.BroadcastIP, self.BroadcastPort)) # method to send the message in broadcast to all local IPs on port 65000
+            print(f"IPBroadcaster : packet send to --> IP : {self.BroadcastIP} | Port : {self.BroadcastPort} ({counter})", end='\r') # display the function status
+            time.sleep(3) # sending the message every 3 seconds is more than enough
+            counter += 1 # increment the counter
 
 
     def TCPConnect(self, PlayerNumber) :
-        """ Fonction de création de sockets pour une connexion tcp avec les joueurs
-        Prend en paramètre : 
-            - PlayerNumber (int) : le nombre de joueurs attendus
+        """ Function to create sockets for TCP connections with players.
+        Takes the following parameter:
+            - PlayerNumber (int): the number of expected players
 
-        Renvoie :
-            - IPDict (list) : une liste des socket TCP de chaque joueurs 
+        Returns:
+            - IPDict (list): a list of TCP sockets for each player
         """
-        HostSocket = socket.socket() # créer un socket avec les valeurs de base (TCP) (Socket de connexion)
-        HostSocket.bind((self.HostIP, self.HostPort)) # définit l'adresse réseau de notre socket de connexion
-        HostSocket.listen(PlayerNumber) # définition de la taille du backlog du socket
-        # nombre de connexion qui peuvent être stocké dans le tampon du socket avant qu'elle soit refusée
+        HostSocket = socket.socket() # create a socket with default values (TCP) (connection socket)
+        HostSocket.bind((self.HostIP, self.HostPort)) # sets the network address for our connection socket
+        HostSocket.listen(PlayerNumber) # defines the socket's backlog size
+        # number of connections that can be stored in the socket buffer before being refused
         
 
-        while len(self.IPDict) < PlayerNumber : # boucle de connexion TCP      
+        while len(self.IPList) < PlayerNumber : # boucle de connexion TCP      
             print("TCPConnect : waiting for new connection") # Affichage de l'état de la fonction (en attente de connexion)
             NewSocket, NewAddr = HostSocket.accept() # Méthode bloquante : le programme se stop en attente d'une nouvelle connexion
             # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
             print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
-            self.IPDict.append(NewSocket) # ajout du nouveau socket dans la liste
+            self.IPList.append(NewSocket) # ajout du nouveau socket dans la liste
+    
+    def SendRequest(self, socket, message):
+        """
+        Arg :
+            - :socket: socket, socket use to send the message
+            - :message: str, the message displayed to the remote player
+        Out : 
+            - :player_response: str, player's response
+        """
+        socket.sendall(message.encode())
+        player_response = socket.recv(1024).decode()
+        print(player_response)
+        return player_response
