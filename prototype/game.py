@@ -5,8 +5,8 @@ import useful_functions as utils
 
 
 class Game:
-    def __init__(self, NbPlayer):
-        self.NbPlayer = NbPlayer
+    def __init__(self, ListOfPlayers):
+        self.ListOfPlayers = ListOfPlayers
         self.TabPlayerInLife = []
         self.DictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
@@ -18,11 +18,11 @@ class Game:
             8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
         }
     
-    def GameStater(self, ListOfPlayer):
+    def GameStater(self):
         """
         """
         
-        TabAvailableCard = self.DictDistibCard[len(ListOfPlayer)]
+        TabAvailableCard = self.DictRole[len(self.ListOfPlayer)]
         for i in range(1, self.NbPlayer+1):
             card = randint(0,len(TabAvailableCard)-1)
             player = Player(i, input(f"Entré le nom du joueur {i}: "), TabAvailableCard[card]) 
