@@ -4,7 +4,7 @@ import socket
 import time
 
 class Host:
-    def __init__(self, PlayerNumber):
+    def __init__(self):
         self.HostIP = socket.gethostbyname(socket.gethostname()) # retrieves the local IP of the host (the executing machine)
         self.HostPort = 50000 # port defined by convention
         self.BroadcastIP = '255.255.255.255' # IP where broadcast messages will appear (255*4 means all addresses are contacted)
