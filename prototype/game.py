@@ -1,5 +1,5 @@
 from random import randint
-from prototype.role import *
+from role import *
 from player import Player
 import useful_functions as utils
 
