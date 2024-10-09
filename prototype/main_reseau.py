@@ -21,7 +21,7 @@ def host():
         ListOfPlayers.append(Player(GameHost.IPList[i], GameHost.SendRequest(GameHost.IPList[i], "votre nom : ")))
 
     new_game = Game(ListOfPlayers)
-    new_game.GameStater()
+    new_game.GameStarter()
     new_game.GameLoop()
 
 def client():
