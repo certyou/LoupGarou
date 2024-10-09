@@ -1,4 +1,4 @@
-import useful_functions
+from useful_functions import *
 
 class Wearwolf: # test commit
     def __init__(self, id):
@@ -12,7 +12,7 @@ class Wearwolf: # test commit
     """
     def ActionWearwolf(self, length):
         expected_results = [i for i in range(1,length+1)]
-        choisePlayer = PlayerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
+        choisePlayer = playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
         return choisePlayer
 
 class Villager:
@@ -35,8 +35,8 @@ class Hunter:
            Input : int length (number of player alive)
            Output : int ChoiseKillPlayer (number of the player to kill)"""
         
-        prompt = "Entrez le numéro du joueur que vous souhaitez éliminer: "
-        expectedResults = [str(i) for i in range(1,length+1)]
+        prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
+        expectedResults = [i for i in range(1,length+1)]
         choiceKillPlayer = playerChoice(prompt, expectedResults)
 
         return choiceKillPlayer
@@ -48,8 +48,8 @@ class Witch:
         self.lifePotion = True
         self.potionPoison = True
 
-    def actionWitch(self,playerName,length):
-        """Action : lors de la nuit, après les loup garous la sorcière peut utiliser sa potion de vie pour sauver un joueur et/ou sa potion de mort pour tuer un joueur. Elle peut également ne rien faire.
+    def actionWitch(self,length, playerName):
+        """Action : during the night, after werewolfs, the witch can choose to use her life potion or/and her death potion or nothing
            Input : int length (number of player alive)
                    str playerName (Name of the player who will die)
            Output : tuple choices, (tuple instance with choiceKillPlayer and choiceToSave)
@@ -58,24 +58,25 @@ class Witch:
         
         choiceToSave = False
         choices = ()
+        expectedResults=[]
 
         if self.lifePotion == True and self.potionPoison == True :
-            prompt = f"Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieur choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n 2: utiliser la potion de mort \n 3: utiliser les deux potions"
+            prompt = f"\n Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n 2: utiliser la potion de mort \n 3: utiliser les deux potions \n \n"
             expectedResults = [0,1,2,3]
 
         elif self.lifePotion == True and self.potionPoison == False:
-            prompt = f"Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieur choix :\n 0: ne rien faire \n 1: utiliser la potion de vie"
+            prompt = f"\n Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n \n "
             expectedResults = [0,1]
 
         elif self.lifePotion == False and self.potionPoison == True:
-            prompt = f"Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieur choix :\n 0: ne rien faire \n 1: utiliser la potion de mort"
+            prompt = f"\n Sorcière, {playerName} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de mort \n \n "
             expectedResults = [0,1]
 
         else:
-            print("Sorcière, vous n'avez plus de potions")
+            print("\n Sorcière, vous n'avez plus de potions \n \n")
             whatToDo = 0
 
-        if len(expectedResults != 1):
+        if expectedResults:
             whatToDo=playerChoice(prompt, expectedResults)
 
         if whatToDo == 0:
@@ -89,15 +90,15 @@ class Witch:
 
         elif (whatToDo == 1 and self.potionPoison == True) or (whatToDo == 2):
             choiceToSave=True
-            prompt = "Entrez le numéro du joueur que vous souhaitez éliminer: "
-            expectedResults = [str(i) for i in range(1,length+1)]
+            prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
+            expectedResults = [i for i in range(1,length+1)]
             choiceKillPlayer = playerChoice(prompt, expectedResults)
             self.potionPoison = False
 
         else:
             choiceToSave=True
-            prompt = "Entrez le numéro du joueur que vous souhaitez éliminer: "
-            expectedResults = [str(i) for i in range(1,length+1)]
+            prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
+            expectedResults = [i for i in range(1,length+1)]
             choiceKillPlayer = playerChoice(prompt, expectedResults)
             self.lifePotion = False
             self.potionPoison = False
