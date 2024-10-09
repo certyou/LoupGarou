@@ -16,10 +16,11 @@ def host():
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
     GameHost.TCPConnect(NbOfPlayers)
-    print(GameHost.IPDict)
+    for  i in range(NbOfPlayers):
+        ListOfPlayers.append(Player(GameHost.IPList[i], utils.SendMessage(GameHost.IPList[i], "votre nom : ")))
     
 
-    new_game = Game(NbOfPlayers)
+    new_game = Game(ListOfPlayers)
     new_game.GameStater()
     new_game.GameLoop()
 

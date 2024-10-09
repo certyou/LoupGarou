@@ -4,7 +4,7 @@ class Wearwolf: # test commit
         self.id = id
 
     def ActionWearwolf(self):
-        ChoiseKillPlayer = str(input("Entrez le nom du joueur que vous shouaitez éliminer: "))
+        ChoiseKillPlayer = str(input("Entrez le nom du joueur que vous souhaitez éliminer: "))
         return ChoiseKillPlayer.lower()
 
 class Villager:
