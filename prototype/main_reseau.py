@@ -27,7 +27,8 @@ def host():
 
 def client():
     You = Client()
-    You.WithHostConnection()
+    socket = You.WithHostConnection()
+    You.SendResponse(socket)
 
 def main():
     print(
