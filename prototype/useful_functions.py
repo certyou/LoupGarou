@@ -1,4 +1,4 @@
-def PlayerChoice(prompt, expected_results):
+def playerChoice(prompt, expectedResults):
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
@@ -9,7 +9,7 @@ def PlayerChoice(prompt, expected_results):
     """
     choice = input(prompt)
     while True:
-        if choice not in expected_results:
+        if choice not in expectedResults:
             print("Choix invalide")
             choice = input(prompt)
         else:
