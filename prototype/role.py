@@ -1,10 +1,12 @@
+import useful_functions
+
 class Wearwolf: # test commit
     def __init__(self, id):
         self.name = "Loup garou"
         self.id = id
 
     def ActionWearwolf(self):
-        ChoiseKillPlayer = str(input("Entrez le nom du joueur que vous shouaitez éliminer: "))
+        choiseKillPlayer = PlayerChoice("Entrez le nom du joueur que vous shouaitez éliminer: ", )
         return ChoiseKillPlayer.lower()
 
 class Villager:
