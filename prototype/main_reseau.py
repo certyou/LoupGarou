@@ -16,6 +16,7 @@ joli texte d'introduction avec plein d'ascii art
 """
     )
 
+
     print("Voulez-vous être l'hôte ou le client ?")
     print("1. Hôte")
     print("2. Client")
