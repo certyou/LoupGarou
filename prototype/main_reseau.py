@@ -11,10 +11,10 @@ MIN_PLAYER = 1
 
 def host():
     NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)]) - 1
-    ListOfPlayers = []
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
+    ListOfPlayers = [Player(GameHost.IPBroadcasterSocket, input("votre nom : "))]
     GameHost.TCPConnect(NbOfPlayers)
     for i in range(NbOfPlayers):
         #print(GameHost.SendRequest(GameHost.IPList[i], "votre nom : "))

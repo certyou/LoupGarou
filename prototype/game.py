@@ -18,10 +18,11 @@ class Game:
             8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
         }
     
-    def GameStater(self):
+    def GameStater(self, ListOfPlayer):
+        """
+        """
         
-
-        TabAvailableCard = self.DictDistibCard[self.NbPlayer]
+        TabAvailableCard = self.DictDistibCard[len(ListOfPlayer)]
         for i in range(1, self.NbPlayer+1):
             card = randint(0,len(TabAvailableCard)-1)
             player = Player(i, input(f"Entré le nom du joueur {i}: "), TabAvailableCard[card]) 
