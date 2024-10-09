@@ -15,19 +15,3 @@ def PlayerChoice(prompt, expected_results):
         else:
             break
     return int(choice)
-
-def SendMessage(socket, message, expected_results=None):
-    """
-    Arg :
-        - :socket: socket, socket use to send the message
-        - :message: str, the message displayed to the remote player
-        - :expected_results: list, the list of expected results
-    Out : 
-        - :choice: int, player's choice
-    """
-    socket.sendall(message.encode())
-    if expected_results is not None:
-        pass
-    else:
-        player_response = socket.recv(1024).decode()
-    return player_response
