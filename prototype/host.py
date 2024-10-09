@@ -10,7 +10,7 @@ class Host:
         self.BroadcastPort = 65000 # port définit par convention
         self.IPBroadcasterSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # créer un socket utilisant IPV4 et un datagrame (UDP)
         self.IPBroadcasterSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1) # paramètre le socket pour une utilisation en broadcast
-        self.IPDict = list() #creation de la liste des IP et de leurs sockets
+        self.IPList = list() #creation de la liste des IP et de leurs sockets
 
     def IPBroadcaster(self, PlayerNumber) :
         """ Fonction de diffusion de l'ip privé de la machine pour que les clients puissent ensuite se connecter en TCP (TCPConnect())
@@ -21,7 +21,7 @@ class Host:
             - PlayerNumber (int) : le nombre de joueurs attendus
         """
         compteur = 1
-        while len(self.IPDict) < PlayerNumber : # boucle de diffusion de l'IP jusqu'à ce qu'il y ai assez de joueurs connectés
+        while len(self.IPList) < PlayerNumber : # boucle de diffusion de l'IP jusqu'à ce qu'il y ai assez de joueurs connectés
             message = "{" + self.HostIP + "," + str(self.HostPort) + "}" # message : coordonnées de la machine
             self.IPBroadcasterSocket.sendto(message.encode(), (self.BroadcastIP, self.BroadcastPort)) # méthode d'envoi du message en broadcast à tous les ip locaux sur le port 65000
             print(f"IPBroadcaster : packet send to --> IP : {self.BroadcastIP} | Port : {self.BroadcastPort} ({compteur})", end='\r') # affichage de l'état de la fonction
@@ -43,9 +43,9 @@ class Host:
         # nombre de connexion qui peuvent être stocké dans le tampon du socket avant qu'elle soit refusée
         
 
-        while len(self.IPDict) < PlayerNumber : # boucle de connexion TCP      
+        while len(self.IPList) < PlayerNumber : # boucle de connexion TCP      
             print("TCPConnect : waiting for new connection") # Affichage de l'état de la fonction (en attente de connexion)
             NewSocket, NewAddr = HostSocket.accept() # Méthode bloquante : le programme se stop en attente d'une nouvelle connexion
             # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
             print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
-            self.IPDict.append(NewSocket) # ajout du nouveau socket dans la liste
+            self.IPList.append(NewSocket) # ajout du nouveau socket dans la liste

@@ -15,3 +15,5 @@ def PlayerChoice(prompt, expected_results):
         else:
             break
     return int(choice)
+
+def SendMessage(socket, message, expected_results):

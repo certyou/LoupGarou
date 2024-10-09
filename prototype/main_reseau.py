@@ -11,17 +11,21 @@ MIN_PLAYER = 1
 
 def host():
     NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)]) - 1
+    ListOfPlayers = []
     GameHost = host.Host(NbOfPlayers)
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
     GameHost.TCPConnect(NbOfPlayers)
     print(GameHost.IPDict)
-
+    
 
     new_game = Game(NbOfPlayers)
     new_game.GameStater()
     new_game.GameLoop()
 
+def client():
+    You = client.Client()
+    You.WithHostConnection()
 
 def main():
     print(
@@ -39,8 +43,7 @@ joli texte d'introduction avec plein d'ascii art
     if choice == 1:
         host()
     elif choice == 2:
-        You = client.Client()
-        You.WithHostConnection()
+        client()
 
 if __name__ == "__main__":
     main()
