@@ -47,7 +47,13 @@ class Thief:
         self.id = id
 
     def actionTief(self, tabPlayerInLife):
-        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non", [1,2])
+        """
+        Input: lst tabPlayerInLife (table listing the player objects of living players)
+        Output: Player object (the person whose card is to be exchanged)
+        Action: The thief can choose to swap his card with that of another player (on the first night) 
+        and then players who become thieves in turn can also swap their cards. 
+        """
+        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\n", [1,2])
         if choicePlayer == 1:
             expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
             choicePlayer = PlayerChoice("Entrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
