@@ -1,6 +1,6 @@
 import threading
-import client
-import host
+from client import Client
+from host import Host
 from game import Game
 from player import Player
 import useful_functions as utils
@@ -12,12 +12,13 @@ MIN_PLAYER = 1
 def host():
     NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)]) - 1
     ListOfPlayers = []
-    GameHost = host.Host(NbOfPlayers)
+    GameHost = Host(NbOfPlayers)
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
     GameHost.TCPConnect(NbOfPlayers)
+    print(GameHost.SendRequest(GameHost.IPList[i], "votre nom : "))
     for  i in range(NbOfPlayers):
-        ListOfPlayers.append(Player(GameHost.IPList[i], utils.SendMessage(GameHost.IPList[i], "votre nom : ")))
+        ListOfPlayers.append(Player(GameHost.IPList[i], GameHost.SendRequest(GameHost.IPList[i], "votre nom : ")))
     
 
     new_game = Game(ListOfPlayers)
@@ -25,7 +26,7 @@ def host():
     new_game.GameLoop()
 
 def client():
-    You = client.Client()
+    You = Client()
     You.WithHostConnection()
 
 def main():

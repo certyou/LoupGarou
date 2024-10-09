@@ -51,14 +51,13 @@ class Host:
             print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
             self.IPList.append(NewSocket) # ajout du nouveau socket dans la liste
     
-    def SendMessage(socket, message):
+    def SendRequest(self, socket, message):
         """
         Arg :
             - :socket: socket, socket use to send the message
             - :message: str, the message displayed to the remote player
-            - :expected_results: list, the list of expected results
         Out : 
-            - :choice: int, player's choice
+            - :player_response: str, player's response
         """
         socket.sendall(message.encode())
         player_response = socket.recv(1024).decode()
