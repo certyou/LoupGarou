@@ -6,15 +6,16 @@ class Wearwolf: # test commit
         self.id = id
 
 
-    def actionWearwolf(self, length):
+    def actionWearwolf(self, tabPlayerInLife):
         """
-        Input: int length (number of players in life)
-        Output: int choisePlayer (number of the player voted)
+        Input: lst tabPlayerInLife (table listing the player objects of living players)
+        Output: Player object (player voted by the wearwolf)
         Action: Werewolves must choose one person to kill each night.
         """
-        expected_results = [i for i in range(1,length+1)]
+        expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
+        print(expected_results)
         choicePlayer = PlayerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
-        return choicePlayer
+        return tabPlayerInLife[choicePlayer-1]
 
 class Villager:
     def __init__(self, id):
@@ -30,7 +31,7 @@ class Seer:
         self.name="Voyante"
         self.id = id
 
-    def actionWearwolf(self, tabPlayerInLife):
+    def actionSeer(self, tabPlayerInLife):
         """
         Input: lst tabPlayerInLife (table listing the player objects of living players)
         Output: str choicePlayer (return the name of the choosing person and his associate card)
@@ -46,20 +47,19 @@ class Thief:
         self.name="Voleur"
         self.id = id
 
-    def actionTief(self, tabPlayerInLife):
+    def actionThief(self, tabPlayerInLife, thiefName):
         """
         Input: lst tabPlayerInLife (table listing the player objects of living players)
         Output: Player object (the person whose card is to be exchanged)
         Action: The thief can choose to swap his card with that of another player (on the first night) 
         and then players who become thieves in turn can also swap their cards. 
         """
-        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\n", [1,2])
+        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
         if choicePlayer == 1:
-            expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
-            choicePlayer = PlayerChoice("Entrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
+            expected_results = [i for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
+            choicePlayer = PlayerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
             return tabPlayerInLife[choicePlayer-1]
 
-        
         return None
 
 
