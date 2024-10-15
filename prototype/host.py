@@ -2,6 +2,7 @@
 import threading
 import socket
 import time
+import select
 
 class Host:
     def __init__(self):
@@ -18,7 +19,7 @@ class Host:
         The function terminates when there are as many TCP connections as expected players.
         This function must be run alongside TCPConnect.
 
-        Takes the following parameter:
+        Arg:
             - PlayerNumber (int): the number of expected players
         """
         counter = 1
@@ -32,10 +33,10 @@ class Host:
 
     def TCPConnect(self, PlayerNumber) :
         """ Function to create sockets for TCP connections with players.
-        Takes the following parameter:
+        Arg:
             - PlayerNumber (int): the number of expected players
 
-        Returns:
+        Out:
             - IPDict (list): a list of TCP sockets for each player
         """
         HostSocket = socket.socket() # create a socket with default values (TCP) (connection socket)
@@ -63,3 +64,10 @@ class Host:
         player_response = socket.recv(1024).decode()
         print(player_response)
         return player_response
+    
+    def sendToPlayer(self,playerId, message, typeOfReturn) :
+        frame = str()
+        frame = "{" + typeOfReturn + "$" + message + "}"
+        if self.IPList[playerId] != None :
+            self.IPList[playerId].sendall(frame.encode())
+
