@@ -19,7 +19,7 @@ class Game:
             8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
         }
     
-    def GameStarter(self):
+    def GameInit(self):
         """
         """
         
@@ -29,14 +29,24 @@ class Game:
             card = randint(0,len(TabAvailableCard)-1)
             player.setRole(card)
             self.TabPlayerInLife.append(player)
-            if TabAvailableCard[card].name in self.DictRole.keys():
-                self.DictRole[TabAvailableCard[card].name].append(player)
-            else:
-                self.DictRole[TabAvailableCard[card].name] = [player]
             TabAvailableCard.pop(card)
 
     def day(self):
-        pass
+        # ----------- Chat ------------------
+
+        # ----------- Vote ------------------
+        listOfPlayer = self.PrintPlayerInLife()
+        maxVotedPlayer = {"player":None, "nbVote":0}
+        # making player vote
+        for player in self.TabPlayerInLife:
+            vote = int(utils.playerChoice(listOfPlayer+"\nvotre vote : ", [str(x+1) for x in range(len(self.TabPlayerInLife))], player.IsHost, player))-1
+            self.TabPlayerInLife[vote].addVote()
+        print()
+        # counting and reseting vote
+        for player in self.TabPlayerInLife:
+            print(player.name, "-->", player.vote)
+            if maxVotedPlayer["nbVote"] < player.vote:
+                maxVotedPlayer = {"player":player, "nbVote":player.vote}
 
     def night(self):
         pass
@@ -45,15 +55,15 @@ class Game:
     def GameLoop(self):
         IsWin = False
         while not IsWin:
-            print("le village s'endort")
+            print("\nle village s'endort\n\n")
             self.night()
-            print("le jour se lève")
+            print("\nle jour se lève\n\n")
             self.day()
 
 
     def PrintPlayerInLife(self):
-        message = f"Joueur en vie:\n   "
+        message = f"Joueurs en vie:\n"
         for x in range(len(self.TabPlayerInLife)):
-            message += f"   -{x+1}: {self.TabPlayerInLife[x].name}\n"
-        print(message)
+            message += f"    {x+1} - {self.TabPlayerInLife[x].name}\n"
+        return message
             

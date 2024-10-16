@@ -1,15 +1,16 @@
 class Player:
 
-    def __init__(self, id, name):
+    def __init__(self, id, name, IsHost):
         self.id = id
         self.name = name
         self.card = None
         self.vote = 0
+        self.IsHost = IsHost
 
-    def AddVote(self):
+    def addVote(self):
         self.vote += 1
     
-    def ResetVote(self):
+    def resetVote(self):
         self.vote = 0
 
     def setRole(self, role):

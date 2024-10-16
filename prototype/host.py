@@ -2,6 +2,7 @@
 import threading
 import socket
 import time
+import select
 
 class Host:
     def __init__(self):
@@ -18,7 +19,7 @@ class Host:
         The function terminates when there are as many TCP connections as expected players.
         This function must be run alongside TCPConnect.
 
-        Takes the following parameter:
+        Arg:
             - PlayerNumber (int): the number of expected players
         """
         counter = 1
@@ -32,10 +33,10 @@ class Host:
 
     def TCPConnect(self, PlayerNumber) :
         """ Function to create sockets for TCP connections with players.
-        Takes the following parameter:
+        Arg:
             - PlayerNumber (int): the number of expected players
 
-        Returns:
+        Out:
             - IPDict (list): a list of TCP sockets for each player
         """
         HostSocket = socket.socket() # create a socket with default values (TCP) (connection socket)
@@ -43,13 +44,12 @@ class Host:
         HostSocket.listen(PlayerNumber) # defines the socket's backlog size
         # number of connections that can be stored in the socket buffer before being refused
         
-
-        while len(self.IPList) < PlayerNumber : # boucle de connexion TCP      
-            print("TCPConnect : waiting for new connection") # Affichage de l'état de la fonction (en attente de connexion)
-            NewSocket, NewAddr = HostSocket.accept() # Méthode bloquante : le programme se stop en attente d'une nouvelle connexion
-            # NewSocket est le socket créé pour la nouvelle connexion | NewAddr est l'adresse d'où viens la connexion
-            print("\nConnection accepted <-- IP : " + NewAddr[0] + " | Port : " + str(NewAddr[1])) # affichage des information de la nouvelle connexion
-            self.IPList.append(NewSocket) # ajout du nouveau socket dans la liste
+        while len(self.IPList) < PlayerNumber: # TCP connection loop
+            print("TCPConnect: waiting for new connection") # Display the function status (waiting for connection)
+            NewSocket, NewAddr = HostSocket.accept() # Blocking method: the program stops waiting for a new connection
+            # NewSocket is the socket created for the new connection | NewAddr is the address from which the connection comes
+            print("\nConnection accepted <-- IP: " + NewAddr[0] + " | Port: " + str(NewAddr[1])) # Display information about the new connection
+            self.IPList.append(NewSocket) # Add the new socket to the list, this is the list of each sockets linked to a player
     
     def SendRequest(self, socket, message):
         """
@@ -63,3 +63,30 @@ class Host:
         player_response = socket.recv(1024).decode()
         print(player_response)
         return player_response
+    
+    def sendToPlayer(self,playerId, message, typeOfReturn) :
+        """
+        Function to send a message to a player
+        The function will send a type of return, it is the type the player will have to send back
+        Arg : 
+            - :playerId: int, the id of the player to identify which socket to use
+            - :message: str, the message to send to the player
+            - :typeOfReturn: str, the type of message to send (see protocol)
+        """
+        frame = str()
+        frame = "{" + typeOfReturn + "$" + message + "}"
+        if self.IPList[playerId] != None :
+            self.IPList[playerId].sendall(frame.encode())
+
+    def listening(self, playerId) :
+        """
+        Function to listen the buffer of the socket with select
+        This function should be started in a thread
+        Arg : 
+            - :playerId: int, the id of the player to identify which socket to listen
+        Out : 
+            - :readable: bool, True if there is a message in the buffer ready to be read, False otherwise
+        """
+        readable, [], [] = select.select([self.IPList[playerId]], [], [], 0)
+        return readable != []
+
