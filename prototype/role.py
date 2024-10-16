@@ -76,7 +76,7 @@ class Hunter:
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
         expectedResults = [str(i) for i in range(1,length+1)]
-        choiceKillPlayer = playerChoice(prompt, expectedResults)
+        choiceKillPlayer = int(playerChoice(prompt, expectedResults))
 
         return choiceKillPlayer
 
@@ -116,7 +116,7 @@ class Witch:
             whatToDo = 0
 
         if expectedResults:
-            whatToDo=playerChoice(prompt, expectedResults)
+            whatToDo=int(playerChoice(prompt, expectedResults))
 
         if whatToDo == 0:
             choiceKillPlayer = 0
@@ -131,14 +131,14 @@ class Witch:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,length+1)]
-            choiceKillPlayer = playerChoice(prompt, expectedResults)
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults))
             self.potionPoison = False
 
         else:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,length+1)]
-            choiceKillPlayer = playerChoice(prompt, expectedResults)
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults))
             self.lifePotion = False
             self.potionPoison = False
 
@@ -158,11 +158,11 @@ class Cupidon :
         secondPlayerToLink = 0
         prompt = "\n entrez le numéro de la première personne à lier : \n"
         expectedResults = [str(i) for i in range(1,length+1)]
-        firstPlayerToLink = playerChoice(prompt, expectedResults)
+        firstPlayerToLink = int(playerChoice(prompt, expectedResults))
 
         prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
         while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink :
-            secondPlayerToLink = playerChoice(prompt, expectedResults)
+            secondPlayerToLink = int(playerChoice(prompt, expectedResults))
         
         choices = (firstPlayerToLink,secondPlayerToLink)
         return choices
