@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 def PlayerChoice(prompt, expected_results, local=True, player=None):
+=======
+def playerChoice(prompt, expectedResults):
+>>>>>>> Role
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
@@ -9,6 +13,7 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
     Out : 
         - :choice: int, player's choice
     """
+<<<<<<< HEAD
     if local:
         choice = input(prompt)
         while True:
@@ -69,3 +74,15 @@ def buffer(message) :
     message = message[message.find("}")+1:]
 
     return typeOfReturn, strMessage, message
+=======
+    choice = int(input(prompt))
+    choice = int(input(prompt))
+    while True:
+        if choice not in expectedResults:
+            print("Choix invalide\n")
+            choice = int(input(prompt))
+        else:
+            break
+    return choice
+    return choice
+>>>>>>> Role
