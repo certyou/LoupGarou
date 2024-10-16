@@ -37,7 +37,7 @@ class Game:
         # vote
         for player in self.TabPlayerInLife:
             list_of_player = "\n".join([str(x+1)+" - "+player.name for x in range(0)])
-            utils.PlayerChoice(list_of_player+"\nvotre vote : ", [str(x) for x in range(len(self.TabPlayerInLife))], player.IsHost, player)
+            utils.playerChoice(list_of_player+"\nvotre vote : ", [str(x) for x in range(len(self.TabPlayerInLife))], player.IsHost, player)
 
     def night(self):
         pass
