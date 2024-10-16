@@ -50,7 +50,7 @@ def SendResponse(socket, message=""):
         """
         host_request = socket.recv(1024).decode()
         print(host_request)
-        socket.sendall(input("votre reponse :").encode())
+        socket.sendall(input("").encode())
 
 def buffer(message) :
     """
@@ -71,7 +71,7 @@ def buffer(message) :
 
 def broadcastMessage(message, players):
      for player in players:
-        if player.isHost:
+        if player.IsHost:
             print(message)
         else:
             player.id.sendall(message.encode())

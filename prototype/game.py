@@ -32,14 +32,13 @@ class Game:
             TabAvailableCard.pop(card)
 
     def day(self):
-        # ----------- Chat ------------------
-
         # ----------- Vote ------------------
         listOfPlayer = self.PrintPlayerInLife()
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
+        utils.broadcastMessage(listOfPlayer, self.ListOfPlayers)
         for player in self.TabPlayerInLife:
-            vote = int(utils.playerChoice(listOfPlayer+"\nvotre vote : ", [str(x+1) for x in range(len(self.TabPlayerInLife))], player.IsHost, player))-1
+            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.TabPlayerInLife))], player.IsHost, player))-1
             self.TabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
@@ -48,8 +47,9 @@ class Game:
             if maxVotedPlayer["nbVote"] < player.vote:
                 maxVotedPlayer = {"player":player, "nbVote":player.vote}
             player.resetVote()
+        # displaying results
         voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
-        utils.broadcastMessage(voteResult, self.TabPlayerInLife)
+        utils.broadcastMessage(voteResult, self.ListOfPlayers)
         self.TabPlayerInLife.remove(maxVotedPlayer['player'])
         
 
@@ -60,9 +60,9 @@ class Game:
     def GameLoop(self):
         IsWin = False
         while not IsWin:
-            print("\nle village s'endort\n\n")
+            utils.broadcastMessage("\nle village s'endort\n\n",self.ListOfPlayers)
             self.night()
-            print("\nle jour se lève\n\n")
+            utils.broadcastMessage("\nle jour se lève\n\n",self.ListOfPlayers)
             self.day()
 
 
