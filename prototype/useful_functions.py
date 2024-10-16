@@ -1,4 +1,4 @@
-def PlayerChoice(prompt, expected_results, local=True, player=None):
+def playerChoice(prompt, expected_results, local=True, player=None):
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
@@ -17,7 +17,7 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
                 choice = input(prompt)
             else:
                 break
-        return int(choice)
+        return choice
     else:
         choice = player.SendRequest(player.id, "votre vote : ")
         while True:
@@ -26,7 +26,7 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
                 choice = SendRequest(player.id, "votre vote : ")
             else:
                 break
-        return int(choice)
+        return choice
     
 def SendRequest(self, socket, message):
         """
