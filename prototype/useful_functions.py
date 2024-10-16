@@ -10,8 +10,8 @@ def playerChoice(prompt, expectedResults):
     choice = int(input(prompt))
     while True:
         if choice not in expectedResults:
-            print("Choix invalide")
+            print("Choix invalide\n")
             choice = int(input(prompt))
         else:
             break
-    return int(choice)
+    return choice
