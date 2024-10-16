@@ -47,6 +47,11 @@ class Game:
             print(player.name, "-->", player.vote)
             if maxVotedPlayer["nbVote"] < player.vote:
                 maxVotedPlayer = {"player":player, "nbVote":player.vote}
+            player.resetVote()
+        voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
+        utils.broadcastMessage(voteResult, self.TabPlayerInLife)
+        self.TabPlayerInLife.remove(maxVotedPlayer['player'])
+        
 
     def night(self):
         pass
