@@ -8,12 +8,10 @@ def playerChoice(prompt, expectedResults):
         - :choice: int, player's choice
     """
     choice = int(input(prompt))
-    choice = int(input(prompt))
     while True:
         if choice not in expectedResults:
             print("Choix invalide\n")
             choice = int(input(prompt))
         else:
             break
-    return choice
     return choice

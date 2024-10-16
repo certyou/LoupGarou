@@ -14,7 +14,7 @@ class Wearwolf: # test commit
         """
         expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
         print(expected_results)
-        choicePlayer = PlayerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
+        choicePlayer = playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
         return tabPlayerInLife[choicePlayer-1]
 
 class Villager:
@@ -38,7 +38,7 @@ class Seer:
         Action: The seer can choose to see the card of a person of her choice each night. 
         """
         expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
-        choicePlayer = PlayerChoice("Entrez le numéro du joueur dont vous shouaitez voir la carte: ", expected_results)
+        choicePlayer = playerChoice("Entrez le numéro du joueur dont vous shouaitez voir la carte: ", expected_results)
         playerVoted = tabPlayerInLife[choicePlayer-1]
         return f"Le rôle de {playerVoted.name} est: {playerVoted.card.name}"
     
@@ -54,10 +54,10 @@ class Thief:
         Action: The thief can choose to swap his card with that of another player (on the first night) 
         and then players who become thieves in turn can also swap their cards. 
         """
-        choicePlayer = PlayerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
+        choicePlayer = playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
         if choicePlayer == 1:
             expected_results = [i for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
-            choicePlayer = PlayerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
+            choicePlayer = playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results)
             return tabPlayerInLife[choicePlayer-1]
 
         return None
@@ -146,4 +146,23 @@ class Witch:
         return choices
 
         
+class Cupidon :
+    def __init__(self, id):
+        self.name = "Cupidon"
+        self.id = id
 
+    def actionCupidon(self, length):
+        """Action : during the night, Cupidon can choose 2 persons to link them. If one of them die, the other one also die
+           Input : int length (number of player alive)
+           Output : tuple choices, (tuple instance with the numbers of both players to link)"""
+        secondPlayerToLink = 0
+        prompt = "\n entrez le numéro de la première personne à lier : \n"
+        expectedResults = [i for i in range(1,length+1)]
+        firstPlayerToLink = playerChoice(prompt, expectedResults)
+
+        prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
+        while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink :
+            secondPlayerToLink = playerChoice(prompt, expectedResults)
+        
+        choices = (firstPlayerToLink,secondPlayerToLink)
+        return choices
