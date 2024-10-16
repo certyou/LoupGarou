@@ -1,20 +1,57 @@
-def PlayerChoice(prompt, expected_results):
+def PlayerChoice(prompt, expected_results, local=True, player=None):
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
         - :prompt: str, the question to ask the player
         - :expected_results: list, the list of expected results
+        - :local: if the player is the host or not
+        - :player: the player to ask if player is not the host 
     Out : 
         - :choice: int, player's choice
     """
-    choice = input(prompt)
-    while True:
-        if choice not in expected_results:
-            print("Choix invalide")
-            choice = input(prompt)
-        else:
-            break
-    return int(choice)
+    if local:
+        choice = input(prompt)
+        while True:
+            if choice not in expected_results:
+                print("Choix invalide")
+                choice = input(prompt)
+            else:
+                break
+        return int(choice)
+    else:
+        choice = player.SendRequest(player.id, "votre vote : ")
+        while True:
+            if choice not in expected_results:
+                print("Choix invalide")
+                choice = SendRequest(player.id, "votre vote : ")
+            else:
+                break
+        return int(choice)
+    
+def SendRequest(self, socket, message):
+        """
+        Arg :
+            - :socket: socket, socket use to send the message
+            - :message: str, the message displayed to the remote player
+        Out : 
+            - :player_response: str, player's response
+        """
+        socket.sendall(message.encode())
+        player_response = socket.recv(1024).decode()
+        print(player_response)
+        return player_response
+
+def SendResponse(self, socket, message=""):
+        """
+        Arg :
+            - :socket: socket, socket use to send the message
+            - :message: str, the message displayed to the host player
+        Out : 
+            /
+        """
+        host_request = socket.recv(1024).decode()
+        print(host_request)
+        socket.sendall(input("votre rep :").encode())
 
 def buffer(message) :
     """
