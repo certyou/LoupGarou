@@ -19,11 +19,11 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
                 break
         return choice
     else:
-        choice = SendRequest(player.id, "votre vote : ")
+        choice = SendRequest(player.id, prompt)
         while True:
             if choice not in expectedResults:
                 print("Choix invalide")
-                choice = SendRequest(player.id, "votre vote : ")
+                choice = SendRequest(player.id, prompt)
             else:
                 break
         return choice
@@ -49,6 +49,7 @@ def SendResponse(socket, message=""):
             /
         """
         host_request = socket.recv(1024).decode()
+        print(host_request)
         socket.sendall(input("votre reponse :").encode())
 
 def buffer(message) :

@@ -12,7 +12,7 @@ class Wearwolf: # test commit
         Output: Player object (player voted by the wearwolf)
         Action: Werewolves must choose one person to kill each night.
         """
-        expected_results = [i for i in range(1,len(tabPlayerInLife)+1)]
+        expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         print(expected_results)
         choicePlayer = playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results)
         return tabPlayerInLife[choicePlayer-1]
@@ -75,7 +75,7 @@ class Hunter:
            Output : int ChoiseKillPlayer (number of the player to kill)"""
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
-        expectedResults = [i for i in range(1,length+1)]
+        expectedResults = [str(i) for i in range(1,length+1)]
         choiceKillPlayer = playerChoice(prompt, expectedResults)
 
         return choiceKillPlayer

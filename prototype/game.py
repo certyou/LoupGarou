@@ -32,12 +32,21 @@ class Game:
             TabAvailableCard.pop(card)
 
     def day(self):
-        # chat
+        # ----------- Chat ------------------
 
-        # vote
+        # ----------- Vote ------------------
+        listOfPlayer = self.PrintPlayerInLife()
+        maxVotedPlayer = {"player":None, "nbVote":0}
+        # making player vote
         for player in self.TabPlayerInLife:
-            list_of_player = "\n".join([str(x+1)+" - "+player.name for x in range(0)])
-            utils.playerChoice(list_of_player+"\nvotre vote : ", [str(x) for x in range(len(self.TabPlayerInLife))], player.IsHost, player)
+            vote = int(utils.playerChoice(listOfPlayer+"\nvotre vote : ", [str(x+1) for x in range(len(self.TabPlayerInLife))], player.IsHost, player))-1
+            self.TabPlayerInLife[vote].addVote()
+        print()
+        # counting and reseting vote
+        for player in self.TabPlayerInLife:
+            print(player.name, "-->", player.vote)
+            if maxVotedPlayer["nbVote"] < player.vote:
+                maxVotedPlayer = {"player":player, "nbVote":player.vote}
 
     def night(self):
         pass
@@ -46,15 +55,15 @@ class Game:
     def GameLoop(self):
         IsWin = False
         while not IsWin:
-            print("le village s'endort")
+            print("\nle village s'endort\n\n")
             self.night()
-            print("le jour se lève")
+            print("\nle jour se lève\n\n")
             self.day()
 
 
     def PrintPlayerInLife(self):
-        message = f"Joueur en vie:\n   "
+        message = f"Joueurs en vie:\n"
         for x in range(len(self.TabPlayerInLife)):
-            message += f"   -{x+1}: {self.TabPlayerInLife[x].name}\n"
-        print(message)
+            message += f"    {x+1} - {self.TabPlayerInLife[x].name}\n"
+        return message
             
