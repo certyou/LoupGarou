@@ -17,7 +17,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
                 choice = input(prompt)
             else:
                 break
-        return int(choice)
+        return choice
     else:
         choice = player.SendRequest(player.id, "votre vote : ")
         while True:
@@ -26,7 +26,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
                 choice = SendRequest(player.id, "votre vote : ")
             else:
                 break
-        return int(choice)
+        return choice
     
 def SendRequest(self, socket, message):
         """
