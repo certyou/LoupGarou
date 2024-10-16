@@ -1,4 +1,4 @@
-def PlayerChoice(prompt, expected_results, local=True, player=None):
+def playerChoice(prompt, expectedResults, local=True, player=None):
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
@@ -12,23 +12,23 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
     if local:
         choice = input(prompt)
         while True:
-            if choice not in expected_results:
+            if choice not in expectedResults:
                 print("Choix invalide")
                 choice = input(prompt)
             else:
                 break
-        return int(choice)
+        return choice
     else:
-        choice = player.SendRequest(player.id, "votre vote : ")
+        choice = SendRequest(player.id, "votre vote : ")
         while True:
-            if choice not in expected_results:
+            if choice not in expectedResults:
                 print("Choix invalide")
                 choice = SendRequest(player.id, "votre vote : ")
             else:
                 break
-        return int(choice)
+        return choice
     
-def SendRequest(self, socket, message):
+def SendRequest(socket, message):
         """
         Arg :
             - :socket: socket, socket use to send the message
@@ -38,10 +38,9 @@ def SendRequest(self, socket, message):
         """
         socket.sendall(message.encode())
         player_response = socket.recv(1024).decode()
-        print(player_response)
         return player_response
 
-def SendResponse(self, socket, message=""):
+def SendResponse(socket, message=""):
         """
         Arg :
             - :socket: socket, socket use to send the message
@@ -50,8 +49,7 @@ def SendResponse(self, socket, message=""):
             /
         """
         host_request = socket.recv(1024).decode()
-        print(host_request)
-        socket.sendall(input("votre rep :").encode())
+        socket.sendall(input("votre reponse :").encode())
 
 def buffer(message) :
     """
