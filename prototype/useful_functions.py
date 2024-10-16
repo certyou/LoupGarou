@@ -1,9 +1,9 @@
-def PlayerChoice(prompt, expected_results, local=True, player=None):
+def playerChoice(prompt, expectedResults, local=True, player=None):
     """
     Function to ask the player to make a choice among a list of expected results
     Arg :
         - :prompt: str, the question to ask the player
-        - :expected_results: list, the list of expected results
+        - :expectedResults: list, the list of expected results
         - :local: if the player is the host or not
         - :player: the player to ask if player is not the host 
     Out : 
@@ -12,7 +12,7 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
     if local:
         choice = input(prompt)
         while True:
-            if choice not in expected_results:
+            if choice not in expectedResults:
                 print("Choix invalide")
                 choice = input(prompt)
             else:
@@ -21,7 +21,7 @@ def PlayerChoice(prompt, expected_results, local=True, player=None):
     else:
         choice = player.SendRequest(player.id, "votre vote : ")
         while True:
-            if choice not in expected_results:
+            if choice not in expectedResults:
                 print("Choix invalide")
                 choice = SendRequest(player.id, "votre vote : ")
             else:

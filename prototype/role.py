@@ -75,7 +75,7 @@ class Hunter:
            Output : int ChoiseKillPlayer (number of the player to kill)"""
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
-        expectedResults = [i for i in range(1,length+1)]
+        expectedResults = [str(i) for i in range(1,length+1)]
         choiceKillPlayer = playerChoice(prompt, expectedResults)
 
         return choiceKillPlayer
@@ -130,14 +130,14 @@ class Witch:
         elif (whatToDo == 1 and self.potionPoison == True) or (whatToDo == 2):
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
-            expectedResults = [i for i in range(1,length+1)]
+            expectedResults = [str(i) for i in range(1,length+1)]
             choiceKillPlayer = playerChoice(prompt, expectedResults)
             self.potionPoison = False
 
         else:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
-            expectedResults = [i for i in range(1,length+1)]
+            expectedResults = [str(i) for i in range(1,length+1)]
             choiceKillPlayer = playerChoice(prompt, expectedResults)
             self.lifePotion = False
             self.potionPoison = False
@@ -157,7 +157,7 @@ class Cupidon :
            Output : tuple choices, (tuple instance with the numbers of both players to link)"""
         secondPlayerToLink = 0
         prompt = "\n entrez le numéro de la première personne à lier : \n"
-        expectedResults = [i for i in range(1,length+1)]
+        expectedResults = [str(i) for i in range(1,length+1)]
         firstPlayerToLink = playerChoice(prompt, expectedResults)
 
         prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
