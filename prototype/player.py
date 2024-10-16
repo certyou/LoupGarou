@@ -7,10 +7,10 @@ class Player:
         self.vote = 0
         self.IsHost = IsHost
 
-    def AddVote(self):
+    def addVote(self):
         self.vote += 1
     
-    def ResetVote(self):
+    def resetVote(self):
         self.vote = 0
 
     def setRole(self, role):
