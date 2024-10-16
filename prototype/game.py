@@ -19,7 +19,7 @@ class Game:
             8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
         }
     
-    def GameStarter(self):
+    def GameInit(self):
         """
         """
         
@@ -29,14 +29,15 @@ class Game:
             card = randint(0,len(TabAvailableCard)-1)
             player.setRole(card)
             self.TabPlayerInLife.append(player)
-            if TabAvailableCard[card].name in self.DictRole.keys():
-                self.DictRole[TabAvailableCard[card].name].append(player)
-            else:
-                self.DictRole[TabAvailableCard[card].name] = [player]
             TabAvailableCard.pop(card)
 
     def day(self):
-        pass
+        # chat
+
+        # vote
+        for player in self.TabPlayerInLife:
+            list_of_player = [str(x)+1 for x in range(0)]
+            utils.PlayerChoice("votre vote : ", [str(x) for x in range(len(self.TabPlayerInLife))], False, player)
 
     def night(self):
         pass
