@@ -65,6 +65,14 @@ class Host:
         return player_response
     
     def sendToPlayer(self,playerId, message, typeOfReturn) :
+        """
+        Function to send a message to a player
+        The function will send a type of return, it is the type the player will have to send back
+        Arg : 
+            - :playerId: int, the id of the player to identify which socket to use
+            - :message: str, the message to send to the player
+            - :typeOfReturn: str, the type of message to send (see protocol)
+        """
         frame = str()
         frame = "{" + typeOfReturn + "$" + message + "}"
         if self.IPList[playerId] != None :
@@ -77,7 +85,7 @@ class Host:
         Arg : 
             - :playerId: int, the id of the player to identify which socket to listen
         Out : 
-            - :bool: bool, True if there is a message in the buffer ready to be read, False otherwise
+            - :readable: bool, True if there is a message in the buffer ready to be read, False otherwise
         """
         readable, [], [] = select.select([self.IPList[playerId]], [], [], 0)
         return readable != []
