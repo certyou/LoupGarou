@@ -37,6 +37,11 @@ class Game:
         self.ListOfRole = [self.TabPlayerInLife[x].card for x in range(self.NbPlayer)]
 
 
+
+
+    
+
+
     def day(self):
         # ----------- Vote ------------------
         listOfPlayer = self.PrintPlayerInLife()
@@ -57,6 +62,44 @@ class Game:
         voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
         utils.broadcastMessage(voteResult, self.ListOfPlayers)
         self.TabPlayerInLife.remove(maxVotedPlayer['player'])
+
+    def mayorVote(self):
+        """
+        """
+
+        tabOfParticipant = []
+        txtVote = "Qui voulez vous élire:\n"
+        for i in range(len(self.tabPlayerInLife)):
+            player = self.tabPlayerInLife[i]
+            choiceParticipation = int(playerChoice("Voulez vous présenter au élection du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
+            if choiceParticipation == 1:
+                tabOfParticipant.append(player)
+                txtVote += f" -{i+1} : {player.name}\n"
+        
+        expectedResultsVote = [str(i+1) for i in range(len(tabOfParticipant))]
+        txtVote += "Choix: "
+        
+        for player in self.tabPlayerInLife:
+            choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.IsHost, player))
+            tabOfParticipant[choiceMayor-1].addVote()
+        
+        return self.playerWithMostVote(tabOfParticipant)
+
+        
+    def playerWithMostVote(self, tabPlayer):
+        """
+        Arg :
+            - :tabPlayer: lst of Player object
+        Out : 
+            - :maxVotePlayer: Player object, player with the most vote
+        """
+        maxVote = tabPlayer[0].vote
+        maxVotePlayer = tabPlayer[0]
+        for player in tabPlayer[1:]:
+            if player.vote > maxVote:
+                maxVote = player.vote
+                maxVotePlayer = player
+        return maxVotePlayer
         
 
     def night(self):
