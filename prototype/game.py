@@ -6,12 +6,12 @@ import useful_functions as utils
 
 class Game:
     def __init__(self, ListOfPlayers):
-        self.ListOfPlayers = ListOfPlayers
-        self.ListOfRole = []
-        self.NbPlayer = len(ListOfPlayers)
-        self.TabPlayerInLife = []
-        self.NbTurn = 0
-        self.DictRole = {
+        self.listOfPlayers = ListOfPlayers
+        self.listOfRole = []
+        self.nbPlayer = len(ListOfPlayers)
+        self.tabPlayerInLife = []
+        self.nbTurn = 0
+        self.dictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
@@ -25,42 +25,42 @@ class Game:
         """
         """
         
-        TabAvailableCard = self.DictRole[self.NbPlayer]
-        for i in range(self.NbPlayer):
-            player = self.ListOfPlayers[i]
-            card = randint(0,len(TabAvailableCard)-1)
+        tabAvailableCard = self.dictRole[self.nbPlayer]
+        for i in range(self.nbPlayer):
+            player = self.listOfPlayers[i]
+            card = randint(0,len(tabAvailableCard)-1)
             player.setRole(card)
             player.card.id = player
-            self.TabPlayerInLife.append(player)
-            TabAvailableCard.pop(card)
-        self.ListOfRole = [self.TabPlayerInLife[x].card for x in range(self.NbPlayer)]
+            self.tabPlayerInLife.append(player)
+            tabAvailableCard.pop(card)
+        self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
 
     def day(self):
         # ----------- Vote ------------------
-        listOfPlayer = self.PrintPlayerInLife()
+        strListOfPlayer = self.PrintPlayerInLife()
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
-        utils.broadcastMessage(listOfPlayer, self.ListOfPlayers)
-        for player in self.TabPlayerInLife:
-            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.TabPlayerInLife))], player.IsHost, player))-1
-            self.TabPlayerInLife[vote].addVote()
+        utils.broadcastMessage(strListOfPlayer, self.listOfPlayers)
+        for player in self.tabPlayerInLife:
+            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            self.tabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
-        for player in self.TabPlayerInLife:
+        for player in self.tabPlayerInLife:
             print(player.name, "-->", player.vote)
             if maxVotedPlayer["nbVote"] < player.vote:
                 maxVotedPlayer = {"player":player, "nbVote":player.vote}
             player.resetVote()
         # displaying results
         voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
-        utils.broadcastMessage(voteResult, self.ListOfPlayers)
-        self.TabPlayerInLife.remove(maxVotedPlayer['player'])
+        utils.broadcastMessage(voteResult, self.listOfPlayers)
+        self.tabPlayerInLife.remove(maxVotedPlayer['player'])
         
 
     def night(self):
         # ----------- first night ------------------
-        if self.NbTurn == 1:
+        if self.nbTurn == 1:
             # cupidon
             pass
             # voleur
@@ -68,17 +68,17 @@ class Game:
         
     
     def GameLoop(self):
-        IsWin = False
-        while not IsWin:
-            self.NbTurn += 1
-            utils.broadcastMessage("\nle village s'endort\n\n",self.ListOfPlayers)
+        isWin = False
+        while not isWin:
+            self.nbTurn += 1
+            utils.broadcastMessage("\nle village s'endort\n\n",self.listOfPlayers)
             self.night()
-            utils.broadcastMessage("\nle jour se lève\n\n",self.ListOfPlayers)
+            utils.broadcastMessage("\nle jour se lève\n\n",self.listOfPlayers)
             self.day()
 
 
     def PrintPlayerInLife(self):
         message = f"Joueurs en vie:\n"
-        for x in range(len(self.TabPlayerInLife)):
-            message += f"    {x+1} - {self.TabPlayerInLife[x].name}\n"
+        for x in range(len(self.tabPlayerInLife)):
+            message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
         return message
