@@ -9,6 +9,7 @@ class Game:
         self.ListOfPlayers = ListOfPlayers
         self.NbPlayer = len(ListOfPlayers)
         self.TabPlayerInLife = []
+        self.NbTurn = 0
         self.DictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Villager(0)], # use for test only
@@ -54,12 +55,18 @@ class Game:
         
 
     def night(self):
-        pass
-
+        # ----------- first night ------------------
+        if self.NbTurn == 1:
+            # cupidon
+            pass
+            # voleur
+        
+        
     
     def GameLoop(self):
         IsWin = False
         while not IsWin:
+            self.NbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n",self.ListOfPlayers)
             self.night()
             utils.broadcastMessage("\nle jour se lève\n\n",self.ListOfPlayers)
@@ -71,4 +78,3 @@ class Game:
         for x in range(len(self.TabPlayerInLife)):
             message += f"    {x+1} - {self.TabPlayerInLife[x].name}\n"
         return message
-            
