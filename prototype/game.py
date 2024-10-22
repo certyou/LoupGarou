@@ -28,7 +28,7 @@ class Game:
         tabAvailableCard = self.dictRole[self.nbPlayer]
         for i in range(self.nbPlayer):
             player = self.listOfPlayers[i]
-            card = randint(0,len(tabAvailableCard)-1)
+            card = tabAvailableCard[randint(0,len(tabAvailableCard)-1)]
             player.setRole(card)
             player.card.id = player
             self.tabPlayerInLife.append(player)
