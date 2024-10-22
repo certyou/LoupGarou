@@ -32,7 +32,7 @@ class Game:
             player.setRole(card)
             player.card.id = player
             self.tabPlayerInLife.append(player)
-            tabAvailableCard.pop(card)
+            tabAvailableCard.remove(card)
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
 

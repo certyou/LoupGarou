@@ -49,7 +49,7 @@ def SendResponse(socket, message=""):
             /
         """
         host_request = socket.recv(1024).decode()
-        print(host_request)
+        print(host_request, end="")
         socket.sendall(input("").encode())
 
 def buffer(message) :
