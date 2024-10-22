@@ -69,3 +69,10 @@ def buffer(message) :
     message = message[message.find("}")+1:]
 
     return typeOfReturn, strMessage, message
+
+def broadcastMessage(message, players):
+     for player in players:
+        if player.IsHost:
+            print(message)
+        else:
+            player.id.sendall(message.encode())

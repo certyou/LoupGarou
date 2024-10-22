@@ -10,7 +10,7 @@ MAX_PLAYER = 16
 MIN_PLAYER = 1
 
 def host():
-    NbOfPlayers = utils.PlayerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)]) - 1
+    NbOfPlayers = utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)]) - 1
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
@@ -42,7 +42,7 @@ joli texte d'introduction avec plein d'ascii art
     print("1. Hôte")
     print("2. Client")
 
-    choice = utils.PlayerChoice("Votre choix : ", ["1", "2"])
+    choice = utils.playerChoice("Votre choix : ", ["1", "2"])
     print()
     if choice == 1:
         host()

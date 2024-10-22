@@ -52,16 +52,25 @@ class Game:
         for player in self.tabPlayerInLife:
             choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.IsHost, player))
             tabOfParticipant[choiceMayor-1].addVote()
+        
+        return self.playerWithMostVote(tabOfParticipant)
 
         
 
     def playerWithMostVote(self, tabPlayer):
+        """
+        Arg :
+            - :tabPlayer: lst of Player object
+        Out : 
+            - :maxVotePlayer: Player object, player with the most vote
+        """
         maxVote = tabPlayer[0].vote
         maxVotePlayer = tabPlayer[0]
         for player in tabPlayer[1:]:
             if player.vote > maxVote:
                 maxVote = player.vote
                 maxVotePlayer = player
+        return maxVotePlayer
         
 
 
