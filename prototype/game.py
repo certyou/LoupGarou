@@ -7,12 +7,13 @@ import useful_functions as utils
 class Game:
     def __init__(self, ListOfPlayers):
         self.ListOfPlayers = ListOfPlayers
+        self.ListOfRole = []
         self.NbPlayer = len(ListOfPlayers)
         self.TabPlayerInLife = []
         self.NbTurn = 0
         self.DictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
-            3:[Wearwolf(0), Villager(0), Villager(0)], # use for test only
+            3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
             6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -29,8 +30,11 @@ class Game:
             player = self.ListOfPlayers[i]
             card = randint(0,len(TabAvailableCard)-1)
             player.setRole(card)
+            player.card.id = player
             self.TabPlayerInLife.append(player)
             TabAvailableCard.pop(card)
+        self.ListOfRole = [self.TabPlayerInLife[x].card for x in range(self.NbPlayer)]
+
 
     def day(self):
         # ----------- Vote ------------------
