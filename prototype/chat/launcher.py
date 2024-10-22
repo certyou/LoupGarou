@@ -10,8 +10,12 @@ def open_new_console(script_name):
     except Exception as e:
         print(f"Erreur lors de l'ouverture de la console pour {script_name}: {e}")
 
-if __name__ == '__main__':
+
+def main() :
     script_path = os.path.join(os.path.dirname(__file__), 'chat.py')
     game_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'main_reseau.py')
     open_new_console(script_path)  # Ouvrir la première console
     open_new_console(game_path)  # Ouvrir la deuxième console
+
+if __name__ == '__main__':
+    main()
