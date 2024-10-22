@@ -48,7 +48,7 @@ def load(saveName):
             elem["card"]=Thief(elem["card"]["id"])
 
         tabPlayerInLife.append(Player(elem["id"],elem["name"],elem["card"]))
-    save= Game(tabPlayerInLife)
+    save = Game(tabPlayerInLife)
     save.tabPlayerInLife=tabPlayerInLife
 
     return save
