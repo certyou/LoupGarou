@@ -13,7 +13,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         choice = input(prompt)
         while True:
             if choice not in expectedResults:
-                print("Choix invalide")
+                print("Choix invalide", end="")
                 choice = input(prompt)
             else:
                 break
@@ -22,13 +22,13 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         choice = SendRequest(player.id, prompt)
         while True:
             if choice not in expectedResults:
-                print("Choix invalide")
-                choice = SendRequest(player.id, prompt)
+                print("Choix invalide", end="")
+                choice = SendRequest(player.id, True)
             else:
                 break
         return choice
     
-def SendRequest(socket, message):
+def SendRequest(socket, message, response=True):
         """
         Arg :
             - :socket: socket, socket use to send the message
@@ -37,20 +37,21 @@ def SendRequest(socket, message):
             - :player_response: str, player's response
         """
         socket.sendall(message.encode())
-        player_response = socket.recv(1024).decode()
-        return player_response
+        if response:
+            player_response = socket.recv(1024).decode()
+            return player_response
 
-def SendResponse(socket, message=""):
+def SendResponse(socket, response=True):
         """
         Arg :
             - :socket: socket, socket use to send the message
-            - :message: str, the message displayed to the host player
+            - :response: bool, if the player must respond or not
         Out : 
             /
         """
         host_request = socket.recv(1024).decode()
-        print(host_request)#, end="")
-        socket.sendall(input("").encode())
+        if response:
+            socket.sendall(input(host_request).encode())
 
 def buffer(message) :
     """
@@ -70,10 +71,8 @@ def buffer(message) :
     return typeOfReturn, strMessage, message
 
 def broadcastMessage(message, players):
-     print(players)
      for player in players:
         if player.IsHost:
-            print(message)
+            print(message, end="")
         else:
-            print("cc")
             player.id.sendall(message.encode())
