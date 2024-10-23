@@ -49,7 +49,7 @@ def SendResponse(socket, message=""):
             /
         """
         host_request = socket.recv(1024).decode()
-        print(host_request, end="")
+        print(host_request)#, end="")
         socket.sendall(input("").encode())
 
 def buffer(message) :
@@ -70,8 +70,10 @@ def buffer(message) :
     return typeOfReturn, strMessage, message
 
 def broadcastMessage(message, players):
+     print(players)
      for player in players:
         if player.IsHost:
             print(message)
         else:
+            print("cc")
             player.id.sendall(message.encode())

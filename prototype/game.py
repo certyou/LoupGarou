@@ -1,4 +1,5 @@
 from random import randint
+import time
 from role import *
 from player import Player
 import useful_functions as utils
@@ -59,12 +60,14 @@ class Game:
         
 
     def night(self):
+        """
         # ----------- first night ------------------
         if self.nbTurn == 1:
             # cupidon
             pass
             # voleur
-        
+        """
+        pass
         
     
     def GameLoop(self):
