@@ -39,7 +39,9 @@ class Game:
     def day(self):
         # ----------- Mayor Vote ------------------
         if self.nbTurn == 1:
-           self.mayorVote()
+            utils.broadcastMessage("=== Vote du maire ===\n", self.tabPlayerInLife)
+            self.mayorVote()
+            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name}", self.tabPlayerInLife)
 
 
         # ----------- Vote ------------------
@@ -65,11 +67,11 @@ class Game:
 
     def mayorVote(self):
         """
-        
+        This fonction add to self.mayor the player who has been voted to become Mayor
         """
 
         tabOfParticipant = []
-        txtVote = "Qui voulez vous élire:\n"
+        txtVote = "\nQui voulez vous élire:\n"
         for i in range(len(self.tabPlayerInLife)):
             player = self.tabPlayerInLife[i]
             choiceParticipation = int(playerChoice("Voulez vous présenter au élection du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
@@ -127,7 +129,7 @@ class Game:
 
 
     def PrintPlayerInLife(self):
-        message = f"Joueurs en vie:\n"
+        message = f"\nJoueurs en vie:\n"
         for x in range(len(self.tabPlayerInLife)):
             message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
         return message
