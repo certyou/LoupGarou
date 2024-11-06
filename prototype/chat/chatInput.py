@@ -1,3 +1,5 @@
+from time import time
+
 def textModifier(chemin, mode='r', contenu=None):
     """
     Fonction pour lire, écrire ou ajouter du contenu à un fichier texte.
@@ -23,7 +25,6 @@ def textModifier(chemin, mode='r', contenu=None):
             fichier.write(contenu)
 
 def main() :
-    textFile = str()
     textFile = "prototype\\chat\\chat.txt"
 
     textModifier(textFile, 'w', "")
@@ -42,7 +43,8 @@ def main() :
         else :
             input_ = "{None§" + input_ + "}"
 
-        textModifier(textFile, 'a', input_ + "\n")
+        textModifier(textFile, 'a', input_ )
+        time.sleep(0.5)
 
 
 if __name__ == '__main__' :

@@ -12,10 +12,13 @@ def open_new_console(script_name):
 
 
 def main() :
-    script_path = os.path.join(os.path.dirname(__file__), 'chat.py')
+    chat_path = os.path.join(os.path.dirname(__file__), 'chat.py')
     game_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'main_reseau.py')
-    #open_new_console(script_path)  # Chat py
-    open_new_console(game_path)  # Ouvrir la deuxième console
+    chatInputPath = os.path.join(os.path.dirname(__file__), 'chatInput.py')
+
+    open_new_console(chat_path)  # Chat py
+    #open_new_console(game_path)  # Ouvrir la deuxième console
+    open_new_console(chatInputPath)
 
 if __name__ == '__main__':
     main()
