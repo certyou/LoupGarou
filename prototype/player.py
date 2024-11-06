@@ -1,14 +1,14 @@
 class Player:
 
-    def __init__(self, id, name, IsHost):
+    def __init__(self, id, name, isHost):
         self.id = id
         self.name = name
         self.card = None
         self.vote = 0
-        self.IsHost = IsHost
+        self.IsHost = isHost
 
-    def addVote(self):
-        self.vote += 1
+    def addVote(self, increment=1):
+        self.vote += increment
     
     def resetVote(self):
         self.vote = 0
