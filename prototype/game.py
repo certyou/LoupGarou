@@ -3,14 +3,15 @@ from random import randint, choice
 from role import *
 from player import Player
 import useful_functions as utils
-
+from ascii_art import *
 
 class Game:
-    def __init__(self, ListOfPlayers):
-        self.listOfPlayers = ListOfPlayers
+    def __init__(self, listOfPlayers):
+        self.listOfPlayers = listOfPlayers
         self.listOfRole = []
-        self.nbPlayer = len(ListOfPlayers)
+        self.nbPlayer = len(listOfPlayers)
         self.tabPlayerInLife = []
+        self.mayor = None
         self.nbTurn = 0
         self.lovers = []
         self.mayor = None
@@ -44,7 +45,7 @@ class Game:
     def day(self):
         # ----------- Mayor Vote ------------------
         if self.nbTurn == 1:
-            utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.tabPlayerInLife)
+            utils.broadcastMessage("---------------- Vote du maire ----------------\n"+"\n"+MAIRE+"\n", self.tabPlayerInLife)
             self.mayorVote()
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
 
@@ -126,22 +127,7 @@ class Game:
             if player.card.name == "Voyante":
                 target = player.card.actionSeer(self.tabPlayerInLife)
     
-    def IsWin(self):
-        countOfWerewolf = 0
-        countOfVillager = 0
-        for role in self.listOfRole:
-            if role.name == "Loup garou":
-                countOfWerewolf += 1
-            else:
-                countOfVillager += 1
-        if len(self.tabPlayerInLife) <= countOfWerewolf:
-            return True, "Loup garou"
-        elif countOfWerewolf == 0:
-            return True, "Villageoi"
-        elif len(self.tabPlayerInLife) == len(self.lovers) == 2:
-            return True, "Amoureux"
-        else:
-            return False, "No one"
+    
     
     def GameLoop(self):
         isWin = (False, "No one")
@@ -149,11 +135,9 @@ class Game:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
             self.night()
-            if self.IsWin():
-                break
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
-            isWin = self.IsWin()
+            
 
     def PrintPlayerInLife(self):
         message = f"Joueurs en vie:\n"
