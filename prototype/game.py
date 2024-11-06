@@ -1,5 +1,5 @@
-from random import randint
 import time
+from random import randint, choice
 from role import *
 from player import Player
 import useful_functions as utils
@@ -13,6 +13,7 @@ class Game:
         self.tabPlayerInLife = []
         self.nbTurn = 0
         self.lovers = []
+        self.mayor = None
         self.dictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
@@ -40,30 +41,79 @@ class Game:
         # keep trace of active player's role
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
-
     def day(self):
-        # ---------------- Vote ------------------
-        strListOfPlayer = self.PrintPlayerInLife() + "---------------- Vote du conseil ----------------\n"
+        # ----------- Mayor Vote ------------------
+        if self.nbTurn == 1:
+            utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.tabPlayerInLife)
+            self.mayorVote()
+            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
+
+        # ----------- Vote ------------------
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{self.PrintPlayerInLife()}" 
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
-        utils.broadcastMessage(strListOfPlayer, self.listOfPlayers)
+        utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
-            vote = int(utils.playerChoice("votre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
             self.tabPlayerInLife[vote].addVote()
+        print()
         # counting and reseting vote
-        for player in self.tabPlayerInLife:
-            utils.broadcastMessage(player.name + " --> " + str(player.vote) + "\n", self.listOfPlayers)
-            if maxVotedPlayer["nbVote"] < player.vote:
-                maxVotedPlayer = {"player":player, "nbVote":player.vote}
-            player.resetVote()
+        maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
+        maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
+        
         # displaying results
         voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
         utils.broadcastMessage(voteResult, self.listOfPlayers)
         self.tabPlayerInLife.remove(maxVotedPlayer['player'])
-        
 
+    def mayorVote(self):
+        """
+        This fonction add to self.mayor the player who has been voted to become Mayor
+        """
+
+        tabOfParticipant = []
+        txtVote = "\nQui voulez vous élire ?  :\n"
+        for i in range(len(self.tabPlayerInLife)):
+            player = self.tabPlayerInLife[i]
+            choiceParticipation = int(playerChoice("Voulez vous vous présenter au élection du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
+            if choiceParticipation == 1:
+                tabOfParticipant.append(player)
+                txtVote += f" -{i+1} : {player.name}\n"
+        
+        expectedResultsVote = [str(i+1) for i in range(len(tabOfParticipant))]
+        txtVote += "Choix: "
+        
+        for player in self.tabPlayerInLife:
+            choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.IsHost, player))
+            tabOfParticipant[choiceMayor-1].addVote()
+        
+        mayor = self.playerWithMostVote(tabOfParticipant)
+        self.mayor = mayor
+        mayor.increment = 2
+        mayor.resetVote()
+        
+    def playerWithMostVote(self, tabPlayer):
+        """
+        Arg :
+            - :tabPlayer: lst of Player object
+        Out : 
+            - :maxVotePlayer: Player object, player with the most vote or random player if draw
+        """
+        utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
+        maxVote = 0
+        for player in tabPlayer:
+            utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
+            if player.vote > maxVote:
+                maxVote = player.vote
+                maxVotePlayer = player
+            elif player.vote == maxVote:
+                temp = [player, maxVotePlayer]
+                maxVotePlayer = choice(temp)
+            player.resetVote()
+        return maxVotePlayer
+    
     def night(self):
-        # ---------------- first night ----------------
+        # ----------- first night ------------------
         if self.nbTurn == 1:
             # cupidon
             pass
@@ -94,6 +144,7 @@ class Game:
             self.night()
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
+
 
 
     def PrintPlayerInLife(self):

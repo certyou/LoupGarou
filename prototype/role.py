@@ -68,17 +68,17 @@ class Hunter:
         self.name="Chasseur"
         self.id = id
     
-    def actionHunter(self,length):
+    def actionHunter(self,tabPlayerInLife):
 
         """Action : Ask the player to choose a player to kill when the Hunter dies
            Input : int length (number of player alive)
            Output : int ChoiseKillPlayer (number of the player to kill)"""
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
-        expectedResults = [str(i) for i in range(1,length+1)]
+        expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         choiceKillPlayer = int(playerChoice(prompt, expectedResults))
 
-        return choiceKillPlayer
+        return tabPlayerInLife[choiceKillPlayer-1]
 
 class Witch:
     def __init__(self, id):
@@ -87,7 +87,7 @@ class Witch:
         self.lifePotion = True
         self.potionPoison = True
 
-    def actionWitch(self,length, playerName):
+    def actionWitch(self,tabPlayerInLife, playerName):
         """Action : during the night, after werewolfs, the witch can choose to use her life potion or/and her death potion or nothing
            Input : int length (number of player alive)
                    str playerName (Name of the player who will die)
@@ -130,14 +130,14 @@ class Witch:
         elif (whatToDo == 1 and self.potionPoison == True) or (whatToDo == 2):
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
-            expectedResults = [str(i) for i in range(1,length+1)]
+            expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
             choiceKillPlayer = int(playerChoice(prompt, expectedResults))
             self.potionPoison = False
 
         else:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
-            expectedResults = [str(i) for i in range(1,length+1)]
+            expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
             choiceKillPlayer = int(playerChoice(prompt, expectedResults))
             self.lifePotion = False
             self.potionPoison = False
