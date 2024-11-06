@@ -55,7 +55,10 @@ class Game:
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
             vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
-            self.tabPlayerInLife[vote].addVote()
+            if player == self.mayor:
+                self.tabPlayerInLife[vote].addVote(2)
+            else:
+                self.tabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
         maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
@@ -100,7 +103,7 @@ class Game:
             - :maxVotePlayer: Player object, player with the most vote or random player if draw
         """
         utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
-        maxVote = 0
+        maxVote = -1
         for player in tabPlayer:
             utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
             if player.vote > maxVote:
@@ -117,7 +120,11 @@ class Game:
         if self.nbTurn == 1:
             # cupidon
             pass
-            # voleur
+            # thief
+        # seer
+        for player in self.tabPlayerInLife:
+            if player.card.name == "Voyante":
+                target = player.card.actionSeer(self.tabPlayerInLife)
     
     def IsWin(self):
         countOfWerewolf = 0
@@ -137,15 +144,16 @@ class Game:
             return False, "No one"
     
     def GameLoop(self):
-        isWin = False
-        while not isWin:
+        isWin = (False, "No one")
+        while not isWin[0]:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
             self.night()
+            if self.IsWin():
+                break
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
-
-
+            isWin = self.IsWin()
 
     def PrintPlayerInLife(self):
         message = f"Joueurs en vie:\n"
