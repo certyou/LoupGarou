@@ -1,5 +1,6 @@
 from chatInput import textModifier
 from time import time
+import zmq
 
 import time
 
