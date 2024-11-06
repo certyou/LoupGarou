@@ -99,7 +99,7 @@ class Game:
             - :maxVotePlayer: Player object, player with the most vote or random player if draw
         """
         utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
-        maxVote = 0
+        maxVote = -1
         for player in tabPlayer:
             utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
             if player.vote > maxVote:
