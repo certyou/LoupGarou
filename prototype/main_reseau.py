@@ -28,7 +28,7 @@ def client():
     host_socket = You.WithHostConnection()
     utils.SendResponse(host_socket)
     while True:
-        pass
+        utils.SendResponse(host_socket)
 
 def main():
     print(
