@@ -12,6 +12,7 @@ class Game:
         self.nbPlayer = len(ListOfPlayers)
         self.tabPlayerInLife = []
         self.nbTurn = 0
+        self.lovers = []
         self.dictRole = {
             2:[Wearwolf(0), Villager(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
@@ -24,8 +25,10 @@ class Game:
     
     def GameInit(self):
         """
+        In : /
+        Out : /
+        Distrib role in random order to all players
         """
-        
         tabAvailableCard = self.dictRole[self.nbPlayer]
         for i in range(self.nbPlayer):
             player = self.listOfPlayers[i]
@@ -34,6 +37,7 @@ class Game:
             player.card.id = player
             self.tabPlayerInLife.append(player)
             tabAvailableCard.remove(card)
+        # keep trace of active player's role
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
 
@@ -48,7 +52,7 @@ class Game:
             self.tabPlayerInLife[vote].addVote()
         # counting and reseting vote
         for player in self.tabPlayerInLife:
-            utils.broadcastMessage(player.name + " --> " + str(player.vote), self.listOfPlayers)
+            utils.broadcastMessage(player.name + " --> " + str(player.vote) + "\n", self.listOfPlayers)
             if maxVotedPlayer["nbVote"] < player.vote:
                 maxVotedPlayer = {"player":player, "nbVote":player.vote}
             player.resetVote()
@@ -64,7 +68,23 @@ class Game:
             # cupidon
             pass
             # voleur
-        
+    
+    def IsWin(self):
+        countOfWerewolf = 0
+        countOfVillager = 0
+        for role in self.listOfRole:
+            if role.name == "Loup garou":
+                countOfWerewolf += 1
+            else:
+                countOfVillager += 1
+        if len(self.tabPlayerInLife) <= countOfWerewolf:
+            return True, "Loup garou"
+        elif countOfWerewolf == 0:
+            return True, "Villageoi"
+        elif len(self.tabPlayerInLife) == len(self.lovers) == 2:
+            return True, "Amoureux"
+        else:
+            return False, "No one"
     
     def GameLoop(self):
         isWin = False
