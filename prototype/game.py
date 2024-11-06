@@ -15,7 +15,7 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Villager(0)], # use for test only
+            2:[Wearwolf(0), Seer(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -124,7 +124,9 @@ class Game:
         # seer
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
+                utils.SendMessage(player, self.PrintPlayerInLife())
                 target = player.card.actionSeer(self.tabPlayerInLife)
+                utils.SendMessage(player, target)
     
     def IsWin(self):
         countOfWerewolf = 0
@@ -154,6 +156,7 @@ class Game:
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
+        print(isWin)
 
     def PrintPlayerInLife(self):
         message = f"Joueurs en vie:\n"

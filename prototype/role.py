@@ -14,7 +14,7 @@ class Wearwolf: # test commit
         """
         expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         print(expected_results)
-        choicePlayer = int(playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results, self.id.isHost, self.player))
+        choicePlayer = int(playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results, self.id.IsHost, self.id))
         return tabPlayerInLife[choicePlayer-1]
 
 class Villager:
@@ -38,7 +38,7 @@ class Seer:
         Action: The seer can choose to see the card of a person of her choice each night. 
         """
         expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        choicePlayer = int(playerChoice("Entrez le numéro du joueur dont vous shouaitez voir la carte: ", expected_results, self.id.isHost, self.player))
+        choicePlayer = int(playerChoice("Entrez le numéro du joueur dont vous souhaitez voir la carte: ", expected_results, self.id.IsHost, self.id))
         playerVoted = tabPlayerInLife[choicePlayer-1]
         return f"Le rôle de {playerVoted.name} est: {playerVoted.card.name}"
     
@@ -57,7 +57,7 @@ class Thief:
         choicePlayer = playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
         if choicePlayer == 1:
             expected_results = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
-            choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.isHost, self.player))
+            choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.IsHost, self.id))
             return tabPlayerInLife[choicePlayer-1]
 
         return None
@@ -76,7 +76,7 @@ class Hunter:
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+        choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
 
         return tabPlayerInLife[choiceKillPlayer-1]
 
@@ -116,7 +116,7 @@ class Witch:
             whatToDo = 0
 
         if expectedResults:
-            whatToDo=int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            whatToDo=int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
 
         if whatToDo == 0:
             choiceKillPlayer = 0
@@ -131,14 +131,14 @@ class Witch:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
             self.potionPoison = False
 
         else:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
             self.lifePotion = False
             self.potionPoison = False
 
@@ -162,7 +162,7 @@ class Cupidon :
 
         prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
         while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink :
-            secondPlayerToLink = int(playerChoice(prompt, expectedResults))
+            secondPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
         
         choices = (firstPlayerToLink,secondPlayerToLink)
         return choices

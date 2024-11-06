@@ -53,6 +53,17 @@ def SendResponse(socket, response=True):
         if response:
             socket.sendall(input(host_request).encode())
 
+def SendMessage(player, message):
+    """
+    Arg :
+        - :socket: socket, socket use to send the message
+        - :message: str, message to display
+    """
+    if player.IsHost:
+        print(message, end="")
+    else:
+        player.id.sendall(message.encode())
+
 def buffer(message) :
     """
     Function that identify the first frame of information inside the message
