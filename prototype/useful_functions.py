@@ -68,27 +68,3 @@ def buffer(message) :
     message = message[message.find("}")+1:]
 
     return typeOfReturn, strMessage, message
-
-def textMofifier(chemin, mode='lire', contenu=None):
-    """
-    Fonction pour lire, écrire ou ajouter du contenu à un fichier texte.
-
-    Arguments :
-    - chemin (str) : Le chemin du fichier.
-    - mode (str) : Le mode de manipulation ('r', 'w', 'a').
-    - contenu (str, optionnel) : Le texte à écrire ou ajouter si mode est 'ecrire' ou 'ajouter'.
-
-    Retourne :
-    - Le contenu du fichier si mode='r', sinon None.
-    """
-    if mode == 'r':
-        with open(chemin, 'r', encoding='utf-8') as fichier:
-            return fichier.read()
-
-    elif mode == 'w':
-        with open(chemin, 'w', encoding='utf-8') as fichier:
-            fichier.write(contenu)
-
-    elif mode == 'a':
-        with open(chemin, 'a', encoding='utf-8') as fichier:
-            fichier.write(contenu)
