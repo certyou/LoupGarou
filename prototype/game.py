@@ -121,11 +121,12 @@ class Game:
             # cupidon
             pass
             # thief
+        
         # seer
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
                 utils.SendMessage(player, self.PrintPlayerInLife())
-                target = player.card.actionSeer(self.tabPlayerInLife)
+                target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.SendMessage(player, target)
     
     def IsWin(self):
@@ -151,7 +152,9 @@ class Game:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
             self.night()
-            if self.IsWin():
+            isWin = self.IsWin()
+            if isWin:
+                print("hi")
                 break
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()

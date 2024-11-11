@@ -28,7 +28,7 @@ class Villager:
     
 class Seer:
     def __init__(self, id):
-        self.name="Voyante"
+        self.name = "Voyante"
         self.id = id
 
     def actionSeer(self, tabPlayerInLife):
