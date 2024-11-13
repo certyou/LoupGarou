@@ -66,8 +66,9 @@ class Game:
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
         
         # displaying results
-        voteResult = "\n"+f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
+        voteResult = "\n"+f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable!"
         utils.broadcastMessage(voteResult, self.listOfPlayers)
+        SendRequest(maxVotedPlayer['player'].id, MORT, False)
         self.tabPlayerInLife.remove(maxVotedPlayer['player'])
 
     def mayorVote(self):
