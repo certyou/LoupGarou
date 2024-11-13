@@ -25,15 +25,19 @@ class Game:
     
     def GameInit(self):
         """
+        In : /
+        Out : /
+        Distrib role in random order to all players
         """
-        
         tabAvailableCard = self.dictRole[self.nbPlayer]
         for i in range(self.nbPlayer):
             player = self.listOfPlayers[i]
-            card = randint(0,len(tabAvailableCard)-1)
+            card = tabAvailableCard[randint(0,len(tabAvailableCard)-1)]
             player.setRole(card)
+            player.card.id = player
             self.tabPlayerInLife.append(player)
-            tabAvailableCard.pop(card)
+            tabAvailableCard.remove(card)
+        # keep trace of active player's role
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
 
