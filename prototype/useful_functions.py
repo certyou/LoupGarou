@@ -38,7 +38,7 @@ def SendRequest(socket, message, response=True):
         """
         socket.sendall(message.encode())
         if response:
-            player_response = socket.recv(1024).decode()
+            player_response = socket.recv(65536).decode()
             return player_response
 
 def SendResponse(socket, response=True):
@@ -49,7 +49,7 @@ def SendResponse(socket, response=True):
         Out : 
             /
         """
-        host_request = socket.recv(1024).decode()
+        host_request = socket.recv(65536).decode()
         if response:
             socket.sendall(input(host_request).encode())
 

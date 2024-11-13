@@ -45,12 +45,12 @@ class Game:
     def day(self):
         # ----------- Mayor Vote ------------------
         if self.nbTurn == 1:
-            utils.broadcastMessage("---------------- Vote du maire ----------------", self.tabPlayerInLife)
+            utils.broadcastMessage("---------------- Vote du maire ----------------\n\n"+MAIRE, self.tabPlayerInLife)
             self.mayorVote()
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
 
         # ----------- Vote ------------------
-        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{self.PrintPlayerInLife()}" 
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n\n{VOTE}\n\n{self.PrintPlayerInLife()}"
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
@@ -66,7 +66,7 @@ class Game:
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
         
         # displaying results
-        voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
+        voteResult = "\n"+f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
         utils.broadcastMessage(voteResult, self.listOfPlayers)
         self.tabPlayerInLife.remove(maxVotedPlayer['player'])
 
@@ -106,7 +106,7 @@ class Game:
         utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
         maxVote = -1
         for player in tabPlayer:
-            utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
+            utils.broadcastMessage("\n"+f"{player.name} --> {player.vote}", self.listOfPlayers)
             if player.vote > maxVote:
                 maxVote = player.vote
                 maxVotePlayer = player
@@ -133,9 +133,9 @@ class Game:
         isWin = (False, "No one")
         while not isWin[0]:
             self.nbTurn += 1
-            utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
-            utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             
 
