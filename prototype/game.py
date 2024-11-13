@@ -153,6 +153,10 @@ class Game:
         """
 
         victim2 = None
+        if victim == self.mayor:
+            isMayor = victim
+        else:
+            isMayor = None
 
         if killer == None:
             # displaying results
@@ -170,12 +174,22 @@ class Game:
         if victim in self.lovers:
             self.lovers.remove(victim)
             victim2 = self.lovers[0]
+            if victim2 == self.mayor:
+                isMayor = victim2
             voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
             utils.broadcastMessage(voteResult, self.listOfPlayers)
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
+        if isMayor != None:
+            utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
+            
+            choice = int(playerChoice("Entrez le numero de la personne qui sera votre successeur : ", isMayor.IsHost, isMayor))
+            self.mayor = self.tabPlayerInLife[choice-1]
+
         for role in self.listOfRole:
             if role.id == victim or role.id == victim2:
                 self.listOfRole.remove(role)
+
+        
 
