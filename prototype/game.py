@@ -43,7 +43,7 @@ class Game:
 
     def day(self):
         # ----------- Mayor Vote ------------------
-        if self.nbTurn == 1:
+        if self.nbTurn == 2:
             utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.listOfPlayers)
             self.mayorVote()
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.listOfPlayers)
