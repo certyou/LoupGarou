@@ -1,8 +1,10 @@
 from useful_functions import *
+import ascii_art
 
 class Wearwolf: # test commit
     def __init__(self, id):
         self.name = "Loup garou"
+        self.ascii = ascii_art.WEREWOLF
         self.id = id
 
 
@@ -14,12 +16,13 @@ class Wearwolf: # test commit
         """
         expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         print(expected_results)
-        choicePlayer = int(playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results, self.id.isHost, self.player))
+        choicePlayer = int(playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results, self.id.IsHost, self.id))
         return tabPlayerInLife[choicePlayer-1]
 
 class Villager:
     def __init__(self, id):
         self.name = "Villageoi"
+        self.ascii = ascii_art.VILLAGER
         self.id = id
 
     def actionVillager(self):
@@ -28,7 +31,8 @@ class Villager:
     
 class Seer:
     def __init__(self, id):
-        self.name="Voyante"
+        self.name = "Voyante"
+        self.ascii = ascii_art.SEER
         self.id = id
 
     def actionSeer(self, tabPlayerInLife):
@@ -38,13 +42,14 @@ class Seer:
         Action: The seer can choose to see the card of a person of her choice each night. 
         """
         expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        choicePlayer = int(playerChoice("Entrez le numéro du joueur dont vous shouaitez voir la carte: ", expected_results, self.id.isHost, self.player))
+        choicePlayer = int(playerChoice("Entrez le numéro du joueur dont vous souhaitez voir la carte: ", expected_results, self.id.IsHost, self.id))
         playerVoted = tabPlayerInLife[choicePlayer-1]
         return f"Le rôle de {playerVoted.name} est: {playerVoted.card.name}"
     
 class Thief:
     def __init__(self, id):
         self.name="Voleur"
+        self.ascii = ascii_art.THIEF
         self.id = id
 
     def actionThief(self, tabPlayerInLife, thiefName):
@@ -57,7 +62,7 @@ class Thief:
         choicePlayer = playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
         if choicePlayer == 1:
             expected_results = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
-            choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.isHost, self.player))
+            choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.IsHost, self.id))
             return tabPlayerInLife[choicePlayer-1]
 
         return None
@@ -66,6 +71,7 @@ class Thief:
 class Hunter:
     def __init__(self, id):
         self.name="Chasseur"
+        self.ascii = ascii_art.HUNTER
         self.id = id
     
     def actionHunter(self,tabPlayerInLife):
@@ -76,13 +82,14 @@ class Hunter:
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+        choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
 
         return tabPlayerInLife[choiceKillPlayer-1]
 
 class Witch:
     def __init__(self, id):
         self.name = "Sorcière"
+        self.ascii = ascii_art.WITCH
         self.id = id
         self.lifePotion = True
         self.potionPoison = True
@@ -116,7 +123,7 @@ class Witch:
             whatToDo = 0
 
         if expectedResults:
-            whatToDo=int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            whatToDo=int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
 
         if whatToDo == 0:
             choiceKillPlayer = 0
@@ -131,14 +138,14 @@ class Witch:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
             self.potionPoison = False
 
         else:
             choiceToSave=True
             prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.player))
+            choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
             self.lifePotion = False
             self.potionPoison = False
 
@@ -149,6 +156,7 @@ class Witch:
 class Cupidon :
     def __init__(self, id):
         self.name = "Cupidon"
+        self.ascii = ascii_art.CUPIDON
         self.id = id
 
     def actionCupidon(self, length):
@@ -162,7 +170,7 @@ class Cupidon :
 
         prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
         while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink :
-            secondPlayerToLink = int(playerChoice(prompt, expectedResults))
+            secondPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
         
         choices = (firstPlayerToLink,secondPlayerToLink)
         return choices
