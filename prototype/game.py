@@ -158,10 +158,10 @@ class Game:
             # displaying results
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable."
 
-        elif killer.card.name == "Loup garou":
+        elif killer == "Loup garou":
             voteResult = f"{victim.name} a été dévoré par les loups garou !"
 
-        elif killer.card.name == "Sorcière":
+        elif killer == "Sorcière":
             voteResult = f"La sorcière a décider de vaporiser {victim.name}"
 
         utils.broadcastMessage(voteResult, self.listOfPlayers)
@@ -171,6 +171,7 @@ class Game:
             self.lovers.remove(victim)
             victim2 = self.lovers[0]
             voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
+            utils.broadcastMessage(voteResult, self.listOfPlayers)
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
