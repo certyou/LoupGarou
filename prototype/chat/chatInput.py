@@ -34,12 +34,14 @@ def main() :
     while True : 
         input_ = str(input("$ "))
 
-        if input_ == "/exit" :
-            return
-        
         if input_[0] == '/' :
             if input_.find(" ") == -1 :
+                print("commande invalide")
+                if input_ == "/exit" :
+                    textModifier(chemin, 'a', "/exit")
+                    return
                 continue
+                
             input_ = '{' + input_[1: input_.find(" ")] + "§" + input_[input_.find(" ")+1:] + '}'
 
         else :

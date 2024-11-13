@@ -11,12 +11,13 @@ def chat():
     while True:
         sleep(0.5)
         command = textModifier(chemin, 'r')
+        if command == "/exit" :
+            return
         if len(command) != 0 :
             print(command)
             textModifier(chemin, 'w', "") #supprimer les données
         
-        
-    
+ 
 if __name__ == '__main__':
     chat()
 

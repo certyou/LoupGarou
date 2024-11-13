@@ -3,7 +3,10 @@ from time import time
 import zmq
 
 def hostChatServer() :
-    return
+    publisher = zmq.Context()
+    
+
+    return 0
 
 if __name__ == '__main__' :
     hostChatServer()

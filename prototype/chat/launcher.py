@@ -17,7 +17,7 @@ def main() :
     chatInputPath = os.path.join(os.path.dirname(__file__), 'chatInput.py')
 
     open_new_console(chat_path)  # Chat py
-    #open_new_console(game_path)  # Ouvrir la deuxième console
+    open_new_console(game_path)  # Ouvrir la deuxième console
     open_new_console(chatInputPath)
 
 if __name__ == '__main__':

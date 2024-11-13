@@ -13,7 +13,8 @@ class Client:
         HostIp = Buffer[1:Buffer.find(',')]
         HostPort = int(Buffer[Buffer.find(',')+1:-1])
 
-        open(os.path.join(os.path.dirname(__file__), "info.txt"), 'w', HostIp)
+        with open(os.path.join(os.path.dirname(__file__), "chat\\HostIp.txt"), 'w') as file:
+            file.write(str(HostIp))
 
         ToHostConnect = socket.socket()
         ToHostConnect.connect((HostIp, HostPort))
