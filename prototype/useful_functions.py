@@ -23,7 +23,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         choice = SendRequest(player.id, prompt)
         while True:
             if choice not in expectedResults:
-                print("Choix invalide", end="")
+                SendMessage(player, "Choix invalide")
                 choice = SendRequest(player.id, True)
             else:
                 break
