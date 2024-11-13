@@ -49,7 +49,7 @@ class Game:
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
 
         # ----------- Vote ------------------
-        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{self.PrintPlayerInLife()}" 
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{self.PrintPlayerInLife()}"
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
@@ -105,7 +105,7 @@ class Game:
         utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
         maxVote = -1
         for player in tabPlayer:
-            utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
+            utils.broadcastMessage(f"{player.name} --> {player.vote}\n", self.listOfPlayers)
             if player.vote > maxVote:
                 maxVote = player.vote
                 maxVotePlayer = player
@@ -153,8 +153,7 @@ class Game:
             utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
             self.night()
             isWin = self.IsWin()
-            if isWin:
-                print("hi")
+            if isWin[0]:
                 break
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
