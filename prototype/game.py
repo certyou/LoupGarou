@@ -1,8 +1,9 @@
+import time
 from random import randint, choice
 from role import *
 from player import Player
 import useful_functions as utils
-
+from ascii_art import *
 
 class Game:
     def __init__(self, listOfPlayers):
@@ -10,11 +11,12 @@ class Game:
         self.listOfRole = []
         self.nbPlayer = len(listOfPlayers)
         self.tabPlayerInLife = []
+        self.mayor = None
         self.nbTurn = 0
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Villager(0)], # use for test only
+            2:[Wearwolf(0), Seer(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -40,17 +42,15 @@ class Game:
         # keep trace of active player's role
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
 
-
     def day(self):
         # ----------- Mayor Vote ------------------
         if self.nbTurn == 1:
-            utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.tabPlayerInLife)
+            utils.broadcastMessage("---------------- Vote du maire ----------------\n\n"+MAIRE, self.tabPlayerInLife)
             self.mayorVote()
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
 
-
         # ----------- Vote ------------------
-        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{self.PrintPlayerInLife()}" 
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n\n{VOTE}\n\n{self.PrintPlayerInLife()}"
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
@@ -62,10 +62,13 @@ class Game:
                 self.tabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
-        maxVotedPlayer = self.playerWithMostVote(self.tabPlayerInLife)
-        self.KillPlayer(maxVotedPlayer)
-
-
+        maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
+        maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
+        
+        # displaying results
+        voteResult = "\n"+f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
+        utils.broadcastMessage(voteResult, self.listOfPlayers)
+        self.tabPlayerInLife.remove(maxVotedPlayer['player'])
 
     def mayorVote(self):
         """
@@ -92,8 +95,6 @@ class Game:
         self.mayor = mayor
         mayor.increment = 2
         mayor.resetVote()
-
-
         
     def playerWithMostVote(self, tabPlayer):
         """
@@ -105,7 +106,7 @@ class Game:
         utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
         maxVote = -1
         for player in tabPlayer:
-            utils.broadcastMessage(f"{player.name} --> {player.vote}", self.listOfPlayers)
+            utils.broadcastMessage("\n"+f"{player.name} --> {player.vote}", self.listOfPlayers)
             if player.vote > maxVote:
                 maxVote = player.vote
                 maxVotePlayer = player
@@ -114,30 +115,51 @@ class Game:
                 maxVotePlayer = choice(temp)
             player.resetVote()
         return maxVotePlayer
-        
-
+    
     def night(self):
         # ----------- first night ------------------
         if self.nbTurn == 1:
             # cupidon
             pass
-            # voleur
+            # thief
         
-        
+        # seer
+        for player in self.tabPlayerInLife:
+            if player.card.name == "Voyante":
+                utils.SendMessage(player, self.PrintPlayerInLife())
+                target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
+                utils.SendMessage(player, target)
+
+    def IsWin(self):
+        countOfWerewolf = 0
+        countOfVillager = 0
+        for role in self.listOfRole:
+            if role.name == "Loup garou":
+                countOfWerewolf += 1
+            else:
+                countOfVillager += 1
+        if len(self.tabPlayerInLife) <= countOfWerewolf:
+            return True, "Loup garou"
+        elif countOfWerewolf == 0:
+            return True, "Villageoi"
+        elif len(self.tabPlayerInLife) == len(self.lovers) == 2:
+            return True, "Amoureux"
+        else:
+            return False, "No one"
     
     def GameLoop(self):
-        IsWin = False
-        while not IsWin:
+        isWin = (False, "No one")
+        while not isWin[0]:
             self.nbTurn += 1
-            utils.broadcastMessage("\nle village s'endort\n\n",self.listOfPlayers)
+            utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
-            utils.broadcastMessage("\nle jour se lève\n\n",self.listOfPlayers)
+            utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
-
-
+            isWin = self.IsWin()
+        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
-        message = f"\nJoueurs en vie:\n"
+        message = f"Joueurs en vie:\n"
         for x in range(len(self.tabPlayerInLife)):
             message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
         return message
@@ -160,7 +182,7 @@ class Game:
 
         if killer == None:
             # displaying results
-            voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable."
+            voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
 
         elif killer == "Loup garou":
             voteResult = f"{victim.name} a été dévoré par les loups garou !"
@@ -183,13 +205,12 @@ class Game:
 
         if isMayor != None:
             utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
-            
+            utils.SendRequest(isMayor.ip, self.PrintPlayerInLife, False)
             choice = int(playerChoice("Entrez le numero de la personne qui sera votre successeur : ", isMayor.IsHost, isMayor))
             self.mayor = self.tabPlayerInLife[choice-1]
 
         for role in self.listOfRole:
             if role.id == victim or role.id == victim2:
-                self.listOfRole.remove(role)
+                self.listOfRole.remove(role) 
 
         
-

@@ -8,12 +8,13 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         - :player: the player to ask if player is not the host 
     Out : 
         - :choice: int, player's choice
+    this function ask any player for a choice from expected results (in local or not)
     """
     if local:
         choice = input(prompt)
         while True:
             if choice not in expectedResults:
-                print("Choix invalide")
+                print("Choix invalide", end="")
                 choice = input(prompt)
             else:
                 break
@@ -22,35 +23,54 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         choice = SendRequest(player.id, prompt)
         while True:
             if choice not in expectedResults:
-                print("Choix invalide")
-                choice = SendRequest(player.id, prompt)
+                SendMessage(player, "Choix invalide")
+                choice = SendRequest(player.id, True)
             else:
                 break
         return choice
     
-def SendRequest(socket, message):
+def SendRequest(socket, message, response=True):
         """
         Arg :
             - :socket: socket, socket use to send the message
             - :message: str, the message displayed to the remote player
         Out : 
             - :player_response: str, player's response
+        this function decode the response of the remote player
         """
         socket.sendall(message.encode())
-        player_response = socket.recv(1024).decode()
-        return player_response
+        if response:
+            player_response = socket.recv(65536).decode()
+            return player_response
 
-def SendResponse(socket, message=""):
+def SendResponse(socket, response=True):
         """
         Arg :
             - :socket: socket, socket use to send the message
-            - :message: str, the message displayed to the host player
+            - :response: bool, if the player must respond or not
         Out : 
             /
+        This function ask the target remote player
         """
-        host_request = socket.recv(1024).decode()
-        print(host_request)
-        socket.sendall(input("").encode())
+        host_request = socket.recv(65536).decode()
+        if response:
+            socket.sendall(input(host_request).encode())
+        else:
+            print(host_request, end="")
+
+def SendMessage(player, message):
+    """
+    Arg :
+        - :socket: socket, socket use to send the message
+        - :message: str, message to display
+    Out :
+        /
+    This function display a message to traget player
+    """
+    if player.IsHost:
+        print(message, end="")
+    else:
+        player.id.sendall(message.encode())
 
 def buffer(message) :
     """
@@ -70,8 +90,16 @@ def buffer(message) :
     return typeOfReturn, strMessage, message
 
 def broadcastMessage(message, players):
+     """
+     Arg:
+        - :message: str, message to display
+        - :players: list of object, list of players to send message
+    Out:
+        /
+    This function take a message and send it to all players
+     """
      for player in players:
         if player.IsHost:
-            print(message)
+            print(message, end="")
         else:
             player.id.sendall(message.encode())

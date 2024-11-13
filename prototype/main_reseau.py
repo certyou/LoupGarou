@@ -4,6 +4,7 @@ from host import Host
 from game import Game
 from player import Player
 import useful_functions as utils
+from ascii_art import *
 
 #test
 MAX_PLAYER = 16
@@ -26,16 +27,12 @@ def host():
 def client():
     You = Client()
     host_socket = You.WithHostConnection()
-    utils.SendResponse(host_socket)
+    utils.SendResponse(host_socket) # ask for pseudo
     while True:
         utils.SendResponse(host_socket)
 
 def main():
-    print(
-"""
-joli texte d'introduction avec plein d'ascii art
-"""
-    )
+    print("\n\n"+INTRO+"\n\n")
 
 
     print("Voulez-vous être l'hôte ou le client ?")
