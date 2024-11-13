@@ -1,8 +1,10 @@
 from useful_functions import *
+import ascii_art
 
 class Wearwolf: # test commit
     def __init__(self, id):
         self.name = "Loup garou"
+        self.ascii = ascii_art.WEREWOLF
         self.id = id
 
 
@@ -20,6 +22,7 @@ class Wearwolf: # test commit
 class Villager:
     def __init__(self, id):
         self.name = "Villageoi"
+        self.ascii = ascii_art.VILLAGER
         self.id = id
 
     def actionVillager(self):
@@ -29,6 +32,7 @@ class Villager:
 class Seer:
     def __init__(self, id):
         self.name = "Voyante"
+        self.ascii = ascii_art.SEER
         self.id = id
 
     def actionSeer(self, tabPlayerInLife):
@@ -45,6 +49,7 @@ class Seer:
 class Thief:
     def __init__(self, id):
         self.name="Voleur"
+        self.ascii = ascii_art.THIEF
         self.id = id
 
     def actionThief(self, tabPlayerInLife, thiefName):
@@ -66,6 +71,7 @@ class Thief:
 class Hunter:
     def __init__(self, id):
         self.name="Chasseur"
+        self.ascii = ascii_art.HUNTER
         self.id = id
     
     def actionHunter(self,tabPlayerInLife):
@@ -83,6 +89,7 @@ class Hunter:
 class Witch:
     def __init__(self, id):
         self.name = "Sorcière"
+        self.ascii = ascii_art.WITCH
         self.id = id
         self.lifePotion = True
         self.potionPoison = True
@@ -149,6 +156,7 @@ class Witch:
 class Cupidon :
     def __init__(self, id):
         self.name = "Cupidon"
+        self.ascii = ascii_art.CUPIDON
         self.id = id
 
     def actionCupidon(self, length):

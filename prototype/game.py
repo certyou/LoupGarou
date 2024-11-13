@@ -8,8 +8,10 @@ import useful_functions as utils
 class Game:
     def __init__(self, ListOfPlayers):
         self.listOfPlayers = ListOfPlayers
+    def __init__(self, listOfPlayers):
+        self.listOfPlayers = listOfPlayers
         self.listOfRole = []
-        self.nbPlayer = len(ListOfPlayers)
+        self.nbPlayer = len(listOfPlayers)
         self.tabPlayerInLife = []
         self.nbTurn = 0
         self.lovers = []
@@ -61,13 +63,10 @@ class Game:
                 self.tabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
-        maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
-        maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
-        
-        # displaying results
-        voteResult = f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
-        utils.broadcastMessage(voteResult, self.listOfPlayers)
-        self.tabPlayerInLife.remove(maxVotedPlayer['player'])
+        maxVotedPlayer = self.playerWithMostVote(self.tabPlayerInLife)
+        self.KillPlayer(maxVotedPlayer)
+
+
 
     def mayorVote(self):
         """
@@ -165,3 +164,32 @@ class Game:
         for x in range(len(self.tabPlayerInLife)):
             message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
         return message
+    
+
+    def KillPlayer(self, victim, killer=None):
+        victim2 = None
+
+        if killer == None:
+            # displaying results
+            voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable."
+
+        elif killer.card.name == "Loup garou":
+            voteResult = f"{victim.name} a été dévoré par les loups garou !"
+
+        elif killer.card.name == "Sorcière":
+            voteResult = f"La sorcière a décider de vaporiser {victim.name}"
+
+        utils.broadcastMessage(voteResult, self.listOfPlayers)
+        self.tabPlayerInLife.remove(victim)
+
+        if victim in self.lovers:
+            self.lovers.remove(victim)
+            victim2 = self.lovers[0]
+            voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
+            self.tabPlayerInLife.remove(victim2)
+            self.lovers = []
+
+        for role in self.listOfRole:
+            if role.id == victim or role.id == victim2:
+                self.listOfRole.remove(role)
+
