@@ -1,18 +1,19 @@
 from chatInput import textModifier
-from time import time
+from time import sleep
 import zmq
+import os
 
 import time
 
 def chat():
-    textFile = "prototype\\chat\\chat.txt"
+    chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
 
     while True:
-        time.sleep(0.5)
-        command = textModifier(textFile, 'r')
+        sleep(0.5)
+        command = textModifier(chemin, 'r')
         if len(command) != 0 :
             print(command)
-            textModifier(textFile, 'w', "") #supprimer les données
+            textModifier(chemin, 'w', "") #supprimer les données
         
         
     

@@ -1,4 +1,6 @@
-from time import time
+from time import sleep
+import os
+
 
 def textModifier(chemin, mode='r', contenu=None):
     """
@@ -25,9 +27,9 @@ def textModifier(chemin, mode='r', contenu=None):
             fichier.write(contenu)
 
 def main() :
-    textFile = "prototype\\chat\\chat.txt"
+    chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
 
-    textModifier(textFile, 'w', "")
+    textModifier(chemin, 'w', "")
 
     while True : 
         input_ = str(input("$ "))
@@ -43,8 +45,8 @@ def main() :
         else :
             input_ = "{None§" + input_ + "}"
 
-        textModifier(textFile, 'a', input_ )
-        time.sleep(0.5)
+        textModifier(chemin, 'a', input_ )
+        sleep(0.5)
 
 
 if __name__ == '__main__' :
