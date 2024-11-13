@@ -66,8 +66,6 @@ class Game:
         maxVotedPlayer = self.playerWithMostVote(self.tabPlayerInLife)
         self.KillPlayer(maxVotedPlayer)
 
-
-
     def mayorVote(self):
         """
         This fonction add to self.mayor the player who has been voted to become Mayor
@@ -127,7 +125,7 @@ class Game:
                 utils.SendMessage(player, self.PrintPlayerInLife())
                 target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.SendMessage(player, target)
-    
+
     def IsWin(self):
         countOfWerewolf = 0
         countOfVillager = 0
@@ -157,7 +155,7 @@ class Game:
             utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
-        print(isWin)
+        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
         message = f"Joueurs en vie:\n"
@@ -171,13 +169,13 @@ class Game:
 
         if killer == None:
             # displaying results
-            voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable."
+            voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
 
         elif killer.card.name == "Loup garou":
-            voteResult = f"{victim.name} a été dévoré par les loups garou !"
+            voteResult = f"{victim.name} a été dévoré par les loups garou !\n"
 
         elif killer.card.name == "Sorcière":
-            voteResult = f"La sorcière a décider de vaporiser {victim.name}"
+            voteResult = f"La sorcière a décider de vaporiser {victim.name}\n"
 
         utils.broadcastMessage(voteResult, self.listOfPlayers)
         self.tabPlayerInLife.remove(victim)
@@ -185,7 +183,7 @@ class Game:
         if victim in self.lovers:
             self.lovers.remove(victim)
             victim2 = self.lovers[0]
-            voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
+            voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin...\n"
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
