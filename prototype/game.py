@@ -56,7 +56,10 @@ class Game:
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
             vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
-            self.tabPlayerInLife[vote].addVote()
+            if player == self.mayor:
+                self.tabPlayerInLife[vote].addVote(2)
+            else:
+                self.tabPlayerInLife[vote].addVote()
         print()
         # counting and reseting vote
         maxVotedPlayer = self.playerWithMostVote(self.tabPlayerInLife)
@@ -141,6 +144,14 @@ class Game:
     
 
     def KillPlayer(self, victim, killer=None):
+        """
+        Imput: -victim: Player object (The player who have been killed)
+               -killer: str (The role of the killer if he exist), None (automatic if there are no killer)
+        Output: void
+
+        Goal: Print a personalised texte depending on the person killed and the circumstances of their death
+        """
+
         victim2 = None
 
         if killer == None:
