@@ -1,12 +1,19 @@
 from chatInput import textModifier
 from time import time
-import zmq
+
 
 def hostChatServer() :
-    publisher = zmq.Context()
+    port = "1000"
+
     
 
-    return 0
+def TCPConnect_Chat(nbPlayers) :
+    sockets = list()
+
+    return sockets
+
+def publish(socket, message):
+    return
 
 if __name__ == '__main__' :
     hostChatServer()
