@@ -3,6 +3,7 @@ from client import Client
 from host import Host
 from game import Game
 from player import Player
+import time
 import useful_functions as utils
 
 #test
@@ -23,12 +24,14 @@ def host():
     new_game.GameInit()
     new_game.GameLoop()
 
+
 def client():
     You = Client()
     host_socket = You.WithHostConnection()
     utils.SendResponse(host_socket) # ask for pseudo
     while True:
         utils.SendResponse(host_socket)
+        time.sleep(0.1)  # Add a small delay to prevent busy-waiting
 
 def main():
     print(

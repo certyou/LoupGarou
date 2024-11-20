@@ -28,7 +28,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         while True:
             if choice not in expectedResults:
                 SendMessage(player, "Choix invalide")
-                choice = SendRequest(player.id, True)
+                choice = SendRequest(player.id, prompt)
             else:
                 break
         return choice
