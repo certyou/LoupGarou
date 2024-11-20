@@ -1,6 +1,7 @@
 from chatInput import textModifier
 import time
 import socket
+import select
 
 def hostChatServer() :
     """Main function simulating a chat server"""
@@ -14,11 +15,20 @@ def hostChatServer() :
         messages.append(textModifier("HostChat.txt", 'r'))
         textModifier("HostChat.txt", "w", "")
 
-        for i in messages : ###############################
-            if True :
-                return
+        for i in messages : 
+            if i != None :
+                PlayersNames = list()
 
-    return
+                Name = i[1:i.find("€")]
+                command = i[i.find("€") +1 : i.find("§" )]
+                text = i[i.find("§") +1 : -1]
+
+                # Le chat des joueurs regarde deja si le joueur est nomé.
+                #je possède les sockets des joueurs, je peux faire un systeme de dictionnaire pour le /talk (note à moi meme)
+
+                publish(playerSock, text)
+
+    
 
     
 def TCPConnect_Chat(nbPlayers) :
@@ -38,7 +48,7 @@ def TCPConnect_Chat(nbPlayers) :
 
     while len(sockets) != nbPlayers :
         newSock, _  = listener.accept()
-        sockets.append(newSock)
+        sockets.append(newSock)  
         
     return sockets
 
@@ -64,6 +74,12 @@ def receve(sockets) :
     """
     messages = list()
     for i in sockets :
-        messages.append(i.recv(1024).decode())
+        #recv is a blocking function, so we use select to avoid blocking
+        readable, _, _ = select.select([i], [], [], 0.1)
+
+        if i in readable :
+            messages.append(i.recv(1024).decode())
+        else :
+            messages.append("")
     return messages
     
