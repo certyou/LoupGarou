@@ -59,13 +59,11 @@ class Thief:
         Action: The thief can choose to swap his card with that of another player (on the first night) 
         and then players who become thieves in turn can also swap their cards. 
         """
-        choicePlayer = playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", [1,2])
+        choicePlayer = int(playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\n\nChoix: ", ["1","2"], self.id.IsHost, self.id))
         if choicePlayer == 1:
             expected_results = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
             choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.IsHost, self.id))
             return tabPlayerInLife[choicePlayer-1]
-
-        return None
 
 
 class Hunter:
@@ -159,18 +157,18 @@ class Cupidon :
         self.ascii = ascii_art.CUPIDON
         self.id = id
 
-    def actionCupidon(self, length):
+    def actionCupidon(self, tabPlayerInLife):
         """Action : during the night, Cupidon can choose 2 persons to link them. If one of them die, the other one also die
            Input : int length (number of player alive)
            Output : tuple choices, (tuple instance with the numbers of both players to link)"""
         secondPlayerToLink = 0
-        prompt = "\n entrez le numéro de la première personne à lier : \n"
-        expectedResults = [str(i) for i in range(1,length+1)]
-        firstPlayerToLink = int(playerChoice(prompt, expectedResults))
+        prompt = "\nentrez le numéro de la première personne à lier : "
+        expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
+        firstPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
 
-        prompt = "\n entrez le numéro de la deuxième personne à lier : \n" 
-        while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink :
+        prompt = "\nentrez le numéro de la deuxième personne à lier : "
+        while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink:
             secondPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.IsHost, self.id))
         
-        choices = (firstPlayerToLink,secondPlayerToLink)
+        choices = (firstPlayerToLink-1, secondPlayerToLink-1)
         return choices

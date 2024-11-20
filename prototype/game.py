@@ -15,8 +15,8 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Seer(0)], # use for test only
-            3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
+            2:[Wearwolf(0), Thief(0)], # use for test only
+            3:[Wearwolf(0), Thief(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
             6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -88,21 +88,40 @@ class Game:
         self.mayor = mayor
         mayor.increment = 2
         mayor.resetVote()
-    
+
     def night(self):
         # first night
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
-            pass
+            for player in self.tabPlayerInLife:
+                if player.card.name == "Cupidon":
+                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                    target = player.card.actionCupidon(self.tabPlayerInLife)
+                    self.lovers.append(self.tabPlayerInLife[target[0]])
+                    self.lovers.append(self.tabPlayerInLife[target[1]])
+                    Message1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
+                    Message2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
+                    utils.SendMessage(self.tabPlayerInLife[target[0]], Message2)
+                    utils.SendMessage(self.tabPlayerInLife[target[1]], Message1)
+
             # ------------------ THIEF ------------------
-        
+            for player in self.tabPlayerInLife:
+                if player.card.name == "Voleur":
+                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                    target = player.card.actionThief(self.tabPlayerInLife, player.name)
+                    msg_to_thief = f"vous êtes désormais {target.card.name}\n"
+                    msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
+                    target.card, player.card = player.card, target.card
+                    utils.SendMessage(player, msg_to_thief)
+                    utils.SendMessage(target, msg_to_victim)
+
         # ------------------ SEER ------------------
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
                 utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
                 target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.SendMessage(player, target)
-        
+
         # ------------------ WEARWOLF ------------------
         WearwolfInLife = []
         for player in self.tabPlayerInLife:
@@ -136,7 +155,7 @@ class Game:
             return True, "Amoureux"
         else:
             return False, "No one"
-    
+
     def GameLoop(self):
         isWin = (False, "No one")
         while not isWin[0]:
