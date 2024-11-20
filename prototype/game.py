@@ -114,6 +114,7 @@ class Game:
                     target.card, player.card = player.card, target.card
                     utils.SendMessage(player, msg_to_thief)
                     utils.SendMessage(target, msg_to_victim)
+                    break
 
         # ------------------ SEER ------------------
         for player in self.tabPlayerInLife:
