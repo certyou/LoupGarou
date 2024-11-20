@@ -4,6 +4,7 @@ from role import *
 from player import Player
 import useful_functions as utils
 from ascii_art import *
+import save as s
 
 class Game:
     def __init__(self, listOfPlayers):
@@ -158,13 +159,16 @@ class Game:
         while not isWin[0]:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
-            save=input("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: ")
-            if save == "1":
-                save()
-                quit=input("\n\n voulez vous quitter la partie ? :\n -1 : Oui\n -2 : Non\nChoix: ")
-                utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
-                if quit == "1":
-                    break
+            print(self.tabPlayerInLife[1].id)
+            save=int(playerChoice(("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
+            if save == 1:
+                saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
+                s.save(self.tabPlayerInLife,saveName)
+                quit=int(playerChoice(("\n\n voulez vous quitter la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
+                if quit == 0:
+                    utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
+                if quit == 1:
+                    return None
             self.night()
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()

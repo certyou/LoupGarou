@@ -16,6 +16,5 @@ class Player:
     def setRole(self, role):
         self.card = role
 
-
     def __str__(self):
         return f"id: {self.id}\nName: {self.name}\nCard: {self.card.name, self.card.id}"

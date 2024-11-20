@@ -9,20 +9,25 @@ def save(tabPlayerInLife,saveName):
                str, saveName (the name of the save)
        Output : None"""
     dict = {f"{saveName}":{"tabPlayerInLife":[]}}
-    
+    format=",\n"
     for elem in tabPlayerInLife:
         if elem.card.name != "Sorciere":
-            role = {"role":elem.card.name, "id":elem.card.id}
+            role = {"role":elem.card.name, "id":elem.name}
         else:
-            role = {"role":elem.card.name, "id":elem.card.id, "lifePotion":elem.card.lifePotion, "potionPoison":elem.card.potionPoison}
-        player = {"id":elem.id , "name":elem.name , "card":role }
+            role = {"role":elem.card.name, "id":elem.name, "lifePotion":elem.card.lifePotion, "potionPoison":elem.card.potionPoison}
+        player = {"id":str(elem.id) , "name":elem.name , "card":role }
         dict[f"{saveName}"]["tabPlayerInLife"].append(player)
 
-    with open("Save.json", "w") as f:
-        json.dump(dict, f)
+    saved=dict[f"{saveName}"]
+    with open("Save.json", "r+") as f:
+        data=json.load(f)
+        data[f"{saveName}"]=saved
+        f.seek(0)
+        json.dump(data, f, indent=4)
 
 
-def load(saveName):
+
+def load(saveName): # L'id des rôle doit être le joueur
     """Action : Load the data named saveName from the Save.json file
        Input : str, saveName (the name of the save)
        Output : tab of instance of Player class, tabPlayerInLife
