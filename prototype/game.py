@@ -66,9 +66,8 @@ class Game:
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
         
         # displaying results
-        voteResult = "\n"+f"Le village a décidé d'éliminer {maxVotedPlayer['player'].name}, et leur sentence est irrévocable."
-        utils.broadcastMessage(voteResult, self.listOfPlayers)
-        self.tabPlayerInLife.remove(maxVotedPlayer['player'])
+        self.KillPlayer(maxVotedPlayer['player'])
+
 
     def mayorVote(self):
         """
@@ -77,12 +76,14 @@ class Game:
 
         tabOfParticipant = []
         txtVote = "\nQui voulez vous élire ?  :\n"
+        nbParticipant = 1
         for i in range(len(self.tabPlayerInLife)):
             player = self.tabPlayerInLife[i]
             choiceParticipation = int(playerChoice("Voulez vous vous présenter au élection du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
             if choiceParticipation == 1:
                 tabOfParticipant.append(player)
-                txtVote += f" -{i+1} : {player.name}\n"
+                txtVote += f" -{nbParticipant} : {player.name}\n"
+                nbParticipant += 1
         
         expectedResultsVote = [str(i+1) for i in range(len(tabOfParticipant))]
         txtVote += "Choix: "
@@ -152,14 +153,14 @@ class Game:
         while not isWin[0]:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
-            self.night()
+            #self.night()
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
         utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
-        message = f"Joueurs en vie:\n"
+        message = f"\nJoueurs en vie:\n"
         for x in range(len(self.tabPlayerInLife)):
             message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
         return message
@@ -181,7 +182,6 @@ class Game:
             isMayor = None
 
         if killer == None:
-            # displaying results
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
 
         elif killer == "Loup garou":
@@ -205,9 +205,15 @@ class Game:
 
         if isMayor != None:
             utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
-            utils.SendRequest(isMayor.ip, self.PrintPlayerInLife, False)
-            choice = int(playerChoice("Entrez le numero de la personne qui sera votre successeur : ", isMayor.IsHost, isMayor))
+            message = self.PrintPlayerInLife()
+            if isMayor.id == None:
+                print(message)
+            else:
+                utils.SendRequest(isMayor.id, message, False)
+            expectedResultsVote = [str(i+1) for i in range(len(self.tabPlayerInLife))]
+            choice = int(playerChoice("\nEntrez le numero de la personne qui sera votre successeur : ", expectedResultsVote, isMayor.IsHost, isMayor))
             self.mayor = self.tabPlayerInLife[choice-1]
+            utils.broadcastMessage(f"\nLe nouveau maire désigné est {self.mayor.name}. Son vote compte à présent double",self.listOfPlayers)
 
         for role in self.listOfRole:
             if role.id == victim or role.id == victim2:
