@@ -1,6 +1,4 @@
 from random import choice
-import time
-import select
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """
@@ -11,7 +9,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         - :local: if the player is the host or not
         - :player: the player to ask if player is not the host 
     Out : 
-        - :choice: string, player's choice
+        - :choice: int, player's choice
     this function ask any player for a choice from expected results (in local or not)
     """
     if local:
@@ -28,7 +26,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         while True:
             if choice not in expectedResults:
                 SendMessage(player, "Choix invalide")
-                choice = SendRequest(player.id, prompt)
+                choice = SendRequest(player.id, True)
             else:
                 break
         return choice
@@ -47,21 +45,20 @@ def SendRequest(socket, message, response=True):
             player_response = socket.recv(1024).decode()
             return player_response
 
-def SendResponse(socket):
-    """
-    Function to send a response to the host
-    Arg :
-        - :socket: socket, socket use to send the message
-    """
-    while True:
-        ready_to_read, _, _ = select.select([socket], [], [], 0.1)
-        if ready_to_read:
-            response = socket.recv(1024).decode()
-            if response:
-                print(response)
-                break
+def SendResponse(socket, response=True):
+        """
+        Arg :
+            - :socket: socket, socket use to send the message
+            - :response: bool, if the player must respond or not
+        Out : 
+            /
+        This function ask the target remote player
+        """
+        host_request = socket.recv(1024).decode()
+        if response:
+            socket.sendall(input(host_request).encode())
         else:
-            time.sleep(0.1)
+            print(host_request, end="")
 
 def SendMessage(player, message):
     """
@@ -133,4 +130,4 @@ def PrintPlayerInLife(tabPlayerInLife):
         message = f"Joueurs en vie:\n"
         for x in range(len(tabPlayerInLife)):
             message += f"    {x+1} - {tabPlayerInLife[x].name}\n"
-        return message
+        return message   

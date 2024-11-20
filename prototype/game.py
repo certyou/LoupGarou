@@ -3,7 +3,7 @@ from random import randint, choice
 from role import *
 from player import Player
 import useful_functions as utils
-
+from ascii_art import *
 
 class Game:
     def __init__(self, listOfPlayers):
@@ -11,6 +11,7 @@ class Game:
         self.listOfRole = []
         self.nbPlayer = len(listOfPlayers)
         self.tabPlayerInLife = []
+        self.mayor = None
         self.nbTurn = 0
         self.lovers = []
         self.mayor = None
@@ -160,12 +161,9 @@ class Game:
         isWin = (False, "No one")
         while not isWin[0]:
             self.nbTurn += 1
-            utils.broadcastMessage("\nle village s'endort\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
-            isWin = self.IsWin()
-            if isWin[0]:
-                break
-            utils.broadcastMessage("\nle jour se lève\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
         utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers) 
