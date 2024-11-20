@@ -4,15 +4,15 @@ import os
 
 def textModifier(chemin, mode='r', contenu=None):
     """
-    Fonction pour lire, écrire ou ajouter du contenu à un fichier texte.
+    Function to read, write, or append content to a text file.
 
-    Arguments :
-    - chemin (str) : Le chemin du fichier.
-    - mode (str) : Le mode de manipulation ('r', 'w', 'a').
-    - contenu (str, optionnel) : Le texte à écrire ou ajouter si mode est 'ecrire' ou 'ajouter'.
+    Arguments:
+    - chemin (str): The path of the file.
+    - mode (str): The mode of operation ('r', 'w', 'a').
+    - contenu (str, optional): The text to write or append if mode is 'w' or 'a'.
 
-    Retourne :
-    - Le contenu du fichier si mode='r', sinon None.
+    Returns:
+    - The content of the file if mode='r', otherwise None.
     """
     if mode == 'r':
         with open(chemin, 'r', encoding='utf-8') as fichier:
@@ -35,14 +35,14 @@ def main() :
         input_ = str(input("$ "))
 
         if input_[0] == '/' :
-            if input_.find(" ") == -1 :
+            if input_.find(" ") == len(input_) -1 :
                 print("commande invalide")
-                if input_ == "/exit" :
-                    textModifier(chemin, 'a', "/exit")
-                    return
                 continue
                 
             input_ = '{' + input_[1: input_.find(" ")] + "§" + input_[input_.find(" ")+1:] + '}'
+
+            if input_ == "/exit" :
+                    return
 
         else :
             input_ = "{None§" + input_ + "}"
