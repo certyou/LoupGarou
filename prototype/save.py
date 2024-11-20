@@ -3,38 +3,52 @@ from role import *
 from player import *
 from game import *
 
-def save(tabPlayerInLife,saveName):
+def save(game,saveName):
     """Action : Save the date in the Save.json file as a dictionnary named saveName
-       Input : tab of instances of Player class,tabPlayerInlife (tab of Pllayer alive)
+       Input : instance of class Game, game
                str, saveName (the name of the save)
        Output : None"""
-    dict = {f"{saveName}":{"tabPlayerInLife":[]}}
+    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}}
+    if game.mayor != None:
+        dict[f"{saveName}"]["mayor"] = game.mayor.name
     format=",\n"
-    for elem in tabPlayerInLife:
+    for elem in game.tabPlayerInLife:
         if elem.card.name != "Sorciere":
             role = {"role":elem.card.name, "id":elem.name}
         else:
             role = {"role":elem.card.name, "id":elem.name, "lifePotion":elem.card.lifePotion, "potionPoison":elem.card.potionPoison}
-        player = {"id":str(elem.id) , "name":elem.name , "card":role }
+        if elem.IsHost:
+            player = {"id":str(elem.id) , "name":elem.name , "card":role, "IsHost":True}
+        else:    
+            player = {"id":str(elem.id) , "name":elem.name , "card":role, "IsHost":False}
         dict[f"{saveName}"]["tabPlayerInLife"].append(player)
 
-    saved=dict[f"{saveName}"]
-    with open("Save.json", "r+") as f:
-        data=json.load(f)
-        data[f"{saveName}"]=saved
-        f.seek(0)
-        json.dump(data, f, indent=4)
 
+    saved=dict[f"{saveName}"]
+
+    with open("Save.json", "r") as f:
+        if len(f.read()) == 0:
+            f.close()
+            with open("Save.json", "r+") as f:
+                json.dump(dict, f, indent=4)
+        else:
+            with open("Save.json", "r+") as f:
+                data=json.load(f)
+                data[f"{saveName}"]=saved
+                f.seek(0)
+                json.dump(data, f, indent=4)
+
+    f.close()
 
 
 def load(saveName): # L'id des rôle doit être le joueur
     """Action : Load the data named saveName from the Save.json file
        Input : str, saveName (the name of the save)
-       Output : tab of instance of Player class, tabPlayerInLife
+       Output : tab with every element we need to reload a game, save
     """
-    with open("Save.json", "r") as f:
-        data = json.load(f)
-    
+    with open("Save.json", "r") as file:
+        data = json.load(file)
+    save=[]
     tabPlayerInLife=[]
     for elem in data[f"{saveName}"]["tabPlayerInLife"]:
         if elem["card"]["role"] == "Villageoi":
@@ -51,9 +65,14 @@ def load(saveName): # L'id des rôle doit être le joueur
             elem["card"]=Seer(elem["card"]["id"])
         elif elem["card"]["role"] == "Voleur":
             elem["card"]=Thief(elem["card"]["id"])
-
-        tabPlayerInLife.append(Player(elem["id"],elem["name"],elem["card"]))
-    save = Game(tabPlayerInLife)
-    save.tabPlayerInLife=tabPlayerInLife
-
+        player = Player(elem["id"],elem["name"],elem["IsHost"])
+        player.card=elem["card"]
+        tabPlayerInLife.append(player)
+    save.append(tabPlayerInLife)
+    save.append(data[f"{saveName}"]["mayor"])
+    save.append(data[f"{saveName}"]["nbTurn"])
+    save.append(data[f"{saveName}"]["lovers"])
+    file.close()
     return save
+
+#print(load("s1"))

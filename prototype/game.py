@@ -163,11 +163,10 @@ class Game:
             save=int(playerChoice(("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
             if save == 1:
                 saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
-                s.save(self.tabPlayerInLife,saveName)
+                s.save(self,saveName)
                 quit=int(playerChoice(("\n\n voulez vous quitter la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
-                if quit == 0:
-                    utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
                 if quit == 1:
+                    utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
                     return None
             self.night()
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
