@@ -153,7 +153,7 @@ class Game:
         while not isWin[0]:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
-            #self.night()
+            self.night()
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
