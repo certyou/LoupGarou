@@ -16,8 +16,8 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Seer(0)], # use for test only
-            3:[Wearwolf(0), Villager(0), Cupidon(0)], # use for test only
+            2:[Wearwolf(0), Thief(0)], # use for test only
+            3:[Wearwolf(0), Thief(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
             6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -44,13 +44,13 @@ class Game:
 
     def day(self):
         # ----------- Mayor Vote ------------------
-        if self.nbTurn == 1:
-            utils.broadcastMessage("---------------- Vote du maire ----------------\n\n"+MAIRE, self.tabPlayerInLife)
+        if self.nbTurn == 2:
+            utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.listOfPlayers)
             self.mayorVote()
-            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.tabPlayerInLife)
+            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.listOfPlayers)
 
         # ----------- Vote ------------------
-        strlistOfPlayer = f"---------------- Vote du Village ----------------\n\n{VOTE}\n\n{self.PrintPlayerInLife()}"
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
         maxVotedPlayer = {"player":None, "nbVote":0}
         # making player vote
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
@@ -60,7 +60,6 @@ class Game:
                 self.tabPlayerInLife[vote].addVote(2)
             else:
                 self.tabPlayerInLife[vote].addVote()
-        print()
         # counting and reseting vote
         maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
@@ -92,44 +91,60 @@ class Game:
             choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.IsHost, player))
             tabOfParticipant[choiceMayor-1].addVote()
         
-        mayor = self.playerWithMostVote(tabOfParticipant)
+        mayor = utils.playerWithMostVote(tabOfParticipant, self.listOfPlayers)
         self.mayor = mayor
         mayor.increment = 2
         mayor.resetVote()
-        
-    def playerWithMostVote(self, tabPlayer):
-        """
-        Arg :
-            - :tabPlayer: lst of Player object
-        Out : 
-            - :maxVotePlayer: Player object, player with the most vote or random player if draw
-        """
-        utils.broadcastMessage("\nVoici les votes qui ont eu lieu: ", self.listOfPlayers)
-        maxVote = -1
-        for player in tabPlayer:
-            utils.broadcastMessage("\n"+f"{player.name} --> {player.vote}", self.listOfPlayers)
-            if player.vote > maxVote:
-                maxVote = player.vote
-                maxVotePlayer = player
-            elif player.vote == maxVote:
-                temp = [player, maxVotePlayer]
-                maxVotePlayer = choice(temp)
-            player.resetVote()
-        return maxVotePlayer
-    
+
     def night(self):
-        # ----------- first night ------------------
+        # first night
         if self.nbTurn == 1:
-            # cupidon
-            pass
-            # thief
-        
-        # seer
+            # ------------------ CUPIDON ------------------
+            for player in self.tabPlayerInLife:
+                if player.card.name == "Cupidon":
+                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                    target = player.card.actionCupidon(self.tabPlayerInLife)
+                    self.lovers.append(self.tabPlayerInLife[target[0]])
+                    self.lovers.append(self.tabPlayerInLife[target[1]])
+                    Message1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
+                    Message2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
+                    utils.SendMessage(self.tabPlayerInLife[target[0]], Message2)
+                    utils.SendMessage(self.tabPlayerInLife[target[1]], Message1)
+
+            # ------------------ THIEF ------------------
+            for player in self.tabPlayerInLife:
+                if player.card.name == "Voleur":
+                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                    target = player.card.actionThief(self.tabPlayerInLife, player.name)
+                    msg_to_thief = f"vous êtes désormais {target.card.name}\n"
+                    msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
+                    target.card, player.card = player.card, target.card
+                    utils.SendMessage(player, msg_to_thief)
+                    utils.SendMessage(target, msg_to_victim)
+
+        # ------------------ SEER ------------------
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
-                utils.SendMessage(player, self.PrintPlayerInLife())
+                utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
                 target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.SendMessage(player, target)
+
+        # ------------------ WEARWOLF ------------------
+        WearwolfInLife = []
+        for player in self.tabPlayerInLife:
+            if player.card.name == "Loup garou":
+                WearwolfInLife.append(player)
+        # Vote
+        strlistOfPlayer = f"---------------- Vote des LG ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
+        maxVotedPlayer = {"player":None, "nbVote":0}
+        # making player vote
+        utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
+        for player in WearwolfInLife:
+            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            self.tabPlayerInLife[vote].addVote()
+        # counting and reseting vote
+        maxVotedPlayer = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
+        self.KillPlayer(maxVotedPlayer, "Loup garou")
 
     def IsWin(self):
         countOfWerewolf = 0
@@ -147,7 +162,7 @@ class Game:
             return True, "Amoureux"
         else:
             return False, "No one"
-    
+
     def GameLoop(self):
         isWin = (False, "No one")
         while not isWin[0]:

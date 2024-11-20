@@ -1,3 +1,5 @@
+from random import choice
+
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """
     Function to ask the player to make a choice among a list of expected results
@@ -104,3 +106,29 @@ def broadcastMessage(message, players):
             print(message, end="")
         else:
             player.id.sendall(message.encode())
+
+def playerWithMostVote(tabPlayer, listOfPlayers):
+    """
+    Arg :
+        - :tabPlayer: lst of Player object
+    Out : 
+        - :maxVotePlayer: Player object, player with the most vote or random player if draw
+    """
+    broadcastMessage("\nVoici les votes qui ont eu lieu: ", listOfPlayers)
+    maxVote = -1
+    for player in tabPlayer:
+        broadcastMessage(f"{player.name} --> {player.vote}\n", listOfPlayers)
+        if player.vote > maxVote:
+            maxVote = player.vote
+            maxVotePlayer = player
+        elif player.vote == maxVote:
+            temp = [player, maxVotePlayer]
+            maxVotePlayer = choice(temp)
+        player.resetVote()
+    return maxVotePlayer
+
+def PrintPlayerInLife(tabPlayerInLife):
+        message = f"Joueurs en vie:\n"
+        for x in range(len(tabPlayerInLife)):
+            message += f"    {x+1} - {tabPlayerInLife[x].name}\n"
+        return message   
