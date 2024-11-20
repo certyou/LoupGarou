@@ -1,4 +1,5 @@
 from random import choice
+import socket
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """
@@ -130,4 +131,66 @@ def PrintPlayerInLife(tabPlayerInLife):
         message = f"Joueurs en vie:\n"
         for x in range(len(tabPlayerInLife)):
             message += f"    {x+1} - {tabPlayerInLife[x].name}\n"
-        return message   
+        return message
+
+def client_receive_and_process(server_socket):
+    """
+    Le client reçoit un message de l'hôte et détermine s'il doit répondre ou non.
+    """
+    try:
+        # Recevoir le message
+        data = server_socket.recv(1024).decode('utf-8')
+        if not data:
+            return  # Si aucune donnée n'est reçue, sortir
+        
+        # Diviser l'instruction et le message
+        parts = data.split("|", 1)
+        if len(parts) != 2:
+            print(f"Message mal formé : {data}")
+            return
+        
+        instruction, message = parts
+        print(f"Message reçu : {message}")
+        
+        # Vérifier si une réponse est attendue
+        if instruction == "REPLY":
+            response = input("Votre réponse : ")
+            server_socket.sendall(response.encode('utf-8'))
+        elif instruction == "NO_REPLY":
+            print("Aucune réponse requise.")
+        else:
+            print(f"Instruction inconnue : {instruction}")
+    except socket.error as e:
+        print(f"Erreur de communication avec l'hôte : {e}")
+
+def host_send_message(client_socket, message, expect_reply):
+    """
+    L'hôte envoie un message au client, avec ou sans attente de réponse.
+    
+    Arguments :
+    - client_socket : socket du client.
+    - message : le message à envoyer.
+    - expect_reply : booléen, True si une réponse est attendue, False sinon.
+    
+    Retourne :
+    - La réponse du client si une réponse est attendue.
+    - None si aucune réponse n'est attendue ou en cas d'erreur.
+    """
+    try:
+        # Déterminer l'instruction à envoyer
+        instruction = "REPLY" if expect_reply else "NO_REPLY"
+        
+        # Préparer le message à envoyer
+        full_message = f"{instruction}|{message}"
+        client_socket.sendall(full_message.encode('utf-8'))
+        
+        # Si une réponse est attendue, la recevoir
+        if expect_reply:
+            response = client_socket.recv(1024).decode('utf-8')
+            return response
+        
+        # Sinon, rien à attendre
+        return None
+    except socket.error as e:
+        print(f"Erreur de communication avec le client : {e}")
+        return None

@@ -28,7 +28,7 @@ def client():
     host_socket = You.WithHostConnection()
     utils.SendResponse(host_socket) # ask for pseudo
     while True:
-        utils.SendResponse(host_socket)
+        utils.client_receive_and_process(host_socket)
 
 def main():
     print(
