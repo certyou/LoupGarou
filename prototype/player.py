@@ -6,6 +6,7 @@ class Player:
         self.card = None
         self.vote = 0
         self.IsHost = isHost
+        self.mayor = False
 
     def addVote(self, increment=1):
         self.vote += increment
