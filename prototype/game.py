@@ -16,7 +16,7 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Thief(0)], # use for test only
+            2:[Cupidon(0),Villager(0)], # use for test only
             3:[Wearwolf(0), Thief(0), Cupidon(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -61,7 +61,7 @@ class Game:
             else:
                 self.tabPlayerInLife[vote].addVote()
         # counting and reseting vote
-        maxVotePlayer = self.playerWithMostVote(self.tabPlayerInLife)
+        maxVotePlayer = utils.playerWithMostVote(self.tabPlayerInLife, self.listOfPlayers)
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
         
         # displaying results
@@ -121,6 +121,7 @@ class Game:
                     target.card, player.card = player.card, target.card
                     utils.SendMessage(player, msg_to_thief)
                     utils.SendMessage(target, msg_to_victim)
+                    break
 
         # ------------------ SEER ------------------
         for player in self.tabPlayerInLife:
@@ -164,14 +165,18 @@ class Game:
             return False, "No one"
 
     def GameLoop(self):
-        isWin = (False, "No one")
-        while not isWin[0]:
+        while True:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
+            isWin = self.IsWin()
+            if isWin[0]:
+                break
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
+            if isWin[0]:
+                break
         utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
