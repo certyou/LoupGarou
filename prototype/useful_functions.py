@@ -40,8 +40,9 @@ def SendRequest(socket, message, response=True):
         """
         socket.sendall(message.encode())
         if response:
-            player_response = socket.recv(65536).decode()
+            player_response = socket.recv(65536).decode()      
             return player_response
+
 
 def SendResponse(socket, response=True):
         """
