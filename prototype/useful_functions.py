@@ -9,7 +9,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         - :local: if the player is the host or not
         - :player: the player to ask if player is not the host 
     Out : 
-        - :choice: int, player's choice
+        - :choice: string, player's choice
     this function ask any player for a choice from expected results (in local or not)
     """
     if local:
