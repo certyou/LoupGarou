@@ -160,15 +160,19 @@ class Game:
             return False, "No one"
 
     def GameLoop(self):
-        isWin = (False, "No one")
-        while not isWin[0]:
+        while True:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
+            isWin = self.IsWin()
+            if isWin[0]:
+                break
             utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
-        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers) 
+            if isWin[0]:
+                break
+        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def KillPlayer(self, victim, killer=None):
         victim2 = None
