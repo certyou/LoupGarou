@@ -26,7 +26,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         choice = HostSendMessage(player.id, prompt, True)
         while True:
             if choice not in expectedResults:
-                HostSendMessage(player, "Choix invalide\n", False)
+                HostSendMessage(player.id, "Choix invalide\n", False)
                 choice = HostSendMessage(player.id, prompt, True)
             else:
                 break
@@ -68,7 +68,7 @@ def ClientSendMessage(server_socket):
         
         # Vérifier si une réponse est attendue
         if instruction == "REPLY":
-            response = input("Votre réponse : ")
+            response = input("")
             server_socket.sendall(response.encode('utf-8'))
         elif instruction == "NO_REPLY":
             #print("Aucune réponse requise.")
