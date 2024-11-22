@@ -17,7 +17,7 @@ def host():
     GameHost.TCPConnect(NbOfPlayers)
     ListOfPlayers = [Player(None, input("votre nom : "), True)]
     for i in range(NbOfPlayers):
-        ListOfPlayers.append(Player(GameHost.IPList[i], utils.SendRequest(GameHost.IPList[i], "votre nom : "), False))
+        ListOfPlayers.append(Player(GameHost.IPList[i], utils.HostSendMessage(GameHost.IPList[i], "votre nom : ", True), False))
 
     new_game = Game(ListOfPlayers)
     new_game.GameInit()
@@ -26,9 +26,9 @@ def host():
 def client():
     You = Client()
     host_socket = You.WithHostConnection()
-    utils.SendResponse(host_socket) # ask for pseudo
+    utils.ClientSendMessage(host_socket) # ask for pseudo
     while True:
-        utils.SendResponse(host_socket)
+        utils.ClientSendMessage(host_socket)
 
 def main():
     print(
