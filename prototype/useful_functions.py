@@ -1,5 +1,6 @@
 from random import choice
 import socket
+import time
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """
@@ -60,11 +61,11 @@ def ClientSendMessage(server_socket):
         # Diviser l'instruction et le message
         parts = data.split("/")
         if len(parts) != 2:
-            print(f"Message mal formé : {data}")
+            print(f"Message mal formé : {parts}")
             return
         
         instruction, message = parts
-        print(message)
+        print(message, end="")
         
         # Vérifier si une réponse est attendue
         if instruction == "REPLY":
@@ -91,8 +92,9 @@ def HostSendMessage(client_socket, message, expect_reply):
     - La réponse du client si une réponse est attendue.
     - None si aucune réponse n'est attendue ou en cas d'erreur.
     """
+    time.sleep(0.5)
     if client_socket is None:
-        print(message)
+        print(message, end="")
     else:
         try:
             # Déterminer l'instruction à envoyer

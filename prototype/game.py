@@ -97,7 +97,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Cupidon":
                     utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
-                    time.sleep(1)
+                    #time.sleep(1)
                     target = player.card.actionCupidon(self.tabPlayerInLife)
                     self.lovers.append(self.tabPlayerInLife[target[0]])
                     self.lovers.append(self.tabPlayerInLife[target[1]])
@@ -110,7 +110,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voleur":
                     utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
-                    time.sleep(1)
+                    #time.sleep(1)
                     target = player.card.actionThief(self.tabPlayerInLife, player.name)
                     msg_to_thief = f"vous êtes désormais {target.card.name}\n"
                     msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
@@ -123,11 +123,13 @@ class Game:
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
                 utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
-                time.sleep(1)
+                #time.sleep(1)
                 target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.HostSendMessage(player.id, target, False)
 
         # ------------------ WEARWOLF ------------------
+        print(self.listOfRole)
+        print(Wearwolf in self.listOfRole)
         if Wearwolf in self.listOfRole:
             WearwolfInLife = []
             for player in self.tabPlayerInLife:
@@ -138,7 +140,7 @@ class Game:
             maxVotedPlayer = {"player":None, "nbVote":0}
             # making player vote
             utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
-            time.sleep(1)
+            #time.sleep(1)
             for player in WearwolfInLife:
                 vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
