@@ -59,11 +59,9 @@ class Thief:
         Action: The thief can choose to swap his card with that of another player (on the first night) 
         and then players who become thieves in turn can also swap their cards. 
         """
-        choicePlayer = int(playerChoice("Voulez vous échanger votre carte avec un joueur?\n    1: oui\n    2: non\nChoix: ", ["1","2"], self.id.IsHost, self.id))
-        if choicePlayer == 1:
-            expected_results = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
-            choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.IsHost, self.id))
-            return tabPlayerInLife[choicePlayer-1]
+        expected_results = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
+        choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expected_results, self.id.IsHost, self.id))
+        return tabPlayerInLife[choicePlayer-1]
 
 
 class Hunter:

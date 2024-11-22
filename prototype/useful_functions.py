@@ -55,10 +55,10 @@ def ClientSendMessage(server_socket):
         # Recevoir le message
         data = server_socket.recv(655336).decode('utf-8')
         if not data:
-            return  # Si aucune donnée n'est reçue, sortir
+            return None # Si aucune donnée n'est reçue, sortir
         
         # Diviser l'instruction et le message
-        parts = data.split("|", 1)
+        parts = data.split("/")
         if len(parts) != 2:
             print(f"Message mal formé : {data}")
             return
@@ -99,7 +99,7 @@ def HostSendMessage(client_socket, message, expect_reply):
             instruction = "REPLY" if expect_reply else "NO_REPLY"
             
             # Préparer le message à envoyer
-            full_message = f"{instruction}|{message}"
+            full_message = f"{instruction}/{message}"
             client_socket.sendall(full_message.encode('utf-8'))
             
             # Si une réponse est attendue, la recevoir
