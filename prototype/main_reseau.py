@@ -33,14 +33,51 @@ def host():
         with open("Save.json", "r") as file:
             data=json.load(file)
         print("Quel sauvegarde voulez vous charger ? : ")
-        keyList=[]
+        saveList=[]
         for key in data.keys():
             print(key)
-            keyList.append(key)
-        choice = utils.playerChoice("Votre choix : ", keyList)
+            saveList.append(key)
+        choice = utils.playerChoice("Votre choix : ", saveList)
         save=load(choice)
         NbOfPlayers=len(save[0])
         print("\nnombre de joueurs attendu :"+str(NbOfPlayers))
+        GameHost = Host()
+        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers-1,), daemon=True)
+        BroadcastThread.start()
+        GameHost.TCPConnect(NbOfPlayers-1)
+        listOfPlayersSaved=save[0]
+        listOfPlayers=[]
+        for elem in listOfPlayersSaved:
+            if elem.IsHost==True:
+                elem.id=None
+                elem.card.id=elem
+                listOfPlayersSaved.remove(elem)
+                listOfPlayers.append(elem)
+        name=[]
+        for elem in listOfPlayersSaved:
+            name.append(elem.name)
+        for i in range(len(listOfPlayersSaved)):
+            listOfPlayersSaved[i].id=GameHost.IPList[i]
+            listOfPlayers.append(listOfPlayersSaved[i])
+            SendMessage(listOfPlayersSaved[i], "\nLes différents noms de la dernière partie sont : \n")
+            for i in range(len(name)):
+                SendMessage(listOfPlayersSaved[i], f"- {name[i]}\n")
+            namechoice=utils.playerChoice("Quel est votre nom de la dernière partie  ? : ", name , False, listOfPlayersSaved[i])
+            for j in range(len(listOfPlayers)):
+                if listOfPlayers[j].name==namechoice:
+                    listOfPlayers[j].id=GameHost.IPList[i]
+                    listOfPlayers[j].card.id=listOfPlayers[j]
+                    name.remove(namechoice)
+
+        new_Game=Game(listOfPlayers)
+        new_Game.tabPlayerInLife=listOfPlayers
+        new_Game.mayor=save[1]
+        
+        new_Game.nbTurn=save[2]-1
+        new_Game.lovers=save[3]
+        new_Game.GameLoop()
+            
+        
 
 def client():
     You = Client()
