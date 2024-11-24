@@ -13,7 +13,7 @@ MIN_PLAYER = 1
 
 def host():
     choice=2
-    with open("Save.json", "r") as file:
+    with open("Save.json", "r") as file: # check if a save exist
         if len(file.read()) != 0:
             choice=int(utils.playerChoice("\nVoulez-vous chargez une sauvegarde ?\n-1 : Oui \n-2 : Non\n",["1","2"]))
     if choice == 2:
@@ -29,7 +29,7 @@ def host():
         new_game = Game(ListOfPlayers)
         new_game.GameInit()
         new_game.GameLoop()
-    else:
+    else: # If the user wants to load a save we upload all the data from the save to recrate a game object from them
         with open("Save.json", "r") as file:
             data=json.load(file)
         print("Quel sauvegarde voulez vous charger ? : ")
@@ -41,35 +41,32 @@ def host():
         save=load(choice)
         NbOfPlayers=len(save[0])
         print("\nnombre de joueurs attendu :"+str(NbOfPlayers)+"\n")
-        GameHost = Host()
+        GameHost = Host() # connection to the host
         BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers-1,), daemon=True)
         BroadcastThread.start()
         GameHost.TCPConnect(NbOfPlayers-1)
         listOfPlayersSaved=save[0]
         listOfPlayers=[]
-        for elem in listOfPlayersSaved:
+        for elem in listOfPlayersSaved: # we add the host as the first player of the list to not have conflict 
             if elem.IsHost==True:
                 elem.id=None
                 elem.card.id=elem
                 listOfPlayersSaved.remove(elem)
                 listOfPlayers.append(elem)
         name=[]
-        for elem in listOfPlayersSaved:
+        for elem in listOfPlayersSaved: #we get the name of every players to ask them wich one it was last time
             name.append(elem.name)
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
             SendMessage(listOfPlayersSaved[i], "\nLes différents noms de la dernière partie sont : \n")
             for j in range(len(name)):
                 SendMessage(listOfPlayersSaved[i], f"- {name[j]}\n")
-        for elem in listOfPlayersSaved:
+        for elem in listOfPlayersSaved: #we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", name , False, elem)
-            for j in range(len(listOfPlayersSaved)):
-                if listOfPlayersSaved[j].name==namechoice:
-                    player=Player(elem.id, namechoice, False)
-                    player.card=elem.card
-                    listOfPlayers.append(player)
-                    name.remove(namechoice)
-                    break
+            player=Player(elem.id, namechoice, False)
+            player.card=elem.card
+            listOfPlayers.append(player)
+            name.remove(namechoice)
 
         new_Game=Game(listOfPlayers)
         new_Game.tabPlayerInLife=listOfPlayers
