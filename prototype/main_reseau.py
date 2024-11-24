@@ -58,16 +58,18 @@ def host():
             name.append(elem.name)
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
-            listOfPlayers.append(listOfPlayersSaved[i])
             SendMessage(listOfPlayersSaved[i], "\nLes différents noms de la dernière partie sont : \n")
             for j in range(len(name)):
                 SendMessage(listOfPlayersSaved[i], f"- {name[j]}\n")
-        for i in range(len(name)):
-            namechoice=utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", name , False, listOfPlayersSaved[i])
-            for j in range(len(listOfPlayers)):
-                if listOfPlayers[j].name==namechoice:
-                    listOfPlayers[j],listOfPlayers[i]=listOfPlayers[i],listOfPlayers[j]
+        for elem in listOfPlayersSaved:
+            namechoice=utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", name , False, elem)
+            for j in range(len(listOfPlayersSaved)):
+                if listOfPlayersSaved[j].name==namechoice:
+                    player=Player(elem.id, namechoice, False)
+                    player.card=elem.card
+                    listOfPlayers.append(player)
                     name.remove(namechoice)
+                    break
 
         new_Game=Game(listOfPlayers)
         new_Game.tabPlayerInLife=listOfPlayers
