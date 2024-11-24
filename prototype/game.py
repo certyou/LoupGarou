@@ -128,13 +128,11 @@ class Game:
                 utils.HostSendMessage(player.id, target, False)
 
         # ------------------ WEARWOLF ------------------
-        print(self.listOfRole)
-        print(Wearwolf in self.listOfRole)
-        if Wearwolf in self.listOfRole:
-            WearwolfInLife = []
-            for player in self.tabPlayerInLife:
-                if player.card.name == "Loup garou":
-                    WearwolfInLife.append(player)
+        WearwolfInLife = []
+        for player in self.tabPlayerInLife:
+            if player.card.name == "Loup garou":
+                WearwolfInLife.append(player)
+        if WearwolfInLife != []:
             # Vote
             strlistOfPlayer = f"---------------- Vote des LG ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
             maxVotedPlayer = {"player":None, "nbVote":0}
@@ -178,7 +176,8 @@ class Game:
             isWin = self.IsWin()
             if isWin[0]:
                 break
-        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
+        time.sleep(1)
+        utils.broadcastMessage(f"\nles {isWin[1]} ont gagnés !!!\n\n", self.listOfPlayers)
 
     def KillPlayer(self, victim, killer=None):
         victim2 = None
