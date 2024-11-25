@@ -8,6 +8,21 @@ def hostChatServer() :
     this program is the same as chat.py but for the host
     it is also used as the server of the whole chat system"""
 
+    print(    """
+          _           _                                     _ 
+      ___| |__   __ _| |_    __ _  ___ _ __   ___ _ __ __ _| |
+     / __| '_ \ / _` | __|  / _` |/ _ \ '_ \ / _ \ '__/ _` | |
+    | (__| | | | (_| | |_  | (_| |  __/ | | |  __/ | | (_| | |
+     \___|_| |_|\__,_|\__|  \__, |\___|_| |_|\___|_|  \__,_|_|
+                            |___/                             
+
+    """)
+
+    print("""Bienvenue dans le chat du LOUP GAROU
+           - Pour quitter le chat, tapez /exit
+           - Pour changer de nom, tapez /name nom
+          Amusez-vous bien !""")
+
     nbplayer = int(textModifier("playerNumber.txt", "r"))
     playerSock = TCPConnect_Chat(nbplayer)
 
