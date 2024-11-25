@@ -14,6 +14,9 @@ def textModifier(chemin, mode='r', contenu=None):
     Returns:
     - The content of the file if mode='r', otherwise None.
     """
+
+    chemin = os.path.join(os.path.dirname(__file__), chemin)
+
     if mode == 'r':
         with open(chemin, 'r', encoding='utf-8') as fichier:
             return fichier.read()
@@ -27,22 +30,36 @@ def textModifier(chemin, mode='r', contenu=None):
             fichier.write(contenu)
 
 def main() :
+    
     chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
 
     textModifier(chemin, 'w', "")
 
+    name = ""
+
     while True : 
+
         input_ = str(input("$ "))
 
         if input_[0] == '/' :
+
+            if name == "" and input_[input_.find("/")+1:input_.find(" ")] == "name" :
+                name = str(input("Name : "))
+                continue
+
+            if name == "" :
+                continue
+
             if input_.find(" ") == len(input_) -1 :
                 print("commande invalide")
                 continue
-                
-            input_ = '{' + input_[1: input_.find(" ")] + "§" + input_[input_.find(" ")+1:] + '}'
 
             if input_ == "/exit" :
                     return
+                
+            input_ = '{' + input_[1: input_.find(" ")] + "§" + input_[input_.find(" ")+1:] + '}'
+
+            
 
         else :
             input_ = "{None§" + input_ + "}"

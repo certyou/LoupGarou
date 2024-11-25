@@ -5,7 +5,7 @@ import threading
 import hostChatServer
 import os
 
-import time
+from time import sleep
 
 def chat():
     chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
@@ -30,9 +30,15 @@ def sendToHost(socket, message) :
     socket.sendall(message.encode())
 
 def TCPToHostConnect() :
+    textModifier("HostIp.txt", "w", "")
+    while textModifier("HostIp.txt", "r") == "" :
+        print("status : offline", end="\r")
+        sleep(1)
     HostIp = textModifier("HostIp.txt", "r")
     PlayerSocket = socket.socket()
+    print("status : connected")
     PlayerSocket.connect((HostIp, 1000))
+    
     return PlayerSocket
  
 if __name__ == '__main__':

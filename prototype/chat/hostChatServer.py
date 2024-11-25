@@ -6,14 +6,14 @@ import select
 def hostChatServer() :
     """Main function simulating a chat server"""
 
-    nbplayer = input("combien de")
+    nbplayer = int(textModifier("playerNumber.txt", "r"))
     playerSock = TCPConnect_Chat(nbplayer)
 
     while True : 
         time.sleep(0.5)
         messages = receve(playerSock)
         messages.append(textModifier("HostChat.txt", 'r'))
-        textModifier("HostChat.txt", "w", "")
+        textModifier("hostChat.txt", "w", "")
 
         for i in messages : 
             if i != None :
@@ -38,7 +38,7 @@ def TCPConnect_Chat(nbPlayers) :
     Out:
         - :sockets: list, list of sockets of every player
     """
-    port = "1000"
+    port = 1000
     sockets = list()
     listener = socket.socket()
     HostIp = textModifier("HostIp.txt", 'r')
@@ -83,3 +83,5 @@ def receve(sockets) :
             messages.append("")
     return messages
     
+if __name__ == "__main__" :
+    hostChatServer()

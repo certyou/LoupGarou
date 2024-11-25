@@ -13,8 +13,10 @@ MIN_PLAYER = 1
 def host():
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
 
-    with open(os.path.join(os.path.dirname(__file__), "chat\\HostIp.txt"), 'a', encoding='utf-8') as file:
-            file.write("\n" + str(NbOfPlayers))
+    file = open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'w', encoding='utf-8')
+    file.write
+    with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
+            file.write(str(NbOfPlayers))
 
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)

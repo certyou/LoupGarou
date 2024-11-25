@@ -11,14 +11,19 @@ def open_new_console(script_name):
         print(f"Erreur lors de l'ouverture de la console pour {script_name}: {e}")
 
 
-def main() :
-    chat_path = os.path.join(os.path.dirname(__file__), 'chat.py')
+def main(host) :
     game_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'main_reseau.py')
-    chatInputPath = os.path.join(os.path.dirname(__file__), 'chatInput.py')
+    if host :
+        chat_path = os.path.join(os.path.dirname(__file__), 'hostChatServer.py')
+        chatInputPath = os.path.join(os.path.dirname(__file__), 'hostChatInput.py')
+    else :
+        chat_path = os.path.join(os.path.dirname(__file__), 'chat.py')
+        chatInputPath = os.path.join(os.path.dirname(__file__), 'chatInput.py')
 
     open_new_console(chat_path)  # Chat py
     open_new_console(game_path)  # Ouvrir la deuxième console
     open_new_console(chatInputPath)
 
 if __name__ == '__main__':
-    main()
+    host = int(input(""))
+    main(host)
