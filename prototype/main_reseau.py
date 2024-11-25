@@ -5,6 +5,7 @@ from game import Game
 from player import Player
 import useful_functions as utils
 import os
+import chat.launcher as launcher
 
 #test
 MAX_PLAYER = 16
@@ -52,8 +53,10 @@ joli texte d'introduction avec plein d'ascii art
     choice = int(utils.playerChoice("Votre choix : ", ["1", "2"]))
     print()
     if choice == 1:
+        launcher.launchHostChat()
         host()
     elif choice == 2:
+        launcher.launchClientChat()
         client()
 
 if __name__ == "__main__":

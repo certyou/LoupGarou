@@ -4,7 +4,9 @@ import socket
 import select
 
 def hostChatServer() :
-    """Main function simulating a chat server"""
+    """Main program for the chat server
+    this program is the same as chat.py but for the host
+    it is also used as the server of the whole chat system"""
 
     nbplayer = int(textModifier("playerNumber.txt", "r"))
     playerSock = TCPConnect_Chat(nbplayer)
@@ -26,7 +28,10 @@ def hostChatServer() :
                 # je possède les sockets des joueurs, je peux faire un systeme de dictionnaire pour le /talk (note à moi meme)
 
                 publish(playerSock, i)
-                print(i)
+                
+                name = i[i.find("{")+1:i.find("€")]
+                text = i[i.find("§")+1:i.find("}")]
+                print(f"{name} : {text}")
 
         
 
