@@ -1,33 +1,48 @@
 from chatInput import textModifier
 import time 
 import socket
-import threading
-import hostChatServer
+import select
+# import threading
+# import hostChatServer
 import os
 
 from time import sleep
 
 def chat():
+
     chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
     socket = TCPToHostConnect()
 
     while True:
         
+        #traitement de l'input 
         time.sleep(0.5)
-        command = textModifier(chemin, 'r')
-        if command == "/host" :
-            hostProcess = threading.Thread(target = hostChatServer.TCPConnect_Chat, daemon=True )
-        if command == "/exit" :
-            return
-        if len(command) != 0 :
-            sendToHost(socket, command)
-            textModifier(chemin, 'w', "") #supprimer les données
+        txt = textModifier(chemin, 'r')
+        textModifier(chemin, 'w', "") #supprimer les données
 
-        ####################################################################################################################################
+        if txt == "/exit" :
+            return
+        if len(txt) != 0 :
+            sendToHost(socket, txt)
+            
+
+        #traitement du massage reçu
+        # {name€command€text}
+        txt = recvFromHost(socket)
+        if txt != None :
+            print(txt)
+        
         
 
 def sendToHost(socket, message) : 
     socket.sendall(message.encode())
+
+def recvFromHost(socket) :
+    readable, _, _ = select.select([socket], [], [], 0.01)
+    if socket in readable :
+        message = socket.recv(1024).decode()
+        return message
+    return None
 
 def TCPToHostConnect() :
     textModifier("HostIp.txt", "w", "")

@@ -12,21 +12,23 @@ def hostChatServer() :
     while True : 
         time.sleep(0.5)
         messages = receve(playerSock)
-        messages.append(textModifier("HostChat.txt", 'r'))
+        messageHost = textModifier("hostChat.txt", "r")
+        if messageHost != "" :
+            messages.append(textModifier("hostChat.txt", 'r'))
         textModifier("hostChat.txt", "w", "")
 
+
         for i in messages : 
-            if i != None :
+            if i != None or i != "":
                 PlayersNames = list()
 
-                Name = i[1:i.find("€")]
-                command = i[i.find("€") +1 : i.find("§" )]
-                text = i[i.find("§") +1 : -1]
-
                 # Le chat des joueurs regarde deja si le joueur est nomé.
-                #je possède les sockets des joueurs, je peux faire un systeme de dictionnaire pour le /talk (note à moi meme)
+                # je possède les sockets des joueurs, je peux faire un systeme de dictionnaire pour le /talk (note à moi meme)
 
-                publish(playerSock, text)
+                publish(playerSock, i)
+                print(i)
+
+        
 
     
 
@@ -63,7 +65,6 @@ def publish(sockets, message):
 
     for i in sockets :
         i.sendall(message.encode())
-    return
 
 def receve(sockets) :
     """Function that receive messages from every player
@@ -79,8 +80,6 @@ def receve(sockets) :
 
         if i in readable :
             messages.append(i.recv(1024).decode())
-        else :
-            messages.append("")
     return messages
     
 if __name__ == "__main__" :
