@@ -5,6 +5,8 @@ from game import Game
 from player import Player
 import useful_functions as utils
 from ascii_art import *
+import os
+import chat.launcher as launcher
 
 #test
 MAX_PLAYER = 16
@@ -12,6 +14,12 @@ MIN_PLAYER = 1
 
 def host():
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
+
+    file = open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'w', encoding='utf-8')
+    file.write
+    with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
+            file.write(str(NbOfPlayers))
+
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
@@ -42,8 +50,10 @@ def main():
     choice = int(utils.playerChoice("Votre choix : ", ["1", "2"]))
     print()
     if choice == 1:
+        launcher.launchHostChat()
         host()
     elif choice == 2:
+        launcher.launchClientChat()
         client()
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 import socket
-import select
+import os
 
 
 class Client:
@@ -12,6 +12,9 @@ class Client:
         Buffer = BroadcastRecv.recvfrom(1024)[0].decode()
         HostIp = Buffer[1:Buffer.find(',')]
         HostPort = int(Buffer[Buffer.find(',')+1:-1])
+
+        with open(os.path.join(os.path.dirname(__file__), "chat\\HostIp.txt"), 'w') as file:
+            file.write(str(HostIp))
 
         ToHostConnect = socket.socket()
         ToHostConnect.connect((HostIp, HostPort))
