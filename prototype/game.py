@@ -16,8 +16,8 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Cupidon(0),Villager(0)], # use for test only
-            3:[Wearwolf(0), Thief(0), Cupidon(0)], # use for test only
+            2:[Seer(0),Wearwolf(0)], # use for test only
+            3:[Wearwolf(0), Villager(0), Hunter(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
             6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -100,31 +100,33 @@ class Game:
         # first night
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
-            for player in self.tabPlayerInLife:
-                if player.card.name == "Cupidon":
-                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
-                    target = player.card.actionCupidon(self.tabPlayerInLife)
-                    self.lovers.append(self.tabPlayerInLife[target[0]])
-                    self.lovers.append(self.tabPlayerInLife[target[1]])
-                    Message1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
-                    Message2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
-                    utils.SendMessage(self.tabPlayerInLife[target[0]], Message2)
-                    utils.SendMessage(self.tabPlayerInLife[target[1]], Message1)
+            if any(isinstance(role, Cupidon) for role in self.listOfRole):
+                for player in self.tabPlayerInLife:
+                    if player.card.name == "Cupidon":
+                        utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                        target = player.card.actionCupidon(self.tabPlayerInLife)
+                        self.lovers.append(self.tabPlayerInLife[target[0]])
+                        self.lovers.append(self.tabPlayerInLife[target[1]])
+                        Message1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
+                        Message2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
+                        utils.SendMessage(self.tabPlayerInLife[target[0]], Message2)
+                        utils.SendMessage(self.tabPlayerInLife[target[1]], Message1)
 
             # ------------------ THIEF ------------------
-            for player in self.tabPlayerInLife:
-                if player.card.name == "Voleur":
-                    utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
-                    target = player.card.actionThief(self.tabPlayerInLife, player.name)
-                    msg_to_thief = f"vous êtes désormais {target.card.name}\n"
-                    msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
-                    target.card, player.card = player.card, target.card
-                    utils.SendMessage(player, msg_to_thief)
-                    utils.SendMessage(target, msg_to_victim)
-                    break
+            if any(isinstance(role, Thief) for role in self.listOfRole):
+                for player in self.tabPlayerInLife:
+                    if player.card.name == "Voleur":
+                        utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                        target = player.card.actionThief(self.tabPlayerInLife, player.name)
+                        msg_to_thief = f"vous êtes désormais {target.card.name}\n"
+                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
+                        target.card, player.card = player.card, target.card
+                        utils.SendMessage(player, msg_to_thief)
+                        utils.SendMessage(target, msg_to_victim)
+                        break
 
         # ------------------ SEER ------------------
-        if Seer in self.listOfRole:
+        if any(isinstance(role, Seer) for role in self.listOfRole):
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
                     utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
@@ -132,7 +134,7 @@ class Game:
                     utils.SendMessage(player, target)
 
         # ------------------ WEARWOLF ------------------
-        if Wearwolf in self.listOfRole:
+        if any(isinstance(role, Wearwolf) for role in self.listOfRole):
             WearwolfInLife = []
             for player in self.tabPlayerInLife:
                 if player.card.name == "Loup garou":
@@ -169,17 +171,17 @@ class Game:
     def GameLoop(self):
         while True:
             self.nbTurn += 1
-            utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nLe village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.night()
             isWin = self.IsWin()
             if isWin[0]:
                 break
-            utils.broadcastMessage("\nle jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nLe jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             self.day()
             isWin = self.IsWin()
             if isWin[0]:
                 break
-        utils.broadcastMessage(f"\nle(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
+        utils.broadcastMessage(f"\nLe(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
         message = f"\nJoueurs en vie:\n"
@@ -194,14 +196,15 @@ class Game:
                -killer: str (The role of the killer if he exist), None (automatic if there are no killer)
         Output: void
 
-        Goal: Print a personalised texte depending on the person killed and the circumstances of their death
+        Goal: -Print a personalised texte depending on the person killed and the circumstances of their death
+              -Do all the acction link to the death of a player
         """
 
-        victim2 = None
+        victim2,victim3 = None, None
+        isMayor = None
+        isHunter = None
         if victim == self.mayor:
             isMayor = victim
-        else:
-            isMayor = None
 
         if killer == None:
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
@@ -212,19 +215,34 @@ class Game:
         elif killer == "Sorcière":
             voteResult = f"La sorcière a décider de vaporiser {victim.name}"
 
+        if victim.card.name =="Chasseur":
+            isHunter = victim
+        else:
+            voteResult += f"\n{victim.name} étais {victim.card.name}\n\n"
         utils.broadcastMessage(voteResult, self.listOfPlayers)
         self.tabPlayerInLife.remove(victim)
 
+        #If the player is a lover
         if victim in self.lovers:
             self.lovers.remove(victim)
             victim2 = self.lovers[0]
             if victim2 == self.mayor:
                 isMayor = victim2
             voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
+            if victim.card.name =="Hunter":
+                isHunter = victim
+            else:
+                voteResult += f"\n{victim2.name} étais {victim2.card.name}\n\n"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
+        if isHunter != None:
+            utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainner un joueur avec lui dans la mort!",self.listOfPlayers)
+            victim3 = isHunter.actionHunter(self.tabPlayerInLife)
+            voteResult = f"{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
+         
+        #If one of the players is the mayor
         if isMayor != None:
             utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
             message = self.PrintPlayerInLife()
@@ -238,7 +256,7 @@ class Game:
             utils.broadcastMessage(f"\nLe nouveau maire désigné est {self.mayor.name}. Son vote compte à présent double",self.listOfPlayers)
 
         for role in self.listOfRole:
-            if role.id == victim or role.id == victim2:
+            if role.id == victim  or role.id == victim2 or role.id == victim3:
                 self.listOfRole.remove(role) 
 
         
