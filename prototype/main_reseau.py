@@ -20,6 +20,8 @@ def host():
     with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
             file.write(str(NbOfPlayers))
 
+    launcher.launchHostChat()
+
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
     BroadcastThread.start()
@@ -50,7 +52,6 @@ def main():
     choice = int(utils.playerChoice("Votre choix : ", ["1", "2"]))
     print()
     if choice == 1:
-        launcher.launchHostChat()
         host()
     elif choice == 2:
         launcher.launchClientChat()

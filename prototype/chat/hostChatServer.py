@@ -63,7 +63,7 @@ def TCPConnect_Chat(nbPlayers) :
     port = 1000
     sockets = list()
     listener = socket.socket()
-    HostIp = textModifier("HostIp.txt", 'r')
+    HostIp = socket.gethostbyname(socket.gethostname())
     
     listener.bind((HostIp, port))
     listener.listen(nbPlayers)
