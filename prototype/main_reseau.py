@@ -54,14 +54,14 @@ def host():
                 listOfPlayersSaved.remove(elem)
                 listOfPlayers.append(elem)
         name=[]
-        for elem in listOfPlayersSaved: #we get the name of every players to ask them wich one it was last time
+        for elem in listOfPlayersSaved: # we get the name of every players to ask them wich one it was last time
             name.append(elem.name)
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
             SendMessage(listOfPlayersSaved[i], "\nLes différents noms de la dernière partie sont : \n")
             for j in range(len(name)):
                 SendMessage(listOfPlayersSaved[i], f"- {name[j]}\n")
-        for elem in listOfPlayersSaved: #we ask the name of the player to the player so we can associate the good player to the good role with the good id
+        for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", name , False, elem)
             player=Player(elem.id, namechoice, False)
             player.card=elem.card
