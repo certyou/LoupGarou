@@ -16,7 +16,7 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Seer(0),Wearwolf(0)], # use for test only
+            2:[Hunter(0),Wearwolf(0)], # use for test only
             3:[Wearwolf(0), Villager(0), Hunter(0)], # use for test only
             4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
             5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
@@ -140,7 +140,7 @@ class Game:
                 if player.card.name == "Loup garou":
                     WearwolfInLife.append(player)
             # Vote
-            strlistOfPlayer = f"---------------- Vote des LG ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
+            strlistOfPlayer = f"---------------- Vote des Loups Garous ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
             maxVotedPlayer = {"player":None, "nbVote":0}
             # making player vote
             utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
@@ -239,8 +239,11 @@ class Game:
 
         if isHunter != None:
             utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainner un joueur avec lui dans la mort!",self.listOfPlayers)
-            victim3 = isHunter.actionHunter(self.tabPlayerInLife)
-            voteResult = f"{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
+            SendRequest(isHunter.id,f"---------------- Choix du chasseur ----------------\n{self.PrintPlayerInLife()}",False)
+            victim3 = isHunter.card.actionHunter(self.tabPlayerInLife)
+            voteResult = f"\n{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
+            utils.broadcastMessage(voteResult, self.listOfPlayers)
+            self.tabPlayerInLife.remove(victim3)
          
         #If one of the players is the mayor
         if isMayor != None:
