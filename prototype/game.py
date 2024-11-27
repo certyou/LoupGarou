@@ -4,6 +4,7 @@ from role import *
 from player import Player
 import useful_functions as utils
 from ascii_art import *
+import save as s
 
 class Game:
     def __init__(self, listOfPlayers):
@@ -41,6 +42,11 @@ class Game:
             tabAvailableCard.remove(card)
         # keep trace of active player's role
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
+        for i in range(0,len(self.listOfPlayers)):
+                message=f"\n\n {self.listOfPlayers[i].card.ascii} \n\n Vous êtes {self.listOfPlayers[i].card.name}\n"
+                SendMessage(self.listOfPlayers[i], message)
+
+
 
     def day(self):
         # ----------- Mayor Vote ------------------
@@ -171,7 +177,16 @@ class Game:
     def GameLoop(self):
         while True:
             self.nbTurn += 1
-            utils.broadcastMessage("\nLe village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
+            utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
+            print(self.tabPlayerInLife[1].id)
+            save=int(playerChoice(("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
+            if save == 1:
+                saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
+                s.save(self,saveName)
+                quit=int(playerChoice(("\n\n voulez vous quitter la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
+                if quit == 1:
+                    utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
+                    return None
             self.night()
             isWin = self.IsWin()
             if isWin[0]:

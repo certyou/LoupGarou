@@ -1,0 +1,70 @@
+{
+    "s1": {
+        "tabPlayerInLife": [
+            {
+                "id": "None",
+                "name": "marceau",
+                "card": {
+                    "role": "Villageoi",
+                    "id": "marceau"
+                },
+                "IsHost": true
+            },
+            {
+                "id": "<socket.socket fd=564, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52933)>",
+                "name": "ewen",
+                "card": {
+                    "role": "Villageoi",
+                    "id": "ewen"
+                },
+                "IsHost": false
+            },
+            {
+                "id": "<socket.socket fd=556, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52944)>",
+                "name": "noah",
+                "card": {
+                    "role": "Villageoi",
+                    "id": "noah"
+                },
+                "IsHost": false
+            },
+            {
+                "id": "<socket.socket fd=448, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52956)>",
+                "name": "arthur",
+                "card": {
+                    "role": "Loup garou",
+                    "id": "arthur"
+                },
+                "IsHost": false
+            }
+        ],
+        "mayor": "ewen",
+        "nbTurn": 2,
+        "lovers": []
+    },
+    "s3": {
+        "tabPlayerInLife": [
+            {
+                "id": "None",
+                "name": "m",
+                "card": {
+                    "role": "Voyante",
+                    "id": "m"
+                },
+                "IsHost": true
+            },
+            {
+                "id": "<socket.socket fd=524, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 53415)>",
+                "name": "e",
+                "card": {
+                    "role": "Loup garou",
+                    "id": "e"
+                },
+                "IsHost": false
+            }
+        ],
+        "mayor": null,
+        "nbTurn": 1,
+        "lovers": []
+    }
+}
