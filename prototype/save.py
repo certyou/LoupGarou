@@ -8,11 +8,10 @@ def save(game,saveName):
        Input : instance of class Game, game
                str, saveName (the name of the save)
        Output : None"""
-    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}}
+    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}} # creation of a dictionary that will contain every saved game and element to be saved
     if game.mayor != None:
         dict[f"{saveName}"]["mayor"] = game.mayor.name
-    format=",\n"
-    for elem in game.tabPlayerInLife:
+    for elem in game.tabPlayerInLife: # Save of every player attributes because we can't save object in json
         if elem.card.name != "Sorciere":
             role = {"role":elem.card.name, "id":elem.name}
         else:
@@ -26,7 +25,7 @@ def save(game,saveName):
 
     saved=dict[f"{saveName}"]
 
-    with open("Save.json", "r") as f:
+    with open("Save.json", "r") as f: # we check if the file is empty or not to know if we need to add or if it's the first saved to be write
         if len(f.read()) == 0:
             f.close()
             with open("Save.json", "r+") as f:
