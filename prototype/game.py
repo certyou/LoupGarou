@@ -16,13 +16,13 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Wearwolf(0), Thief(0)], # use for test only
-            3:[Wearwolf(0), Thief(0), Cupidon(0)], # use for test only
-            4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
-            5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            7:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
+            2:[Wearwolf(), Witch()], # use for test only
+            3:[Wearwolf(), Thief(), Cupidon()], # use for test only
+            4:[Wearwolf(), Villager(), Villager(), Villager()],
+            5:[Wearwolf(), Villager(), Villager(), Villager(), Villager()],
+            6:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager()],
+            7:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager()],
+            8:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager(), Villager()]
         }
     
     def GameInit(self):
@@ -31,12 +31,13 @@ class Game:
         Out : /
         Distrib role in random order to all players
         """
+        # select the rigth distibution of role in function of the number of player
         tabAvailableCard = self.dictRole[self.nbPlayer]
         for i in range(self.nbPlayer):
             player = self.listOfPlayers[i]
             card = tabAvailableCard[randint(0,len(tabAvailableCard)-1)]
             player.setRole(card)
-            player.card.id = player
+            player.card.id = player # allows to find the player from his role
             self.tabPlayerInLife.append(player)
             tabAvailableCard.remove(card)
         # keep trace of active player's role
@@ -51,8 +52,7 @@ class Game:
 
         # ----------- Vote ------------------
         strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
-        maxVotedPlayer = {"player":None, "nbVote":0}
-        # making player vote
+        # send the list of players in life
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
             vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
@@ -123,7 +123,6 @@ class Game:
         for player in self.tabPlayerInLife:
             if player.card.name == "Voyante":
                 utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
-                #time.sleep(1)
                 target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                 utils.HostSendMessage(player.id, target, False)
 
@@ -133,18 +132,24 @@ class Game:
             if player.card.name == "Loup garou":
                 WearwolfInLife.append(player)
         if WearwolfInLife != []:
-            # Vote
-            strlistOfPlayer = f"---------------- Vote des LG ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
-            maxVotedPlayer = {"player":None, "nbVote":0}
             # making player vote
+            strlistOfPlayer = f"---------------- Vote des LG ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
             utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
-            #time.sleep(1)
             for player in WearwolfInLife:
                 vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
             # counting and reseting vote
-            maxVotedPlayer = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
-            self.KillPlayer(maxVotedPlayer, "Loup garou")
+            victim = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
+            
+        # ------------------ WITCH ------------------
+        for player in self.tabPlayerInLife:
+            if player.card.name == "Sorcière":
+                utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                choice = player.card.actionWitch(self.tabPlayerInLife, victim)
+                print(choice)
+                utils.HostSendMessage(player.id, choice, False)
+        
+        self.KillPlayer(victim, "Loup garou")
 
     def IsWin(self):
         countOfWerewolf = 0
