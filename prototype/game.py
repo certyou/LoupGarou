@@ -152,6 +152,13 @@ class Game:
             self.KillPlayer(maxVotedPlayer, "Loup garou")
 
     def IsWin(self):
+        """
+        Output: -str (str which contain the name of the winer(s))
+                -boolean (true if sombody win and false otherwise)
+
+        Goal: Know if sombody win to stop the game and print the winer(s)
+        """
+                
         countOfWerewolf = 0
         countOfVillager = 0
         for role in self.listOfRole:
@@ -169,6 +176,7 @@ class Game:
             return False, "No one"
 
     def GameLoop(self):
+        """This is the main Game"""
         while True:
             self.nbTurn += 1
             utils.broadcastMessage("\nLe village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
@@ -184,6 +192,11 @@ class Game:
         utils.broadcastMessage(f"\nLe(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
 
     def PrintPlayerInLife(self):
+        """
+        Output: str message (str showing all the players in life)
+
+        Goal: obtain a string to showing all the player in life to all the player in game
+        """
         message = f"\nJoueurs en vie:\n"
         for x in range(len(self.tabPlayerInLife)):
             message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
