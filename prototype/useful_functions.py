@@ -26,7 +26,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         while True:
             if choice not in expectedResults:
                 SendMessage(player, "Choix invalide")
-                choice = SendRequest(player.id, True)
+                choice = SendRequest(player.id, prompt)
             else:
                 break
         return choice
@@ -42,8 +42,9 @@ def SendRequest(socket, message, response=True):
         """
         socket.sendall(message.encode())
         if response:
-            player_response = socket.recv(65536).decode()
+            player_response = socket.recv(65536).decode()      
             return player_response
+
 
 def SendResponse(socket, response=True):
         """

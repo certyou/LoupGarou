@@ -75,8 +75,8 @@ class Hunter:
     def actionHunter(self,tabPlayerInLife):
 
         """Action : Ask the player to choose a player to kill when the Hunter dies
-           Input : int length (number of player alive)
-           Output : int ChoiseKillPlayer (number of the player to kill)"""
+           Input : list (tab of all the players in life)
+           Output : Player object (Player selected by the Hunter)"""
         
         prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
