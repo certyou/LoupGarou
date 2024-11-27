@@ -5,8 +5,8 @@ from game import Game
 from player import Player
 import useful_functions as utils
 from ascii_art import *
-import os
 import chat.launcher as launcher
+from chat.chatInput import textModifier
 
 #test
 MAX_PLAYER = 16
@@ -14,11 +14,8 @@ MIN_PLAYER = 1
 
 def host():
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
-
-    file = open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'w', encoding='utf-8')
-    file.write
-    with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
-            file.write(str(NbOfPlayers))
+    
+    textModifier("playerNumber.txt", "w", str(NbOfPlayers))
 
     launcher.launchHostChat()
 

@@ -35,9 +35,7 @@ def main() :
     retourne cette frame sur le fichier texte attitré.
     """
 
-    chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
-
-    textModifier(chemin, 'w', "")
+    textModifier("chat.txt", 'w', "")
 
     
     name = ""
@@ -46,35 +44,41 @@ def main() :
 
         input_ = str(input("$ "))
 
+        if "{" or "}" in input_ :
+            print("Vous ne pouvez pas utiliser {}")
+            continue
+
         if input_[0] == '/' :
             command = input_[1: input_.find(" ")] if input_[0] == '/' else None
             text = input_[input_.find(" ")+1:] if input_.find(" ") != len(input_) -1 else None
             message = '{'+ name + "€" + command + "§" + text + '}'
 
-            if input_ == "/exit" :
+            if command == "exit" :
                 return
+            
+
+            if command == "name" :
+                name = text
+                continue
            
         else :
             command = None
             text = input_ 
             message = '{'+ name + "€None§" + text + '}'
 
-        if command == "name" :
-            name = text
-            continue
 
         if name == "" :
             print("Vous devez d'abord choisir un nom (commande : /name)")
             continue
 
 
-        if input_ == "" :
+        if input_ == "" or " " :
             continue
        
         
 
 
-        textModifier(chemin, 'a', message )
+        textModifier("chat.txt", 'a', message )
         sleep(0.5)
 
 

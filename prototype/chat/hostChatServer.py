@@ -8,7 +8,7 @@ def hostChatServer() :
     this program is the same as chat.py but for the host
     it is also used as the server of the whole chat system"""
 
-    print(    """
+    print(    r"""
           _           _                                     _ 
       ___| |__   __ _| |_    __ _  ___ _ __   ___ _ __ __ _| |
      / __| '_ \ / _` | __|  / _` |/ _ \ '_ \ / _ \ '__/ _` | |
@@ -26,7 +26,14 @@ def hostChatServer() :
     nbplayer = int(textModifier("playerNumber.txt", "r"))
     playerSock = TCPConnect_Chat(nbplayer)
 
+    loup = False
+
     while True : 
+        
+        if textModifier("role.txt", "r") == "Loup garou":
+            loup = True
+            print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
+
         time.sleep(0.5)
         messages = receve(playerSock)
         messageHost = textModifier("hostChat.txt", "r")
@@ -46,6 +53,14 @@ def hostChatServer() :
                 
                 name = i[i.find("{")+1:i.find("€")]
                 text = i[i.find("§")+1:i.find("}")]
+                command = i[i.find("€")+1:i.find("§")]
+
+                if command == "loup" and loup == True :
+                    print(f"{name} : {text}")
+                else : 
+                    continue
+                    #skip the loop to not display the message
+
                 print(f"{name} : {text}")
 
         
