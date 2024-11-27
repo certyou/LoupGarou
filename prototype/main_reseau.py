@@ -4,6 +4,7 @@ from host import Host
 from game import Game
 from player import Player
 import useful_functions as utils
+from ascii_art import *
 import os
 import chat.launcher as launcher
 
@@ -18,6 +19,8 @@ def host():
     file.write
     with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
             file.write(str(NbOfPlayers))
+
+    launcher.launchHostChat()
 
     GameHost = Host()
     BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
@@ -34,16 +37,12 @@ def host():
 def client():
     You = Client()
     host_socket = You.WithHostConnection()
-    utils.SendResponse(host_socket)
+    utils.SendResponse(host_socket) # ask for pseudo
     while True:
-        pass
+        utils.SendResponse(host_socket)
 
 def main():
-    print(
-"""
-joli texte d'introduction avec plein d'ascii art
-"""
-    )
+    print("\n\n"+INTRO+"\n\n")
 
 
     print("Voulez-vous être l'hôte ou le client ?")
@@ -53,7 +52,6 @@ joli texte d'introduction avec plein d'ascii art
     choice = int(utils.playerChoice("Votre choix : ", ["1", "2"]))
     print()
     if choice == 1:
-        launcher.launchHostChat()
         host()
     elif choice == 2:
         launcher.launchClientChat()
