@@ -172,3 +172,9 @@ class Cupidon :
         
         choices = (firstPlayerToLink-1, secondPlayerToLink-1)
         return choices
+    
+class LittleGirl:
+    def __init__(self, id):
+        self.name = "Petite fille"
+        self.ascii = ascii_art.LITTLE_GIRL
+        self.id = id
