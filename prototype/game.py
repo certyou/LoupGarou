@@ -223,12 +223,18 @@ class Game:
 
         if killer == None:
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
+            utils.SendMessage(victim, f"\n\nLe village a décidé de vous éliminer et leur sentence est irrévocable!\n\n {MORT}")
+
 
         elif killer == "Loup garou":
             voteResult = f"{victim.name} a été dévoré par les loups garou !"
+            utils.SendMessage(victim, f"\n\nLes loups garou vous ont dévoré!\n\n {MORT}")
+
 
         elif killer == "Sorcière":
             voteResult = f"La sorcière a décider de vaporiser {victim.name}"
+            utils.SendMessage(victim, f"\n\nLa sorcière a décider de vous vaporiser!\n\n {MORT}")
+
 
         if victim.card.name =="Chasseur":
             isHunter = victim
@@ -249,16 +255,18 @@ class Game:
             else:
                 voteResult += f"\n{victim2.name} étais {victim2.card.name}\n\n"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
+            utils.SendMessage(victim2, f"\n\nVous êtes mort de chagrin... !\n\n {MORT}")
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
         #If the player is the Hunter
         if isHunter != None:
-            utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainner un joueur avec lui dans la mort!",self.listOfPlayers)
+            utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainer un joueur avec lui dans la mort!",self.listOfPlayers)
             SendRequest(isHunter.id,f"---------------- Choix du chasseur ----------------\n{self.PrintPlayerInLife()}",False)
             victim3 = isHunter.card.actionHunter(self.tabPlayerInLife)
             voteResult = f"\n{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
+            utils.SendMessage(victim3, f"\n\nVous avez été tué par le chasseur !\n\n {MORT}")
             self.tabPlayerInLife.remove(victim3)
          
         #If one of the players is the mayor
