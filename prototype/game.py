@@ -17,13 +17,13 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = {
-            2:[Hunter(0),Wearwolf(0)], # use for test only
-            3:[Wearwolf(0), Villager(0), Hunter(0)], # use for test only
-            4:[Wearwolf(0), Villager(0), Villager(0), Villager(0)],
-            5:[Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            6:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            7:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)],
-            8:[Wearwolf(0), Wearwolf(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0), Villager(0)]
+            2:[Wearwolf(), Witch()], # use for test only
+            3:[Wearwolf(), Thief(), Cupidon()], # use for test only
+            4:[Wearwolf(), Villager(), Villager(), Villager()],
+            5:[Wearwolf(), Villager(), Villager(), Villager(), Villager()],
+            6:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager()],
+            7:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager()],
+            8:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager(), Villager()]
         }
     
     def GameInit(self):
@@ -32,12 +32,13 @@ class Game:
         Out : /
         Distrib role in random order to all players
         """
+        # select the rigth distibution of role in function of the number of player
         tabAvailableCard = self.dictRole[self.nbPlayer]
         for i in range(self.nbPlayer):
             player = self.listOfPlayers[i]
             card = tabAvailableCard[randint(0,len(tabAvailableCard)-1)]
             player.setRole(card)
-            player.card.id = player
+            player.card.id = player # allows to find the player from his role
             self.tabPlayerInLife.append(player)
             tabAvailableCard.remove(card)
         # keep trace of active player's role
@@ -57,8 +58,7 @@ class Game:
 
         # ----------- Vote ------------------
         strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
-        maxVotedPlayer = {"player":None, "nbVote":0}
-        # making player vote
+        # send the list of players in life
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
             vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
@@ -154,8 +154,18 @@ class Game:
                 vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
             # counting and reseting vote
-            maxVotedPlayer = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
-            self.KillPlayer(maxVotedPlayer, "Loup garou")
+            victim = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
+        
+        # ------------------ WITCH ------------------
+        if any(isinstance(role, Witch) for role in self.listOfRole):
+            for player in self.tabPlayerInLife:
+                if player.card.name == "Sorcière":
+                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    choice = player.card.actionWitch(self.tabPlayerInLife, victim)
+                    print(choice)
+                    utils.HostSendMessage(player.id, choice, False)
+        
+        self.KillPlayer(victim, "Loup garou")
 
     def IsWin(self):
         """
@@ -205,17 +215,6 @@ class Game:
             if isWin[0]:
                 break
         utils.broadcastMessage(f"\nLe(s) {isWin[1]} a/ont gagné(s) !!!\n\n", self.listOfPlayers)
-
-    def PrintPlayerInLife(self):
-        """
-        Output: str message (str showing all the players in life)
-
-        Goal: obtain a string to showing all the player in life to all the player in game
-        """
-        message = f"\nJoueurs en vie:\n"
-        for x in range(len(self.tabPlayerInLife)):
-            message += f"    {x+1} - {self.tabPlayerInLife[x].name}\n"
-        return message
     
 
     def KillPlayer(self, victim, killer=None):

@@ -9,6 +9,7 @@ from save import *
 import os
 import chat.launcher as launcher
 
+
 #test
 MAX_PLAYER = 16
 MIN_PLAYER = 1
@@ -98,9 +99,9 @@ def host():
 def client():
     You = Client()
     host_socket = You.WithHostConnection()
-    utils.SendResponse(host_socket) # ask for pseudo
+    utils.ClientSendMessage(host_socket) # ask for pseudo
     while True:
-        utils.SendResponse(host_socket)
+        utils.ClientSendMessage(host_socket)
 
 def main():
     print("\n\n"+INTRO+"\n\n")
