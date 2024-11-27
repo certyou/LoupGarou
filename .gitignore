@@ -2,5 +2,3 @@ __pycache__/
 chat/__pycache__/
 chat/chat.txt
 chat/HostChat.txt
-chat/HostIp.txt
-chat/playerNumber.txt
