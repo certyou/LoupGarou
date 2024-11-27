@@ -35,7 +35,7 @@ def host():
         GameHost.TCPConnect(NbOfPlayers)
         ListOfPlayers = [Player(None, input("votre nom : "), True)]
         for i in range(NbOfPlayers):
-            ListOfPlayers.append(Player(GameHost.IPList[i], utils.SendRequest(GameHost.IPList[i], "votre nom : "), False))
+            ListOfPlayers.append(Player(GameHost.IPList[i], utils.HostSendMessage(GameHost.IPList[i], "votre nom : "), False))
 
         new_game = Game(ListOfPlayers)
         new_game.GameInit()
@@ -74,9 +74,10 @@ def host():
         cpt=1
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
-            SendMessage(listOfPlayersSaved[i], "\nLes différents noms de la dernière partie sont : \n")
+            msg_save = "\nLes différents noms de la dernière partie sont : \n"
             for j in range(len(name)):
-                SendMessage(listOfPlayersSaved[i], f"{j+1} - {name[j]}\n")
+                msg_save += f"{j+1} - {name[j]}\n"
+            utils.HostSendMessage(listOfPlayersSaved[i], msg_save, False)
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)

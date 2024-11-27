@@ -79,7 +79,7 @@ def ClientSendMessage(server_socket):
     except socket.error as e:
         print(f"Erreur de communication avec l'hôte : {e}")
 
-def HostSendMessage(client_socket, message, expect_reply):
+def HostSendMessage(client_socket, message, expect_reply=True):
     """
     L'hôte envoie un message au client, avec ou sans attente de réponse.
     
