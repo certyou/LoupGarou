@@ -88,9 +88,12 @@ def host():
 
         new_Game=Game(listOfPlayers)
         new_Game.tabPlayerInLife=listOfPlayers
+        listOfRole=[]
         for elem in listOfPlayers:
             if elem.name==save[1]:
+                listOfRole.append(elem.card)
                 new_Game.mayor=elem
+        new_Game.listOfRole=listOfRole
         new_Game.nbTurn=save[2]-1
         new_Game.lovers=save[3]
         new_Game.GameLoop()

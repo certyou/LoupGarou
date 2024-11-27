@@ -11,34 +11,25 @@
                 "IsHost": true
             },
             {
-                "id": "<socket.socket fd=564, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52933)>",
+                "id": "<socket.socket fd=592, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 65149)>",
                 "name": "ewen",
                 "card": {
-                    "role": "Villageoi",
+                    "role": "Loup garou",
                     "id": "ewen"
                 },
                 "IsHost": false
             },
             {
-                "id": "<socket.socket fd=556, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52944)>",
+                "id": "<socket.socket fd=596, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 65214)>",
                 "name": "noah",
                 "card": {
                     "role": "Villageoi",
                     "id": "noah"
                 },
                 "IsHost": false
-            },
-            {
-                "id": "<socket.socket fd=448, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 52956)>",
-                "name": "arthur",
-                "card": {
-                    "role": "Loup garou",
-                    "id": "arthur"
-                },
-                "IsHost": false
             }
         ],
-        "mayor": "ewen",
+        "mayor": null,
         "nbTurn": 2,
         "lovers": []
     },
