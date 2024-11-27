@@ -237,6 +237,7 @@ class Game:
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
+        #If the player is the Hunter
         if isHunter != None:
             utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainner un joueur avec lui dans la mort!",self.listOfPlayers)
             SendRequest(isHunter.id,f"---------------- Choix du chasseur ----------------\n{self.PrintPlayerInLife()}",False)
