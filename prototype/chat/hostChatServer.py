@@ -40,19 +40,18 @@ def hostChatServer() :
 
         messageHost = textModifier("hostChat.txt", "r")
         
+
         if messageHost != "" :
             if "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
                 messageHost = "{LOUP " + messageHost[messageHost.find("{") +1 :]
                 messages.append(textModifier("hostChat.txt", 'r'))
-
-                print("coucou")
 
             
             elif "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 print("<Erreur Role> : vous n'est pas loup !")
                 
             
-            if "loup" not in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
+            if not "loup"  in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 messages.append(textModifier("hostChat.txt", 'r'))
             
                 
@@ -68,6 +67,8 @@ def hostChatServer() :
                 text = i[i.find("§")+1:i.find("}")]
                 command = i[i.find("€")+1:i.find("§")]
                 
+                if command == "loup" and not loup :
+                    continue
                 print(f"{name} : {text}")
 
         

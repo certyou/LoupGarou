@@ -8,11 +8,9 @@ def main() :
     retourne cette frame sur le fichier texte attitré.
     Ce programme est uniquement dédié à l'hôte
     """
-    
-    chemin = os.path.join(os.path.dirname(__file__), "hostChat.txt")
-    
+       
 
-    textModifier(chemin, 'w', "")
+    textModifier("hostChat.txt", 'w', "")
 
 
     name = ""
@@ -51,7 +49,7 @@ def main() :
         if input_ == "" or input_ ==  " " :
             continue
 
-        textModifier("chat.txt", 'a', message )
+        textModifier("hostChat.txt", 'a', message )
         sleep(0.5)
 
 
