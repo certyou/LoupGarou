@@ -35,7 +35,7 @@ def chat():
 
     while True:
 
-        if textModifier("role.txt", "r") == "Loup garou":
+        if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
         
@@ -44,8 +44,12 @@ def chat():
         txt = textModifier(chemin, 'r')
         textModifier(chemin, 'w', "") #supprimer les données
 
-        if txt == "/exit" :
-            return
+        if "loup" in txt[txt.find("€"): txt.find("§")+1] and loup :
+            txt = "{LOUP " + txt[txt.find("{") +1 :]
+        elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
+            print("<Erreur Role> : vous n'est pas loup !")
+            continue
+
         if len(txt) != 0 :
             sendToHost(socket, txt)
             
@@ -59,11 +63,9 @@ def chat():
             text = txt[txt.find("§")+1:txt.find("}")]
             command = txt[txt.find("€")+1:txt.find("§")]
             
-            if command == "loup" and loup == True :
-                print(f"{name} : {text}")
-            else : 
-                continue
-                #skip the loop to not display the message
+            if command == "loup" and not loup :
+                    continue
+                    #skip the loop to not display the message
 
             print(f"{name} : {text}")
         

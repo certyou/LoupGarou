@@ -30,37 +30,44 @@ def hostChatServer() :
 
     while True : 
         
-        if textModifier("role.txt", "r") == "Loup garou":
+        """if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
+        """
 
         time.sleep(0.5)
         messages = receve(playerSock)
+
         messageHost = textModifier("hostChat.txt", "r")
+        
         if messageHost != "" :
-            messages.append(textModifier("hostChat.txt", 'r'))
+            if "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
+                messageHost = "{LOUP " + messageHost[messageHost.find("{") +1 :]
+                messages.append(textModifier("hostChat.txt", 'r'))
+
+                print("coucou")
+
+            
+            elif "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
+                print("<Erreur Role> : vous n'est pas loup !")
+                
+            
+            if "loup" not in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
+                messages.append(textModifier("hostChat.txt", 'r'))
+            
+                
         textModifier("hostChat.txt", "w", "")
 
 
         for i in messages : 
             if i != None or i != "":
-                PlayersNames = list()
-
-                # Le chat des joueurs regarde deja si le joueur est nomé.
-                # je possède les sockets des joueurs, je peux faire un systeme de dictionnaire pour le /talk (note à moi meme)
 
                 publish(playerSock, i)
                 
                 name = i[i.find("{")+1:i.find("€")]
                 text = i[i.find("§")+1:i.find("}")]
                 command = i[i.find("€")+1:i.find("§")]
-
-                if command == "loup" and loup == True :
-                    print(f"{name} : {text}")
-                else : 
-                    continue
-                    #skip the loop to not display the message
-
+                
                 print(f"{name} : {text}")
 
         

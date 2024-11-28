@@ -44,7 +44,7 @@ def main() :
 
         input_ = str(input("$ "))
 
-        if "{" or "}" in input_ :
+        if input_.find("{") != -1 and input_.find("}") != -1 :
             print("Vous ne pouvez pas utiliser {}")
             continue
 
@@ -52,15 +52,13 @@ def main() :
             command = input_[1: input_.find(" ")] if input_[0] == '/' else None
             text = input_[input_.find(" ")+1:] if input_.find(" ") != len(input_) -1 else None
             message = '{'+ name + "€" + command + "§" + text + '}'
-
-            if command == "exit" :
+            if input_ == "/exit" :
                 return
             
-
             if command == "name" :
                 name = text
                 continue
-           
+
         else :
             command = None
             text = input_ 
@@ -72,11 +70,8 @@ def main() :
             continue
 
 
-        if input_ == "" or " " :
+        if input_ == "" or input_ ==  " " :
             continue
-       
-        
-
 
         textModifier("chat.txt", 'a', message )
         sleep(0.5)
