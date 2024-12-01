@@ -74,10 +74,10 @@ def host():
         cpt=1
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
-            msg_save = "\nLes différents noms de la dernière partie sont : \n"
+            savedNames = "\nLes différents noms de la dernière partie sont : \n"
             for j in range(len(name)):
-                msg_save += f"{j+1} - {name[j]}\n"
-            utils.HostSendMessage(listOfPlayersSaved[i], msg_save, False)
+                savedNames += f"{j+1} - {name[j]}\n"
+            utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
@@ -91,9 +91,10 @@ def host():
         listOfRole=[]
         for elem in listOfPlayers:
             if elem.name==save[1]:
-                listOfRole.append(elem.card)
                 new_Game.mayor=elem
+        listOfRole=[elem.card for elem in listOfPlayers]
         new_Game.listOfRole=listOfRole
+        print(new_Game.listOfRole)
         new_Game.nbTurn=save[2]-1
         new_Game.lovers=save[3]
         new_Game.GameLoop()
