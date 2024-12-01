@@ -5,3 +5,4 @@ chat/HostIp.txt
 chat/HostChat.txt
 chat/role.txt
 chat/playerNumber.txt
+*.pyc
