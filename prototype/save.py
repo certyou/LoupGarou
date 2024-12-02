@@ -8,11 +8,10 @@ def save(game,saveName):
        Input : instance of class Game, game
                str, saveName (the name of the save)
        Output : None"""
-    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}}
+    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}} # creation of a dictionary that will contain every saved game and element to be saved
     if game.mayor != None:
         dict[f"{saveName}"]["mayor"] = game.mayor.name
-    format=",\n"
-    for elem in game.tabPlayerInLife:
+    for elem in game.tabPlayerInLife: # Save of every player attributes because we can't save object in json
         if elem.card.name != "Sorciere":
             role = {"role":elem.card.name, "id":elem.name}
         else:
@@ -26,13 +25,13 @@ def save(game,saveName):
 
     saved=dict[f"{saveName}"]
 
-    with open("Save.json", "r") as f:
+    with open("Save.json", "r") as f: # we check if the file is empty or not to know if we need to add or if it's the first saved to be write
         if len(f.read()) == 0:
             f.close()
             with open("Save.json", "r+") as f:
                 json.dump(dict, f, indent=4)
         else:
-            with open("Save.json", "r+") as f:
+            with open("Save.json", "r+") as f: # we read the file in r+ to be able to add things
                 data=json.load(f)
                 data[f"{saveName}"]=saved
                 f.seek(0)
@@ -41,16 +40,16 @@ def save(game,saveName):
     f.close()
 
 
-def load(saveName): # L'id des rôle doit être le joueur
+def load(saveName): 
     """Action : Load the data named saveName from the Save.json file
        Input : str, saveName (the name of the save)
        Output : tab with every element we need to reload a game, save
     """
-    with open("Save.json", "r") as file:
+    with open("Save.json", "r") as file: # we open the file to read it's content
         data = json.load(file)
     save=[]
     tabPlayerInLife=[]
-    for elem in data[f"{saveName}"]["tabPlayerInLife"]:
+    for elem in data[f"{saveName}"]["tabPlayerInLife"]: # we recreate every player from their attributes and add them in tabPlayerInLife
         if elem["card"]["role"] == "Villageoi":
             elem["card"]=Villager(elem["card"]["id"])
         elif elem["card"]["role"] == "Loup garou":
@@ -68,7 +67,7 @@ def load(saveName): # L'id des rôle doit être le joueur
         player = Player(elem["id"],elem["name"],elem["IsHost"])
         player.card=elem["card"]
         tabPlayerInLife.append(player)
-    save.append(tabPlayerInLife)
+    save.append(tabPlayerInLife) # We then recreate every attribute of Game that are important and add them to a list that will be returned
     save.append(data[f"{saveName}"]["mayor"])
     save.append(data[f"{saveName}"]["nbTurn"])
     save.append(data[f"{saveName}"]["lovers"])
