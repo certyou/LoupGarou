@@ -8,7 +8,3 @@ prototype/chat/playerNumber.txt
 *.pyc
 *.json
 test/
-prototype/game.py
-prototype/main_reseau.py
-prototype/role.py
-prototype/useful_functions.py

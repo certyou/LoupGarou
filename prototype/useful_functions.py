@@ -3,7 +3,7 @@ import socket
 import time
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
-    """
+    """ this function ask any player for a choice from expected results (in local or not)
     Arg :
         - :prompt: str, the question to ask the player
         - :expectedResults: list, the list of expected results
@@ -11,7 +11,6 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
         - :player: the player to ask if player is not the host 
     Out : 
         - :choice: int, player's choice
-    this function ask any player for a choice from expected results (in local or not)
     """
     if local:
         # request the host for a choice
@@ -48,12 +47,11 @@ def broadcastMessage(message, players):
             HostSendMessage(player.id, message, False)
 
 def ClientSendMessage(server_socket):
-    """
+    """ The client receive a message from the host and determine if a respond is needed
     Arg:
         - :server_socket: socket, socket of the host
     Out:
         /
-    The client receive a message from the host and determine if a respond is needed
     """
     try:
         # receive the message from the host
