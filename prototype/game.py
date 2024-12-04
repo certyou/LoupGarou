@@ -18,12 +18,12 @@ class Game:
         self.mayor = None
         self.dictRole = {
             2:[Wearwolf(), Witch()], # use for test only
-            3:[Wearwolf(), Thief(), Cupidon()], # use for test only
-            4:[Wearwolf(), Villager(), Villager(), Villager()],
-            5:[Wearwolf(), Villager(), Villager(), Villager(), Villager()],
-            6:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager()],
-            7:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager()],
-            8:[Wearwolf(), Wearwolf(), Villager(), Villager(), Villager(), Villager(), Villager(), Villager()]
+            3:[Wearwolf(), Seer(), Witch()], # use for test only
+            4:[Wearwolf(), Seer(), Thief(), Hunter()],
+            5:[Wearwolf(), Seer(), Witch(), Hunter(), Thief()],
+            6:[Wearwolf(), Wearwolf(), Seer(), Witch(), Hunter(), Thief()],
+            7:[Wearwolf(), Wearwolf(), Seer(), Witch(), Hunter(), Thief(), LittleGirl()],
+            8:[Wearwolf(), Wearwolf(), Seer(), Witch(), Hunter(), Thief(), Cupidon(), LittleGirl()]
         }
     
     def GameInit(self):
