@@ -4,7 +4,6 @@ import time
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """
-    Function to ask the player to make a choice among a list of expected results
     Arg :
         - :prompt: str, the question to ask the player
         - :expectedResults: list, the list of expected results
@@ -15,127 +14,135 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
     this function ask any player for a choice from expected results (in local or not)
     """
     if local:
+        # request the host for a choice
         choice = input(prompt)
-        while True:
+        while True: # check if the choice is valid
             if choice not in expectedResults:
                 print("Choix invalide", end="")
                 choice = input(prompt)
             else:
                 break
-        return choice
     else:
+        # request the player for a choice
         choice = HostSendMessage(player.id, prompt, True)
-        while True:
+        while True: # check if the choice is valid
             if choice not in expectedResults:
                 HostSendMessage(player.id, "Choix invalide\n", False)
                 choice = HostSendMessage(player.id, prompt, True)
             else:
                 break
-        return choice
+    return choice
 
 def broadcastMessage(message, players):
-     """
-     Arg:
+    """ This function take a message and send it to all players
+    Arg:
         - :message: str, message to display
         - :players: list of object, list of players to send message
     Out:
         /
-    This function take a message and send it to all players
-     """
-     for player in players:
-        if player.IsHost:
+    """
+    for player in players:
+        if player.IsHost: # if the player is the host, print it
             print(message, end="")
-        else:
+        else: # else send it to all players
             HostSendMessage(player.id, message, False)
 
 def ClientSendMessage(server_socket):
     """
-    Le client reçoit un message de l'hôte et détermine s'il doit répondre ou non.
+    Arg:
+        - :server_socket: socket, socket of the host
+    Out:
+        /
+    The client receive a message from the host and determine if a respond is needed
     """
     try:
-        # Recevoir le message
+        # receive the message from the host
         data = server_socket.recv(655336).decode('utf-8')
         if not data:
-            return None # Si aucune donnée n'est reçue, sortir
+            return None # if no message receive, return None
         
-        # Diviser l'instruction et le message
+        # split the instruction and the message
         parts = data.split("/")
-        if len(parts) != 2:
+        if len(parts) != 2: # check if the message is well formated
             print(f"Message mal formé : {parts}")
             return
         
+        # get the instruction and the message
         instruction, message = parts
         print(message, end="")
         
-        # Vérifier si une réponse est attendue
+        # check if a response is needed
         if instruction == "REPLY":
             response = input("")
             server_socket.sendall(response.encode('utf-8'))
         elif instruction == "NO_REPLY":
-            #print("Aucune réponse requise.")
             pass
-        else:
+        else: # if the instruction is unknown
             print(f"Instruction inconnue : {instruction}")
+
     except socket.error as e:
         print(f"Erreur de communication avec l'hôte : {e}")
 
 def HostSendMessage(client_socket, message, expect_reply=True):
+    """ The host send a message to the client, with or without a response expected
+    Arg:
+        - :client_socket: socket, client socket to send the message to.
+        - :message: str, message to send.
+        - :expect_reply: boolean, True if a response is needed, False else.
+    Out:
+        - :response: str, return the response if response was needed
+        - None, else
     """
-    L'hôte envoie un message au client, avec ou sans attente de réponse.
-    
-    Arguments :
-    - client_socket : socket du client.
-    - message : le message à envoyer.
-    - expect_reply : booléen, True si une réponse est attendue, False sinon.
-    
-    Retourne :
-    - La réponse du client si une réponse est attendue.
-    - None si aucune réponse n'est attendue ou en cas d'erreur.
-    """
-    time.sleep(0.5)
-    if client_socket is None:
+    time.sleep(0.5) # wait for the client to be ready
+    if client_socket is None: # if the client is the host, print the message
         print(message, end="")
     else:
         try:
-            # Déterminer l'instruction à envoyer
+            # determine the instruction to send
             instruction = "REPLY" if expect_reply else "NO_REPLY"
             
-            # Préparer le message à envoyer
+            # prepare the message to send
             full_message = f"{instruction}/{message}"
             client_socket.sendall(full_message.encode('utf-8'))
             
-            # Si une réponse est attendue, la recevoir
+            # if a response is needed, receive it
             if expect_reply:
                 response = client_socket.recv(655336).decode('utf-8')
                 return response
-            
-            # Sinon, rien à attendre
+            # else, nothing to wait for
             return None
-        except socket.error as e:
+        except socket.error as e: # if an error occured
             print(f"Erreur de communication avec le client : {e}")
             return None
 
 def playerWithMostVote(tabPlayer, listOfPlayers):
-    """
+    """ return the player with the most from a list of players
     Arg :
-        - :tabPlayer: lst of Player object
+        - :tabPlayer: lst of Player object, list of all players partiping at the vote
     Out : 
         - :maxVotePlayer: Player object, player with the most vote or random player if draw
     """
     broadcastMessage("\nVoici les votes qui ont eu lieu: \n", listOfPlayers)
     maxVote = -1
     for player in tabPlayer:
+        # display the votes
         broadcastMessage(f"{player.name} --> {player.vote}\n", listOfPlayers)
         if player.vote > maxVote:
             maxVote = player.vote
             maxVotePlayer = player
         elif player.vote == maxVote:
             temp = [player, maxVotePlayer]
-            maxVotePlayer = choice(temp)
-        player.resetVote()
+            maxVotePlayer = choice(temp) # if draw, choose randomly with random.choice
+        player.resetVote() # reset the vote for the next round
     return maxVotePlayer
 
 def PrintPlayerInLife(tabPlayerInLife):
+        """ return a str with all the player in life with a number associate with their name
+        Arg :
+            - :tabPlayerInLife: lst of Player object, list of all players in life
+        Out :
+            - :message: str, list of all player in life with a number associate with their name
+        """
         message = f"Voici les différents joueurs en vie:\n"
         for x in range(len(tabPlayerInLife)):
             message += f"    {x+1} - {tabPlayerInLife[x].name}\n"
