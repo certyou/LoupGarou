@@ -16,15 +16,15 @@ MAX_PLAYER = 16
 MIN_PLAYER = 1
 
 def host():
-    """
+    """ launch the host side, and wait for the number of players expected
     Args : 
         /
     Out :
         /
-    ...
     """
+    # Ask the number of players expected
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
-
+    # Save the number of players expected
     file = open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'w', encoding='utf-8')
     file.write
     with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
@@ -86,10 +86,16 @@ def client():
     You = Client()
     host_socket = You.WithHostConnection()
     utils.ClientSendMessage(host_socket) # response for pseudo
-    while True:
+    while True: # loop to wait for message from the host
         utils.ClientSendMessage(host_socket)
 
 def main():
+    """ launch the main menu, and ask the player if he wants to be the host or the client
+    Args :
+        /
+    Out :
+        /
+    """
     print("\n\n"+INTRO+"\n\n")
     print("Voulez-vous être l'hôte ou le client ?")
     print("1. Hôte")
@@ -97,9 +103,9 @@ def main():
 
     choice = int(utils.playerChoice("Votre choix : ", ["1", "2"]))
     print()
-    if choice == 1:
+    if choice == 1: # if the player is the host
         host()
-    elif choice == 2:
+    elif choice == 2: # if the player is the client
         launcher.launchClientChat()
         client()
 
