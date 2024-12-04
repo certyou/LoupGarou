@@ -2,6 +2,8 @@ import json
 from role import *
 from player import *
 from game import *
+from host import Host
+import threading
 
 def save(game,saveName):
     """Action : Save the date in the Save.json file as a dictionnary named saveName
@@ -73,5 +75,54 @@ def load(saveName):
     save.append(data[f"{saveName}"]["lovers"])
     file.close()
     return save
+
+def reloadGame():
+    with open("Save.json", "r") as file:
+        data=json.load(file)
+        print("\nQuel sauvegarde voulez vous charger ? : ")
+        saveList=[str(i) for i in range (1,len(data.keys())+1) ]
+        saves=[]
+        cpt=0
+        for key in data.keys():
+            saves.append(key)
+            cpt+=1
+            print(f"{cpt} : {key}")
+        choice = int(utils.playerChoice("Votre choix : ", saveList))
+        save=load(saves[choice-1])
+        NbOfPlayers=len(save[0])
+        print("\nnombre de joueurs attendu :"+str(NbOfPlayers)+"\n")
+        GameHost = Host() # connection to the host
+        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers-1,), daemon=True)
+        BroadcastThread.start()
+        GameHost.TCPConnect(NbOfPlayers-1)
+        listOfPlayersSaved=save[0]
+        listOfPlayers=[]
+        for elem in listOfPlayersSaved: # we add the host as the first player of the list to not have conflict 
+            if elem.IsHost==True:
+                elem.id=None
+                elem.card.id=elem
+                listOfPlayersSaved.remove(elem)
+                listOfPlayers.append(elem)
+        name=[]
+        for elem in listOfPlayersSaved: # we get the name of every players to ask them wich one it was last time
+            name.append(elem.name)
+        nameExpected=[str(i) for i in range (1,len(name)+1)]
+        cpt=1
+        for i in range(len(listOfPlayersSaved)):
+            listOfPlayersSaved[i].id=GameHost.IPList[i]
+            savedNames = "\nLes différents noms de la dernière partie sont : \n"
+            for j in range(len(name)):
+                savedNames += f"{j+1} - {name[j]}\n"
+            utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
+        for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
+            namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
+            player=Player(elem.id, name[namechoice-cpt], False)
+            player.card=elem.card
+            listOfPlayers.append(player)
+            name.remove(name[namechoice-cpt])
+            cpt+=1
+        return [listOfPlayers,save[1],save[2],save[3]]
+
+        
 
 #print(load("s1"))
