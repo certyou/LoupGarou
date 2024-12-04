@@ -103,6 +103,7 @@ class Game:
         mayor.resetVote()
 
     def night(self):
+        dead = {}
         # first night
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
@@ -155,6 +156,7 @@ class Game:
                 self.tabPlayerInLife[vote].addVote()
             # counting and reseting vote
             victim = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
+            dead["Loup garou"] = victim
         
         # ------------------ WITCH ------------------
         if any(isinstance(role, Witch) for role in self.listOfRole):
@@ -163,10 +165,16 @@ class Game:
                     utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     utils.HostSendMessage(player.id, choice, False)
-            if choice[0] != None:
-                self.KillPlayer(victim, "Sorcière")
+            if choice[0] != None and choice[1]:
+                dead = {"Sorcière" : self.tabPlayerInLife[choice[0]]}
+            elif choice[0] != None:
+                dead["Sorcière"] = self.tabPlayerInLife[choice[0]]
+            elif choice[1]:
+                dead = {}
         
-        self.KillPlayer(victim, "Loup garou")
+        # kill players at the end of the night
+        for key in dead:
+            self.KillPlayer(dead[key], key)
 
     def IsWin(self):
         """
