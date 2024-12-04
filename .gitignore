@@ -6,6 +6,7 @@ prototype/chat/HostChat.txt
 prototype/chat/role.txt
 prototype/chat/playerNumber.txt
 *.pyc
+*.json
 test/
 prototype/game.py
 prototype/main_reseau.py

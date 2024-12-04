@@ -26,7 +26,7 @@ def chat():
     print("""Bienvenue dans le chat du LOUP GAROU
            - Pour quitter le chat, tapez /exit
            - Pour changer de nom, tapez /name nom
-          Amusez-vous bien !""")
+          Amusez-vous bien !\n\n""")
 
     chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
     socket = TCPToHostConnect()
@@ -35,38 +35,45 @@ def chat():
 
     while True:
 
+        #check if the player is a loup
         if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
-            print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
+            print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
         
-        #traitement de l'input 
+        #processing input from the other console
         time.sleep(0.5)
         txt = textModifier(chemin, 'r')
-        textModifier(chemin, 'w', "") #supprimer les données
+        textModifier(chemin, 'w', "") # delete the content of the file
 
+        # if the command is loup and the player is a loup, we add the tag {LOUP} to the message
         if "loup" in txt[txt.find("€"): txt.find("§")+1] and loup :
             txt = "{LOUP " + txt[txt.find("{") +1 :]
         elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
+            #if the player is not a loup, we skip the loop to not display the message
             print("<Erreur Role> : vous n'est pas loup !")
             continue
-
+        
+        #if the message is not empty, we send it to the host
         if len(txt) != 0 :
             sendToHost(socket, txt)
             
 
-        #traitement du massage reçu
+        # processing the received message
         # {name€command€text}
         txt = recvFromHost(socket)
         
+        # if the received message is not empty, we display it
         if txt != None :
             name = txt[txt.find("{")+1:txt.find("€")]
             text = txt[txt.find("§")+1:txt.find("}")]
             command = txt[txt.find("€")+1:txt.find("§")]
             
+            #if the command is loup and the player is not a loup, we skip the loop to not display the message
             if command == "loup" and not loup :
                     continue
                     #skip the loop to not display the message
 
+            # general display printing
             print(f"{name} : {text}")
         
         
@@ -97,19 +104,26 @@ def TCPToHostConnect() :
     Out:
         - :PlayerSocket: socket, socket of the player
     """
+    # Delete the content of the file
     textModifier("HostIp.txt", "w", "")
     a = ""
+
     while a == "" :
-        print("offline.", end="\r")
+        # beautiful display for the connection status
+        print("offline.   ", end="\r")
         sleep(0.5)
-        print("offline..", end="\r")
+        print("offline..   ", end="\r")
         sleep(0.5)
-        print("offline...", end="\r")
+        print("offline...  ", end="\r")
         sleep(0.5)
+        # wait for the IP to be written in the file
         a = textModifier("HostIp.txt", "r")
+    
+    # then, take the IP of the Host to connect the chat
     HostIp = textModifier("HostIp.txt", "r")
     PlayerSocket = socket.socket()
     print("status : connected")
+    # connection
     PlayerSocket.connect((HostIp, 1000))
     
     return PlayerSocket
