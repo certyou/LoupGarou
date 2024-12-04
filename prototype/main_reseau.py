@@ -11,7 +11,6 @@ import chat.launcher as launcher
 from chat.chatInput import textModifier
 
 
-#test
 MAX_PLAYER = 16
 MIN_PLAYER = 1
 
