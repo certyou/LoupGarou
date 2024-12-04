@@ -30,10 +30,10 @@ def hostChatServer() :
 
     while True : 
         
-        """if textModifier("role.txt", "r") == "1" and not loup:
+        if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
-        """
+        
 
         time.sleep(0.5)
         # reveive messages from players
