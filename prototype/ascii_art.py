@@ -183,8 +183,6 @@ INTRO = """
     Préparez-vous pour une partie de
     suspense, de mensonges et de mystères...
 
-    <ASCII-art de loups-garous ou du village ici>
-
     Que le jeu commence !
 """
 
