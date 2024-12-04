@@ -8,11 +8,9 @@ def main() :
     retourne cette frame sur le fichier texte attitré.
     Ce programme est uniquement dédié à l'hôte
     """
-    
-    chemin = os.path.join(os.path.dirname(__file__), "hostChat.txt")
-    
+       
 
-    textModifier(chemin, 'w', "")
+    textModifier("hostChat.txt", 'w', "")
 
 
     name = ""
@@ -21,27 +19,37 @@ def main() :
 
         input_ = str(input("$ "))
 
-        command = input_[1: input_.find(" ")] if input_[0] == '/' else None
-        text = input_[input_.find(" ")+1:] if input_.find(" ") != len(input_) -1 else None
-
-        if command == "name" :
-            name = text
+        if input_.find("{") != -1 and input_.find("}") != -1 :
+            print("Vous ne pouvez pas utiliser {}")
             continue
+
+        if input_[0] == '/' :
+            command = input_[1: input_.find(" ")] if input_[0] == '/' else None
+            text = input_[input_.find(" ")+1:] if input_.find(" ") != len(input_) -1 else None
+            message = '{'+ name + "€" + command + "§" + text + '}'
+
+            if input_ == "/exit" :
+                return
+            
+            if command == "name" :
+                name = text
+                continue
+           
+        else :
+            command = None
+            text = input_ 
+            message = '{'+ name + "€None§" + text + '}'
+
 
         if name == "" :
             print("Vous devez d'abord choisir un nom (commande : /name)")
             continue
 
-        if input_ == "/exit" :
-            return
-        
-        if input_ == "" :
+
+        if input_ == "" or input_ ==  " " :
             continue
-       
-        input_ = '{'+ name + "€" + input_[1: input_.find(" ")] + "§" + input_[input_.find(" ")+1:] + '}'
 
-
-        textModifier(chemin, 'a', input_ )
+        textModifier("hostChat.txt", 'a', message )
         sleep(0.5)
 
 

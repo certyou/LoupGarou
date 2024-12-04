@@ -1,5 +1,5 @@
 import socket
-import os
+from chat.chatInput import textModifier
 
 
 class Client:
@@ -13,8 +13,7 @@ class Client:
         HostIp = Buffer[1:Buffer.find(',')]
         HostPort = int(Buffer[Buffer.find(',')+1:-1])
 
-        with open(os.path.join(os.path.dirname(__file__), "chat\\HostIp.txt"), 'w') as file:
-            file.write(str(HostIp))
+        textModifier("HostIp.txt", "w", str(HostIp))
 
         ToHostConnect = socket.socket()
         ToHostConnect.connect((HostIp, HostPort))
