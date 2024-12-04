@@ -6,7 +6,6 @@ from player import Player
 import useful_functions as utils
 from ascii_art import *
 from save import *
-import os
 import chat.launcher as launcher
 from chat.chatInput import textModifier
 
@@ -16,6 +15,13 @@ MAX_PLAYER = 16
 MIN_PLAYER = 1
 
 def host():
+    """
+    Args : 
+        /
+    Out :
+        /
+    ...
+    """
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
     
     textModifier("playerNumber.txt", "w", str(NbOfPlayers))
@@ -99,16 +105,21 @@ def host():
         
 
 def client():
+    """
+    Args :
+        /
+    Out :
+        /
+    launch the client side, and wait for message from the host
+    """
     You = Client()
     host_socket = You.WithHostConnection()
-    utils.ClientSendMessage(host_socket) # ask for pseudo
+    utils.ClientSendMessage(host_socket) # response for pseudo
     while True:
         utils.ClientSendMessage(host_socket)
 
 def main():
     print("\n\n"+INTRO+"\n\n")
-
-
     print("Voulez-vous être l'hôte ou le client ?")
     print("1. Hôte")
     print("2. Client")
