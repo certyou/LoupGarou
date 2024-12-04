@@ -162,8 +162,9 @@ class Game:
                 if player.card.name == "Sorcière":
                     utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
-                    print(choice)
                     utils.HostSendMessage(player.id, choice, False)
+            if choice[0] != None:
+                self.KillPlayer(victim, "Sorcière")
         
         self.KillPlayer(victim, "Loup garou")
 

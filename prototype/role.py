@@ -115,7 +115,7 @@ class Witch:
             expectedResults = ["0","1"]
 
         else:
-            print("\n Sorcière, vous n'avez plus de potions \n \n")
+            HostSendMessage(self.id.id, "\n Sorcière, vous n'avez plus de potions \n \n", False)
             whatToDo = 0
 
         if expectedResults != []:
@@ -145,8 +145,7 @@ class Witch:
             self.lifePotion = False
             self.potionPoison = False
 
-        choices=(choiceKillPlayer,choiceToSave)
-        return choices
+        return None, choiceToSave if choiceKillPlayer == 0 else tabPlayerInLife[choiceKillPlayer]-1, choiceToSave
 
         
 class Cupidon :
