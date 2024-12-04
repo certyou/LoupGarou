@@ -32,7 +32,7 @@ def hostChatServer() :
         
         """if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
-            print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
+            print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
         """
 
         time.sleep(0.5)
