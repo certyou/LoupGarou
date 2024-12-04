@@ -92,7 +92,6 @@ def host():
                 new_Game.mayor=elem
         listOfRole=[elem.card for elem in listOfPlayers]
         new_Game.listOfRole=listOfRole
-        print(new_Game.listOfRole)
         new_Game.nbTurn=save[2]-1
         new_Game.lovers=save[3]
         new_Game.GameLoop()

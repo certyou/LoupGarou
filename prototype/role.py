@@ -15,7 +15,6 @@ class Wearwolf:
         Action: Werewolves must choose one person to kill each night.
         """
         expected_results = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        print(expected_results)
         choicePlayer = int(playerChoice("Entrez le numéro du joueur que vous shouaitez éliminer: ", expected_results, self.id.IsHost, self.id))
         return choicePlayer
 
@@ -145,7 +144,7 @@ class Witch:
             self.lifePotion = False
             self.potionPoison = False
 
-        return None, choiceToSave if choiceKillPlayer == 0 else tabPlayerInLife[choiceKillPlayer]-1, choiceToSave
+        return (None, choiceToSave) if choiceKillPlayer == 0 else (tabPlayerInLife[choiceKillPlayer-1], choiceToSave)
 
         
 class Cupidon :
