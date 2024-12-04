@@ -3,5 +3,7 @@ chat/__pycache__/
 chat/chat.txt
 chat/HostIp.txt
 chat/HostChat.txt
+chat/role.txt
 chat/playerNumber.txt
+*.pyc
 test/
