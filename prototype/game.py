@@ -205,7 +205,6 @@ class Game:
         while True:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
-            print(self.tabPlayerInLife[1].id)
             save=int(playerChoice(("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
             if save == 1:
                 saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
