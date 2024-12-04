@@ -48,7 +48,7 @@ def host():
         with open("Save.json", "r") as file:
             data=json.load(file)
         print("\nQuel sauvegarde voulez vous charger ? : ")
-        saveList=[str(i) for i in range (1,len(data.keys())+1) ]
+        saveList=["-"+str(i) for i in range (1,len(data.keys())+1) ]
         saves=[]
         cpt=0
         for key in data.keys():
@@ -83,7 +83,7 @@ def host():
                 savedNames += f"{j+1} - {name[j]}\n"
             utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
-            namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
+            namechoice=int(utils.playerChoice("\nQuel était votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
             player.card=elem.card
             listOfPlayers.append(player)
