@@ -171,7 +171,7 @@ class Cupidon :
         return choices
     
 class LittleGirl:
-    def __init__(self, id):
+    def __init__(self, id=None):
         self.name = "Petite fille"
         self.ascii = ascii_art.LITTLE_GIRL
         self.id = id

@@ -30,8 +30,6 @@ def host():
     with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
             file.write(str(NbOfPlayers))
 
-    launcher.launchHostChat()
-
     choice=2
     with open("Save.json", "r") as file: # check if a save exist
         if len(file.read()) != 0:
