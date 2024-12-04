@@ -41,21 +41,28 @@ def host():
         new_game.GameLoop()
     else: # If the user wants to load a save we upload all the data from the save to recrate a game object from them
         reload = s.reloadGame()
+        # Updtate of the listOfPlayers and tabPlayerInLife
         listOfPlayers = reload[0]
         new_Game = Game(listOfPlayers)
         new_Game.tabPlayerInLife = listOfPlayers
-        listOfRole = []
+        
+        # associate mayor to the right player
         for elem in listOfPlayers:
             if elem.name == reload[1]:
-
                 new_Game.mayor = elem
 
+        # Update the listOfRole
         listOfRole = [elem.card for elem in listOfPlayers]
         new_Game.listOfRole = listOfRole
+
+        # Launch the chat
         launcher.launchHostChat()
-        print(new_Game.listOfRole)
+
+        # Update the number of turn, and the lovers
         new_Game.nbTurn = reload[2]-1
         new_Game.lovers = reload[3]
+
+        # Launch the game loop
         new_Game.GameLoop()
             
         
