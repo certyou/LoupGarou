@@ -25,10 +25,7 @@ def host():
     """
     NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
 
-    file = open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'w', encoding='utf-8')
-    file.write
-    with open(os.path.join(os.path.dirname(__file__), "chat\\playerNumber.txt"), 'a', encoding='utf-8') as file:
-            file.write(str(NbOfPlayers))
+    textModifier("playerNumber.txt", 'w', str(NbOfPlayers)) # Save the number of player in a file to use it in the chat
 
     choice=2
     with open("Save.json", "r") as file: # check if a save exist
