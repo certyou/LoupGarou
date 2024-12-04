@@ -166,9 +166,9 @@ class Game:
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     utils.HostSendMessage(player.id, choice, False)
             if choice[0] != None and choice[1]:
-                dead = {"Sorcière" : self.tabPlayerInLife[choice[0]]}
+                dead = {"Sorcière" : choice[0]}
             elif choice[0] != None:
-                dead["Sorcière"] = self.tabPlayerInLife[choice[0]]
+                dead["Sorcière"] = choice[0]
             elif choice[1]:
                 dead = {}
         

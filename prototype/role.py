@@ -144,7 +144,7 @@ class Witch:
             self.lifePotion = False
             self.potionPoison = False
 
-        return None, choiceToSave if choiceKillPlayer == 0 else tabPlayerInLife[choiceKillPlayer]-1, choiceToSave
+        return (None, choiceToSave) if choiceKillPlayer == 0 else (tabPlayerInLife[choiceKillPlayer-1], choiceToSave)
 
         
 class Cupidon :
