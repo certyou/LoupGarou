@@ -1,7 +1,6 @@
 import time
 from random import randint, choice
 from role import *
-from player import Player
 import useful_functions as utils
 from ascii_art import *
 import save as s
@@ -50,6 +49,11 @@ class Game:
 
 
     def day(self):
+        """
+        In : /
+        Out : /
+        play the day, making players vote and elect the mayor
+        """
         # ----------- Mayor Vote ------------------
         if self.nbTurn == 2:
             utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.listOfPlayers)

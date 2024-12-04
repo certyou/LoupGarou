@@ -7,3 +7,7 @@ prototype/chat/role.txt
 prototype/chat/playerNumber.txt
 *.pyc
 test/
+prototype/game.py
+prototype/main_reseau.py
+prototype/role.py
+prototype/useful_functions.py
