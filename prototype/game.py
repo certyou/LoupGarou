@@ -54,14 +54,14 @@ class Game:
         if self.nbTurn == 2:
             utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.listOfPlayers)
             self.mayorVote()
-            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote compte à présent double.\n\n", self.listOfPlayers)
+            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote comptera double à partir de maintenant.\n\n", self.listOfPlayers)
 
         # ----------- Vote ------------------
         strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
         # send the list of players in life
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
-            vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            vote = int(utils.playerChoice("\nQuel joueur voulez-vous éliminer : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
             if player == self.mayor:
                 self.tabPlayerInLife[vote].addVote(2)
             else:
@@ -80,11 +80,11 @@ class Game:
         """
 
         tabOfParticipant = []
-        txtVote = "\nQui voulez vous élire ?  :\n"
+        txtVote = "\nQui voulez-vous élire ?  :\n"
         nbParticipant = 1
         for i in range(len(self.tabPlayerInLife)):
             player = self.tabPlayerInLife[i]
-            choiceParticipation = int(playerChoice("Voulez vous vous présenter au élection du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
+            choiceParticipation = int(playerChoice("Voulez-vous vous présenter aux élections du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
             if choiceParticipation == 1:
                 tabOfParticipant.append(player)
                 txtVote += f" -{nbParticipant} : {player.name}\n"
@@ -151,7 +151,7 @@ class Game:
             # making player vote
             utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
             for player in WearwolfInLife:
-                vote = int(utils.playerChoice("\nvotre vote : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+                vote = int(utils.playerChoice("\nQui souhaitez-vous dévorer ce soir : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
             # counting and reseting vote
             victim = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
@@ -197,7 +197,7 @@ class Game:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             print(self.tabPlayerInLife[1].id)
-            save=int(playerChoice(("\n\n voulez sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
+            save=int(playerChoice(("\n\n voulez-vous sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
             if save == 1:
                 saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
                 s.save(self,saveName)

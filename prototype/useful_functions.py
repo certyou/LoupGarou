@@ -122,7 +122,7 @@ def playerWithMostVote(tabPlayer, listOfPlayers):
     Out : 
         - :maxVotePlayer: Player object, player with the most vote or random player if draw
     """
-    broadcastMessage("\nVoici les votes qui ont eu lieu: ", listOfPlayers)
+    broadcastMessage("\nVoici les votes qui ont eu lieu: \n", listOfPlayers)
     maxVote = -1
     for player in tabPlayer:
         broadcastMessage(f"{player.name} --> {player.vote}\n", listOfPlayers)
@@ -136,7 +136,7 @@ def playerWithMostVote(tabPlayer, listOfPlayers):
     return maxVotePlayer
 
 def PrintPlayerInLife(tabPlayerInLife):
-        message = f"Joueurs en vie:\n"
+        message = f"Voici les différents joueurs en vie:\n"
         for x in range(len(tabPlayerInLife)):
             message += f"    {x+1} - {tabPlayerInLife[x].name}\n"
         return message   
