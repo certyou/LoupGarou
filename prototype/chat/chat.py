@@ -13,7 +13,7 @@ def chat():
     
     """
 
-    print(    """
+    print(    r"""
           _           _                                     _ 
       ___| |__   __ _| |_    __ _  ___ _ __   ___ _ __ __ _| |
      / __| '_ \ / _` | __|  / _` |/ _ \ '_ \ / _ \ '__/ _` | |
@@ -31,15 +31,25 @@ def chat():
     chemin = os.path.join(os.path.dirname(__file__), "chat.txt")
     socket = TCPToHostConnect()
 
+    loup = False
+
     while True:
+
+        if textModifier("role.txt", "r") == "1" and not loup:
+            loup = True
+            print("Vous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups")
         
         #traitement de l'input 
         time.sleep(0.5)
         txt = textModifier(chemin, 'r')
         textModifier(chemin, 'w', "") #supprimer les données
 
-        if txt == "/exit" :
-            return
+        if "loup" in txt[txt.find("€"): txt.find("§")+1] and loup :
+            txt = "{LOUP " + txt[txt.find("{") +1 :]
+        elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
+            print("<Erreur Role> : vous n'est pas loup !")
+            continue
+
         if len(txt) != 0 :
             sendToHost(socket, txt)
             
@@ -51,6 +61,12 @@ def chat():
         if txt != None :
             name = txt[txt.find("{")+1:txt.find("€")]
             text = txt[txt.find("§")+1:txt.find("}")]
+            command = txt[txt.find("€")+1:txt.find("§")]
+            
+            if command == "loup" and not loup :
+                    continue
+                    #skip the loop to not display the message
+
             print(f"{name} : {text}")
         
         

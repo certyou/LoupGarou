@@ -15,17 +15,6 @@ def main() :
     game_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'main_reseau.py')
     open_new_console(game_path)  # Ouvrir la deuxième console
 
-    """
-    if host :
-        chat_path = os.path.join(os.path.dirname(__file__), 'hostChatServer.py')
-        chatInputPath = os.path.join(os.path.dirname(__file__), 'hostChatInput.py')
-    else :
-        chat_path = os.path.join(os.path.dirname(__file__), 'chat.py')
-        chatInputPath = os.path.join(os.path.dirname(__file__), 'chatInput.py')
-
-    open_new_console(chat_path)  # Chat py
-    open_new_console(game_path)  # Ouvrir la deuxième console
-    open_new_console(chatInputPath)"""
 
 def launchHostChat() :
     chat_path = os.path.join(os.path.dirname(__file__), 'hostChatServer.py')
