@@ -1,2 +1,10 @@
 __pycache__/
+prototype/chat/__pycache__/
 prototype/chat/chat.txt
+prototype/chat/HostIp.txt
+prototype/chat/HostChat.txt
+prototype/chat/role.txt
+prototype/chat/playerNumber.txt
+*.pyc
+*.json
+test/

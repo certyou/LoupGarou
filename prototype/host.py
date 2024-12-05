@@ -1,5 +1,3 @@
-
-import threading
 import socket
 import time
 import select
