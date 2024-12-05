@@ -114,14 +114,18 @@ class Game:
 
             # ------------------ THIEF ------------------
             if any(isinstance(role, Thief) for role in self.listOfRole):
+                thief = None
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
+                        thief = player
                         utils.SendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife))
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
-                        msg_to_thief = f"vous êtes désormais {target.card.name}\n"
-                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
+                        msg_to_thief1 = f"Vous prendraiez connaissance de votre nouveau rôle au lecer du jour.\n"
+                        msg_to_thief2 = f"vous êtes désormais {target.card.name}\n"
+                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
+
                         target.card, player.card = player.card, target.card
-                        utils.SendMessage(player, msg_to_thief)
+                        utils.SendMessage(player, msg_to_thief1)
                         utils.SendMessage(target, msg_to_victim)
                         break
 
@@ -150,6 +154,13 @@ class Game:
             # counting and reseting vote
             maxVotedPlayer = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
             self.KillPlayer(maxVotedPlayer, "Loup garou")
+
+
+        # ------------------ END OF THE NIGHT ------------------
+        if thief:
+            target.card, player.card = player.card, target.card
+            utils.SendMessage(thief, msg_to_thief2)
+            utils.SendMessage(target, msg_to_victim)
 
     def IsWin(self):
         countOfWerewolf = 0
