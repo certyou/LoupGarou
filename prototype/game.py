@@ -130,6 +130,8 @@ class Game:
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
             if any(isinstance(role, Cupidon) for role in self.listOfRole): # if there is a Cupidon in the game
+                strlistOfPlayer = f"\n---------------- Tour de cupidon ----------------\n"
+                utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Cupidon":
                         # send the list of players in life
@@ -147,22 +149,22 @@ class Game:
             # ------------------ THIEF ------------------
             if any(isinstance(role, Thief) for role in self.listOfRole):
                 thief = None
-                strlistOfPlayer = f"---------------- Tour du voleur ----------------\n"
+                strlistOfPlayer = f"\n---------------- Tour du voleur ----------------\n"
                 utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
                         thief = player
-                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife))
+                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
                         msg_to_thief1 = f"Vous prendraiez connaissance de votre nouveau rôle au lever du jour.\n"
-                        msg_to_thief2 = f"vous êtes désormais {target.card.name}\n"
+                        msg_to_thief2 = f"Vous êtes désormais {target.card.name}\n"
                         msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
-                        utils.HostSendMessage(player.id, msg_to_thief1)
+                        utils.HostSendMessage(player.id, msg_to_thief1, False)
                         break
 
         # ------------------ SEER ------------------
         if any(isinstance(role, Seer) for role in self.listOfRole): # if there is a Seer in the game
-            strlistOfPlayer = f"---------------- Tour de la sorcière ----------------\n"
+            strlistOfPlayer = f"\n---------------- Tour de la voyante ----------------\n"
             utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
@@ -180,7 +182,7 @@ class Game:
                 if player.card.name == "Loup garou":
                     WearwolfInLife.append(player)
             # send the list of players in life
-            strlistOfPlayer = f"---------------- Vote des Loups Garous ----------------\n"
+            strlistOfPlayer = f"\n---------------- Vote des Loups Garous ----------------\n"
             lgMessage = f"{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
             utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
             utils.broadcastMessage(lgMessage, WearwolfInLife)
@@ -194,6 +196,8 @@ class Game:
         
         # ------------------ WITCH ------------------
         if any(isinstance(role, Witch) for role in self.listOfRole): # if there is a Witch in the game
+            strlistOfPlayer = f"\n---------------- Tour de la sorcière ----------------\n"
+            utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
                     # send the list of players in life
@@ -211,11 +215,20 @@ class Game:
 
 
         # ------------------ END OF THE NIGHT ------------------
-        # kill players at the end of the night
+        
+        strlistOfPlayer = f"\n---------------- Fin de la nuit ----------------\n"
+        utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
+        # Exchange card if the thief has played
         if thief:
-            target.card, player.card = player.card, target.card
-            utils.HostSendMessage(thief.id, msg_to_thief2)
-            utils.HostSendMessage(target.id, msg_to_victim)
+            tmpCard = thief.card
+            thief.card.id = target
+            thief.card =  target.card
+            target.card.id = thief
+            target.card = tmpCard
+            utils.HostSendMessage(thief.id, msg_to_thief2, False)
+            utils.HostSendMessage(target.id, msg_to_victim, False)
+
+        # kill players at the end of the night
         for key in dead:
             self.KillPlayer(dead[key], key)
         
