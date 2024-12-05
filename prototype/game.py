@@ -21,7 +21,7 @@ class Game:
         self.lovers = []
         self.mayor = None
         self.dictRole = { # dict of role distribution in function of the number of player
-            2:[Wearwolf(), Witch()], # use for test only
+            2:[Wearwolf(), Thief()], # use for test only
             3:[Wearwolf(), Seer(), Witch()], # use for test only
             4:[Wearwolf(), Seer(), Thief(), Hunter()],
             5:[Wearwolf(), Seer(), Witch(), Hunter(), Thief()],
@@ -130,6 +130,8 @@ class Game:
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
             if any(isinstance(role, Cupidon) for role in self.listOfRole): # if there is a Cupidon in the game
+                strlistOfPlayer = f"\n---------------- Tour de cupidon ----------------\n"
+                utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Cupidon":
                         # send the list of players in life
@@ -145,23 +147,26 @@ class Game:
                         utils.HostSendMessage(self.tabPlayerInLife[target[1]].id, Message1, False)
 
             # ------------------ THIEF ------------------
-            if any(isinstance(role, Thief) for role in self.listOfRole): # if there is a Thief in the game
+            if any(isinstance(role, Thief) for role in self.listOfRole):
+                thief = None
+                strlistOfPlayer = f"\n---------------- Tour du voleur ----------------\n"
+                utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
-                        # send the list of players in life
-                        utils.HostSendMessage(player,"---------------- Tour du Voleur  ----------------\n"+ utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         # making thief vote for the role he want to steal
+                        thief = player
+                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
-                        # send the result to the victim and the thief
-                        msg_to_thief = f"vous êtes désormais {target.card.name}\n"
-                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
-                        target.card, player.card = player.card, target.card
-                        utils.HostSendMessage(player.id, msg_to_thief, False)
-                        utils.HostSendMessage(target.id, msg_to_victim, False)
+                        msg_to_thief1 = f"Vous prendraiez connaissance de votre nouveau rôle au lever du jour.\n"
+                        msg_to_thief2 = f"Vous êtes désormais {target.card.name}\n"
+                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
+                        utils.HostSendMessage(player.id, msg_to_thief1, False)
                         break
 
         # ------------------ SEER ------------------
         if any(isinstance(role, Seer) for role in self.listOfRole): # if there is a Seer in the game
+            strlistOfPlayer = f"\n---------------- Tour de la voyante ----------------\n"
+            utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
                     # send the list of players in life
@@ -178,9 +183,10 @@ class Game:
                 if player.card.name == "Loup garou":
                     WearwolfInLife.append(player)
             # send the list of players in life
-            strlistOfPlayer = f"---------------- Vote des Loups Garous ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
-            maxVotedPlayer = {"player":None, "nbVote":0}
-            utils.broadcastMessage(strlistOfPlayer, WearwolfInLife)
+            strlistOfPlayer = f"\n---------------- Vote des Loups Garous ----------------\n"
+            lgMessage = f"{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
+            utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
+            utils.broadcastMessage(lgMessage, WearwolfInLife)
             for player in WearwolfInLife: # making wearwolves vote for a victim
                 vote = int(utils.playerChoice("\nQui souhaitez-vous dévorer ce soir : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
@@ -191,6 +197,8 @@ class Game:
         
         # ------------------ WITCH ------------------
         if any(isinstance(role, Witch) for role in self.listOfRole): # if there is a Witch in the game
+            strlistOfPlayer = f"\n---------------- Tour de la sorcière ----------------\n"
+            utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
                     # send the list of players in life
@@ -208,9 +216,24 @@ class Game:
 
 
         # ------------------ END OF THE NIGHT ------------------
+        
+        strlistOfPlayer = f"\n---------------- Fin de la nuit ----------------\n"
+        utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
+        # Exchange card if the thief has played
+        if thief:
+            tmpCard = thief.card
+            thief.card.id = target
+            thief.card =  target.card
+            target.card.id = thief
+            target.card = tmpCard
+            utils.HostSendMessage(thief.id, msg_to_thief2, False)
+            utils.HostSendMessage(target.id, msg_to_victim, False)
+
         # kill players at the end of the night
         for key in dead:
             self.KillPlayer(dead[key], key)
+        
+
 
     def IsWin(self):
         """ check if someone win the game
