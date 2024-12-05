@@ -7,11 +7,7 @@ import os
 from time import sleep
 
 def chat():
-    # we make sure that all the necessary text files are created
-    textModifier("chat.txt", "w", "")
-    textModifier("hostChat.txt", "w", "")
-    textModifier("playerNumber.txt", "w", "") 
-    textModifier("role.txt", "w", "")
+
     
     """Main program for receiving text input and displaying those coming from the server
 
