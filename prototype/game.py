@@ -149,7 +149,7 @@ class Game:
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
                         # send the list of players in life
-                        utils.HostSendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         # making thief vote for the role he want to steal
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
                         # send the result to the victim and the thief
@@ -205,7 +205,9 @@ class Game:
                 dead["Sorcière"] = choice[0]
             elif choice[1]: # if the witch decide to save the victim
                 dead = {}
-        
+
+
+        # ------------------ END OF THE NIGHT ------------------
         # kill players at the end of the night
         for key in dead:
             self.KillPlayer(dead[key], key)
