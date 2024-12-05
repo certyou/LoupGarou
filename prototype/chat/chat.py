@@ -49,12 +49,13 @@ def chat():
         textModifier(chemin, 'w', "") # delete the content of the file
 
         # if the command is loup and the player is a loup, we add the tag {LOUP} to the message
-        if "loup" == txt[txt.find("€"): txt.find("§")+1] and loup :
-            txt = "{LOUP " + txt[txt.find("{") +1 :]
-        elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
-            #if the player is not a loup, we skip the loop to not display the message
-            print("<Erreur Role> : vous n'est pas loup !")
-            continue
+        if txt != "" :
+            if "loup" == txt[txt.find("€")+1: txt.find("§")] and loup :
+                txt = "{LOUP " + txt[txt.find("{") +1 :]
+            elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
+                #if the player is not a loup, we skip the loop to not display the message
+                print("<Erreur Role> : vous n'est pas loup !")
+                continue
         
         #if the message is not empty, we send it to the host
         if len(txt) != 0 :

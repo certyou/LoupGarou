@@ -50,14 +50,14 @@ def hostChatServer() :
         if messageHost != "" :
             if "loup" == messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
                 messageHost = "{LOUP " + messageHost[messageHost.find("{") +1 :]
-                messages.append(textModifier("hostChat.txt", 'r'))
+                messages.append(messageHost)
 
             # if the host is not a loup, we skip the loop to not display the message
             elif "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 print("<Erreur Role> : vous n'est pas loup !")
                 
             # if the message is not empty, we send it to the players
-            if not "loup"  in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
+            if "loup" not in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 messages.append(textModifier("hostChat.txt", 'r'))
             
         # we delete the content of the file      
