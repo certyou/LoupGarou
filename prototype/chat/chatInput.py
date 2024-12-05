@@ -36,25 +36,33 @@ def main() :
     """
 
     textModifier("chat.txt", 'w', "")
-
+    # delete the content of the file
     
     name = ""
 
     while True : 
 
+        # general input
         input_ = str(input("$ "))
 
+        # check if the input contains '{' or '}'
         if input_.find("{") != -1 and input_.find("}") != -1 :
             print("Vous ne pouvez pas utiliser {}")
             continue
 
+        # check if the input is a command
         if input_[0] == '/' :
+
+            #create the message
             command = input_[1: input_.find(" ")] if input_[0] == '/' else None
             text = input_[input_.find(" ")+1:] if input_.find(" ") != len(input_) -1 else None
             message = '{'+ name + "€" + command + "§" + text + '}'
+
+            # exit the program
             if input_ == "/exit" :
                 return
             
+            # change the name
             if command == "name" :
                 name = text
                 continue
@@ -64,15 +72,16 @@ def main() :
             text = input_ 
             message = '{'+ name + "€None§" + text + '}'
 
-
+        # check if the name is empty
         if name == "" :
             print("Vous devez d'abord choisir un nom (commande : /name)")
             continue
 
-
+        # check if the input is empty
         if input_ == "" or input_ ==  " " :
             continue
 
+        # write the message in the file
         textModifier("chat.txt", 'a', message )
         sleep(0.5)
 

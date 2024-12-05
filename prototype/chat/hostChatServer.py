@@ -30,34 +30,37 @@ def hostChatServer() :
 
     while True : 
         
-        """if textModifier("role.txt", "r") == "1" and not loup:
+        if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
-        """
-
-        time.sleep(0.5)
-        messages = receve(playerSock)
-
-        messageHost = textModifier("hostChat.txt", "r")
         
 
+        time.sleep(0.5)
+        # reveive messages from players
+        messages = receve(playerSock)
+
+        # check if the host has sent a message
+        messageHost = textModifier("hostChat.txt", "r")
+
+        # if the host has sent a message, we check if it is a loup message
         if messageHost != "" :
             if "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
                 messageHost = "{LOUP " + messageHost[messageHost.find("{") +1 :]
                 messages.append(textModifier("hostChat.txt", 'r'))
 
-            
+            # if the host is not a loup, we skip the loop to not display the message
             elif "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 print("<Erreur Role> : vous n'est pas loup !")
                 
-            
+            # if the message is not empty, we send it to the players
             if not "loup"  in messageHost[messageHost.find("€")+1: messageHost.find("§")] :
                 messages.append(textModifier("hostChat.txt", 'r'))
             
-                
+        # we delete the content of the file      
         textModifier("hostChat.txt", "w", "")
 
 
+        # we travel through the message list and display the messages
         for i in messages : 
             if i != None or i != "":
 
