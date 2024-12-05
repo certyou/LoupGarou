@@ -49,7 +49,7 @@ class Player:
             if self.IsHost :
                 textModifier("role.txt", "w", "1")
             else :
-                useful_functions.HostSendMessage(self.id, "⌈⌈loup")
+                useful_functions.HostSendMessage(self.id, "⌈⌈loup", False)
         elif self.card.name == "Petite fille" : # if the player is the little girl, write permission to see in the private chat of wearwolf in a file
             if self.IsHost :
                 textModifier("role.txt", "w", "2")
