@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+from chatInput import textModifier
 # Function to launch a Python script in a new console
 def open_new_console(script_name):
     try:
@@ -14,6 +15,12 @@ def main() :
     # launch the game
     game_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'main_reseau.py')
     open_new_console(game_path)  # open the game in a new console
+    # we make sure that all the necessary text files are created
+    textModifier("chat.txt", "w", "")
+    textModifier("hostChat.txt", "w", "")
+    textModifier("HostIp.txt", "w", "")
+    textModifier("playerNumber.txt", "w", "") 
+    textModifier("role.txt", "w", "")
 
 
 def launchHostChat() :
