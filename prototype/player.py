@@ -45,11 +45,11 @@ class Player:
         """
         self.card = role
         if self.card.name == "Loup garou" : # if the player is a werewolf, write permission to discuss in the private chat of wearwolf in a file
-            textModifier("role.txt", "w", "")
-            textModifier("role.txt", "w", "1")
+            if self.isHost() :
+                textModifier("role.txt", "w", "1")
         elif self.card.name == "Petite fille" : # if the player is the little girl, write permission to see in the private chat of wearwolf in a file
-            textModifier("role.txt", "w", "")
-            textModifier("role.txt", "w", "2")
+            if self.isHost() :
+                textModifier("role.txt", "w", "2")
 
     def __str__(self):
         """ Return the string representation of the player

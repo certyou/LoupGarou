@@ -1,6 +1,7 @@
 from random import choice
 import socket
 import time
+from chat.chatInput import textModifier
 
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """ this function ask any player for a choice from expected results (in local or not)
@@ -67,13 +68,16 @@ def ClientSendMessage(server_socket):
         
         # get the instruction and the message
         instruction, message = parts
-        print(message, end="")
         
+        if instruction == "NO_REPLY" and message == "⌈⌈loup" :
+            textModifier("role.txt", "w", "1")
         # check if a response is needed
-        if instruction == "REPLY":
+        elif instruction == "REPLY":
+            print(message, end="")
             response = input("")
             server_socket.sendall(response.encode('utf-8'))
         elif instruction == "NO_REPLY":
+            print(message, end="")
             pass
         else: # if the instruction is unknown
             print(f"Instruction inconnue : {instruction}")
