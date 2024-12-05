@@ -46,7 +46,7 @@ def hostChatServer() :
 
         # if the host has sent a message, we check if it is a loup message
         if messageHost != "" :
-            if "loup" in messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
+            if "loup" == messageHost[messageHost.find("€")+1: messageHost.find("§")] and loup :
                 messageHost = "{LOUP " + messageHost[messageHost.find("{") +1 :]
                 messages.append(textModifier("hostChat.txt", 'r'))
 

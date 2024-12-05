@@ -47,7 +47,7 @@ def chat():
         textModifier(chemin, 'w', "") # delete the content of the file
 
         # if the command is loup and the player is a loup, we add the tag {LOUP} to the message
-        if "loup" in txt[txt.find("€"): txt.find("§")+1] and loup :
+        if "loup" == txt[txt.find("€"): txt.find("§")+1] and loup :
             txt = "{LOUP " + txt[txt.find("{") +1 :]
         elif "loup" in txt[txt.find("€")+1: txt.find("§")] :
             #if the player is not a loup, we skip the loop to not display the message
