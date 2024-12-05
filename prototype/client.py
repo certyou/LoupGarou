@@ -17,7 +17,7 @@ class Client:
 
         ToHostConnect = socket.socket()
         ToHostConnect.connect((HostIp, HostPort))
-        print(f"Conneced to Host <--> {ToHostConnect.getpeername()}")
+        print(f"Connected to Host <--> {ToHostConnect.getpeername()}")
         return ToHostConnect
     
     def WithIpConnection(self) :
