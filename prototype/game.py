@@ -126,6 +126,7 @@ class Game:
             /
         """
         dead = {}
+        thief = None
         # first night
         if self.nbTurn == 1:
             # ------------------ CUPIDON ------------------
@@ -148,7 +149,6 @@ class Game:
 
             # ------------------ THIEF ------------------
             if any(isinstance(role, Thief) for role in self.listOfRole):
-                thief = None
                 strlistOfPlayer = f"\n---------------- Tour du voleur ----------------\n"
                 utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
                 for player in self.tabPlayerInLife:
