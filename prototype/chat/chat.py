@@ -39,6 +39,7 @@ def chat():
         if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
+            textModifier("role.txt", "w", "")
         
         #processing input from the other console
         time.sleep(0.5)
