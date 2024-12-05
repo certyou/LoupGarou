@@ -104,8 +104,7 @@ def TCPToHostConnect() :
     Out:
         - :PlayerSocket: socket, socket of the player
     """
-    # Delete the content of the file
-    textModifier("HostIp.txt", "w", "")
+    
     a = ""
 
     while a == "" :
@@ -121,6 +120,9 @@ def TCPToHostConnect() :
     
     # then, take the IP of the Host to connect the chat
     HostIp = textModifier("HostIp.txt", "r")
+    # Delete the content of the file
+    textModifier("HostIp.txt", "w", "")
+    
     PlayerSocket = socket.socket()
     print("status : connected")
     # connection

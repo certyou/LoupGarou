@@ -86,7 +86,7 @@ def TCPConnect_Chat(nbPlayers) :
     Out:
         - :sockets: list, list of sockets of every player
     """
-    port = 1000
+    port = 40000
     sockets = list()
     listener = socket.socket()
     HostIp = socket.gethostbyname(socket.gethostname())
