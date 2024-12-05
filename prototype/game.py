@@ -109,7 +109,7 @@ class Game:
             if any(isinstance(role, Cupidon) for role in self.listOfRole):
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Cupidon":
-                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.HostSendMessage(player.id, "---------------- Tour de Cupidon ----------------\n" +utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         target = player.card.actionCupidon(self.tabPlayerInLife)
                         self.lovers.append(self.tabPlayerInLife[target[0]])
                         self.lovers.append(self.tabPlayerInLife[target[1]])
@@ -122,7 +122,7 @@ class Game:
             if any(isinstance(role, Thief) for role in self.listOfRole):
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
-                        utils.HostSendMessage(player, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.HostSendMessage(player,"---------------- Tour du Voleur  ----------------\n"+ utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
                         msg_to_thief = f"vous êtes désormais {target.card.name}\n"
                         msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Voleur\n"
@@ -135,7 +135,7 @@ class Game:
         if any(isinstance(role, Seer) for role in self.listOfRole):
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, "---------------- Tour de la Voyante ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                     utils.HostSendMessage(player.id, target, False)
 
@@ -160,7 +160,7 @@ class Game:
         if any(isinstance(role, Witch) for role in self.listOfRole):
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, "---------------- Tour de la sorcière ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     print(choice)
                     utils.HostSendMessage(player.id, choice, False)
