@@ -156,9 +156,9 @@ class Game:
                         # making thief vote for the role he want to steal
                         thief = player
                         utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
-                        target = player.card.actionThief(self.tabPlayerInLife, player.name)
-                        msg_to_thief1 = f"Vous prendraiez connaissance de votre nouveau rôle au lever du jour.\n"
-                        msg_to_thief2 = f"Vous êtes désormais {target.card.name}\n"
+                        targetOfThief = player.card.actionThief(self.tabPlayerInLife, player.name)
+                        msg_to_thief1 = f"Vous prendrez connaissance de votre nouveau rôle au lever du jour.\n"
+                        msg_to_thief2 = f"Vous êtes désormais {targetOfThief.card.name}\n"
                         msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
                         utils.HostSendMessage(player.id, msg_to_thief1, False)
                         break
@@ -202,7 +202,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, "---------------- Tour de la sorcière ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     # making witch vote for the victim to kill or save
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     # send the result to the witch
@@ -216,18 +216,17 @@ class Game:
 
 
         # ------------------ END OF THE NIGHT ------------------
-        
         strlistOfPlayer = f"\n---------------- Fin de la nuit ----------------\n"
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         # Exchange card if the thief has played
         if thief:
             tmpCard = thief.card
-            thief.card.id = target
-            thief.card =  target.card
-            target.card.id = thief
-            target.card = tmpCard
+            thief.card.id = targetOfThief
+            thief.card =  targetOfThief.card
+            targetOfThief.card.id = thief
+            targetOfThief.card = tmpCard
             utils.HostSendMessage(thief.id, msg_to_thief2, False)
-            utils.HostSendMessage(target.id, msg_to_victim, False)
+            utils.HostSendMessage(targetOfThief.id, msg_to_victim, False)
 
         # kill players at the end of the night
         for key in dead:
