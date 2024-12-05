@@ -122,11 +122,11 @@ def TCPToHostConnect() :
     HostIp = textModifier("HostIp.txt", "r")
     # Delete the content of the file
     textModifier("HostIp.txt", "w", "")
-    
+
     PlayerSocket = socket.socket()
     print("status : connected")
     # connection
-    PlayerSocket.connect((HostIp, 1000))
+    PlayerSocket.connect((HostIp, 40000))
     
     return PlayerSocket
  

@@ -24,6 +24,7 @@ def hostChatServer() :
           Amusez-vous bien !""")
 
     nbplayer = int(textModifier("playerNumber.txt", "r"))
+    print("Start connection to players")
     playerSock = TCPConnect_Chat(nbplayer)
 
     loup = False
