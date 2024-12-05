@@ -4,6 +4,13 @@ import socket
 import select
 
 def hostChatServer() :
+    # we make sure that all the necessary text files are created
+    textModifier("chat.txt", "w", "")
+    textModifier("hostChat.txt", "w", "")
+    textModifier("HostIp.txt", "w", "")
+    textModifier("playerNumber.txt", "w", "") 
+    textModifier("role.txt", "w", "")
+    
     """Main program for the chat server
     this program is the same as chat.py but for the host
     it is also used as the server of the whole chat system"""
