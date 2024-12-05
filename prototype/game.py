@@ -133,7 +133,7 @@ class Game:
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Cupidon":
                         # send the list of players in life
-                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.HostSendMessage(player.id, "---------------- Tour de Cupidon ----------------\n" +utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         # making cupidon vote for the lovers
                         target = player.card.actionCupidon(self.tabPlayerInLife)
                         self.lovers.append(self.tabPlayerInLife[target[0]])
@@ -149,7 +149,7 @@ class Game:
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Voleur":
                         # send the list of players in life
-                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.HostSendMessage(player,"---------------- Tour du Voleur  ----------------\n"+ utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         # making thief vote for the role he want to steal
                         target = player.card.actionThief(self.tabPlayerInLife, player.name)
                         # send the result to the victim and the thief
@@ -165,7 +165,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, "---------------- Tour de la Voyante ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     # making seer vote for the player he want to see the role
                     target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                     # send the result to the seer
@@ -194,7 +194,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, "---------------- Tour de la sorcière ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     # making witch vote for the victim to kill or save
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     # send the result to the witch
