@@ -82,6 +82,7 @@ def client():
     You = Client()
     host_socket = You.WithHostConnection()
     utils.ClientSendMessage(host_socket) # response for pseudo
+    launcher.launchClientChat()
     while True: # loop to wait for message from the host
         utils.ClientSendMessage(host_socket)
 
@@ -102,7 +103,6 @@ def main():
     if choice == 1: # if the player is the host
         host()
     elif choice == 2: # if the player is the client
-        launcher.launchClientChat()
         client()
 
 if __name__ == "__main__":
