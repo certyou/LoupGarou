@@ -1,4 +1,3 @@
-from chatInput import textModifier
 import subprocess
 import sys
 import os
