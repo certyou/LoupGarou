@@ -72,8 +72,11 @@ def ClientSendMessage(server_socket):
         # get the instruction and the message
         instruction, message = parts
         
+        # if the message is a role, write the permission in a file
         if instruction == "NO_REPLY" and message == "⌈⌈loup" :
             textModifier("role.txt", "w", "1")
+        if instruction == "NO_REPLY" and message == "⌈⌈fille" :
+            textModifier("role.txt", "w", "2")
         # check if a response is needed
         elif instruction == "REPLY":
             print(message, end="")
