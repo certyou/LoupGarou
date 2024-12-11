@@ -80,7 +80,7 @@ def chat():
             #if the command is loup and the player is not a loup, we skip the loop to not display the message
             if command == "loup" and not loup :
                 if fille :
-                    print(f"{name[:5]} : {text}")
+                    print(f"{name[:4]} : {text}")
                 #skip the loop to not display the message
                 continue
 
