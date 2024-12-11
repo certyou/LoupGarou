@@ -2,6 +2,7 @@ import subprocess
 import sys
 import os
 
+
 # Function to launch a Python script in a new console
 def open_new_console(script_name):
     try:

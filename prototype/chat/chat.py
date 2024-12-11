@@ -3,8 +3,8 @@ import time
 import socket
 import select
 import os
-
 from time import sleep
+
 
 def chat():
 

@@ -5,11 +5,15 @@ from game import *
 from host import Host
 import threading
 
-def save(game,saveName):
-    """Action : Save the date in the Save.json file as a dictionnary named saveName
-       Input : instance of class Game, game
-               str, saveName (the name of the save)
-       Output : None"""
+
+def save(game, saveName):
+    """ Save the data in the Save.json file as a dictionnary
+    Args:
+        - :game: Game object, game to save
+        - :saveName: str, name of the save
+    Out:
+        - /
+    """
     dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}} # creation of a dictionary that will contain every saved game and element to be saved
     if game.mayor != None:
         dict[f"{saveName}"]["mayor"] = game.mayor.name
@@ -23,8 +27,6 @@ def save(game,saveName):
         else:    
             player = {"id":str(elem.id) , "name":elem.name , "card":role, "IsHost":False}
         dict[f"{saveName}"]["tabPlayerInLife"].append(player)
-
-
     saved=dict[f"{saveName}"]
 
     with open("Save.json", "r") as f: # we check if the file is empty or not to know if we need to add or if it's the first saved to be write
@@ -38,14 +40,15 @@ def save(game,saveName):
                 data[f"{saveName}"]=saved
                 f.seek(0)
                 json.dump(data, f, indent=4)
-
     f.close()
 
 
-def load(saveName): 
-    """Action : Load the data named saveName from the Save.json file
-       Input : str, saveName (the name of the save)
-       Output : tab with every element we need to reload a game, save
+def load(saveName):
+    """ Load the data with the same name as the argument from the Save.json file
+    Args:
+        - :saveName: str, name of the save
+    Out:
+        - :save: list, list of every element we need to recreate a game (list of players, mayor, nbTurn, lovers)
     """
     with open("Save.json", "r") as file: # we open the file to read it's content
         data = json.load(file)
@@ -77,13 +80,11 @@ def load(saveName):
     return save
 
 def reloadGame():
-    """
-    This function is called when the player wants to load a save. It will ask the player which save he wants to load and then load it.
-    
+    """ This function is called when the player wants to load a save. It will ask the player which save he wants to load and then load it.
     Args:
         /
     Out:
-        list, save (list of every element we need to recreate a game (list of players, mayor, nbTurn, lovers))
+        - list save, list of every element we need to recreate a game (list of players, mayor, nbTurn, lovers, ...)
     """
     with open("Save.json", "r") as file: # we ask wich save the player want to load
         data = json.load(file)
@@ -108,7 +109,6 @@ def reloadGame():
         BroadcastThread.start()
         GameHost.TCPConnect(NbOfPlayers-1)
 
-
         listOfPlayersSaved = save[0]
         listOfPlayers = []
 
@@ -120,17 +120,14 @@ def reloadGame():
                 listOfPlayers.append(elem)
 
         name = []
-
         for elem in listOfPlayersSaved: # we get the name of every players to ask them wich one it was last time
             name.append(elem.name)
-
         nameExpected = [str(i) for i in range (1,len(name)+1)]
         cpt = 1
 
         for i in range(len(listOfPlayersSaved)):
             listOfPlayersSaved[i].id=GameHost.IPList[i]
             savedNames = "\nLes différents noms de la dernière partie sont : \n"
-
             for j in range(len(name)):
                 savedNames += f"{j+1} - {name[j]}\n"
             utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
@@ -145,7 +142,3 @@ def reloadGame():
             cpt+=1
 
         return [listOfPlayers,save[1],save[2],save[3]]
-
-        
-
-#print(load("s1"))

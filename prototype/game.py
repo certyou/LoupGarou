@@ -4,6 +4,7 @@ import useful_functions as utils
 from ascii_art import *
 import save as s
 
+
 class Game:
     def __init__(self, listOfPlayers):
         """ This function initialize the game with the list of players
@@ -29,7 +30,8 @@ class Game:
             7:[Wearwolf(), Wearwolf(), Seer(), Witch(), Hunter(), Thief(), LittleGirl()],
             8:[Wearwolf(), Wearwolf(), Seer(), Witch(), Hunter(), Thief(), Cupidon(), LittleGirl()]
         }
-    
+
+
     def GameInit(self):
         """ Distrib role in random order to all players
         Args:
@@ -51,6 +53,7 @@ class Game:
         for i in range(0, len(self.listOfPlayers)):
                 message=f"\n\n {self.listOfPlayers[i].card.ascii} \n\n Vous êtes {self.listOfPlayers[i].card.name}\n"
                 utils.HostSendMessage(self.listOfPlayers[i].id, message, False)
+
 
     def day(self):
         """
@@ -92,7 +95,6 @@ class Game:
         Out:
             /
         """
-
         tabOfParticipant = []
         txtVote = "\nQui voulez-vous élire ?  :\n"
         nbParticipant = 1
@@ -117,6 +119,7 @@ class Game:
         self.mayor = mayor
         mayor.increment = 2
         mayor.resetVote()
+
 
     def night(self):
         """ This function is the night part of the game
@@ -214,7 +217,6 @@ class Game:
             elif choice[1]: # if the witch decide to save the victim
                 dead = {}
 
-
         # ------------------ END OF THE NIGHT ------------------
         strlistOfPlayer = f"\n---------------- Fin de la nuit ----------------\n"
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
@@ -231,7 +233,6 @@ class Game:
         # kill players at the end of the night
         for key in dead:
             self.KillPlayer(dead[key], key)
-        
 
 
     def IsWin(self):
@@ -244,19 +245,20 @@ class Game:
         """
         countOfWerewolf = 0
         countOfVillager = 0
-        for role in self.listOfRole:
+        for role in self.listOfRole: # check the equilibrium of the game
             if role.name == "Loup garou":
                 countOfWerewolf += 1
             else:
                 countOfVillager += 1
-        if len(self.tabPlayerInLife) <= countOfWerewolf:
+        if len(self.tabPlayerInLife) <= countOfWerewolf: # if the number of werewolf is greater than the number of villager, the werewolf win
             return True, "Loup garou"
-        elif countOfWerewolf == 0:
+        elif countOfWerewolf == 0: # if there is no more villager in life, the village win
             return True, "Villageoi"
-        elif len(self.tabPlayerInLife) == len(self.lovers) == 2:
+        elif len(self.tabPlayerInLife) == len(self.lovers) == 2: # if lovers are the only one remainings then they win
             return True, "Amoureux"
         else:
             return False, "No one"
+
 
     def GameLoop(self):
         """ This function is the main loop of the game
@@ -289,6 +291,7 @@ class Game:
                 break
         # display the winner
         utils.broadcastMessage(f"\nLes {isWin[1]} ont gagnés !!!\n\n", self.listOfPlayers)
+        # disconnect all players
         for player in self.listOfPlayers:
             if not player.IsHost:
                 disconnect = "END_GAME/fin de la partie"
