@@ -57,5 +57,30 @@
         "mayor": null,
         "nbTurn": 1,
         "lovers": []
+    },
+    "2": {
+        "tabPlayerInLife": [
+            {
+                "id": "None",
+                "name": "ewen",
+                "card": {
+                    "role": "Loup garou",
+                    "id": "ewen"
+                },
+                "IsHost": true
+            },
+            {
+                "id": "<socket.socket fd=8, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 50000), raddr=('127.0.0.1', 50721)>",
+                "name": "noah",
+                "card": {
+                    "role": "Voleur",
+                    "id": "noah"
+                },
+                "IsHost": false
+            }
+        ],
+        "mayor": null,
+        "nbTurn": 1,
+        "lovers": []
     }
 }

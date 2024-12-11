@@ -78,7 +78,9 @@ def ClientSendMessage(server_socket):
             server_socket.sendall(response.encode('utf-8'))
         elif instruction == "NO_REPLY":
             print(message, end="")
-            pass
+        elif instruction == "END_GAME":
+            print(message, end="")
+            exit()
         else: # if the instruction is unknown
             print(f"Instruction inconnue : {instruction}")
 

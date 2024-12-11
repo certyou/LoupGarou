@@ -289,6 +289,10 @@ class Game:
                 break
         # display the winner
         utils.broadcastMessage(f"\nLes {isWin[1]} ont gagnés !!!\n\n", self.listOfPlayers)
+        for player in self.listOfPlayers:
+            if not player.IsHost:
+                disconnect = "END_GAME/fin de la partie"
+                player.id.sendall(disconnect.encode('utf-8'))
     
 
     def KillPlayer(self, victim, killer=None):
