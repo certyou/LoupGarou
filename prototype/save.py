@@ -138,7 +138,7 @@ def reloadGame():
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
-            player.card=elem.card
+            player.setRole(elem.card)
             player.card.id = elem
             listOfPlayers.append(player)
             name.remove(name[namechoice-cpt])
