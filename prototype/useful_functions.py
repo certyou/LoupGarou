@@ -3,6 +3,7 @@ import socket
 import time
 from chat.chatInput import textModifier
 
+
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """ this function ask any player for a choice from expected results (in local or not)
     Arg :
@@ -33,6 +34,7 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
                 break
     return choice
 
+
 def broadcastMessage(message, players):
     """ This function take a message and send it to all players
     Arg:
@@ -46,6 +48,7 @@ def broadcastMessage(message, players):
             print(message, end="")
         else: # else send it to all players
             HostSendMessage(player.id, message, False)
+
 
 def ClientSendMessage(server_socket):
     """ The client receive a message from the host and determine if a respond is needed
@@ -87,6 +90,7 @@ def ClientSendMessage(server_socket):
     except socket.error as e:
         print(f"Erreur de communication avec l'hôte : {e}")
 
+
 def HostSendMessage(client_socket, message, expect_reply=True):
     """ The host send a message to the client, with or without a response expected
     Arg:
@@ -119,6 +123,7 @@ def HostSendMessage(client_socket, message, expect_reply=True):
             print(f"Erreur de communication avec le client : {e}")
             return None
 
+
 def playerWithMostVote(tabPlayer, listOfPlayers):
     """ return the player with the most from a list of players
     Arg :
@@ -139,6 +144,7 @@ def playerWithMostVote(tabPlayer, listOfPlayers):
             maxVotePlayer = choice(temp) # if draw, choose randomly with random.choice
         player.resetVote() # reset the vote for the next round
     return maxVotePlayer
+
 
 def PrintPlayerInLife(tabPlayerInLife):
         """ return a str with all the player in life with a number associate with their name
