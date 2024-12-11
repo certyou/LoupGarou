@@ -7,7 +7,7 @@ import threading
 
 
 def save(game, saveName):
-    """ Save the date in the Save.json file as a dictionnary
+    """ Save the data in the Save.json file as a dictionnary
     Args:
         - :game: Game object, game to save
         - :saveName: str, name of the save
