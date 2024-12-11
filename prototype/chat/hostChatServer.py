@@ -30,12 +30,17 @@ def hostChatServer() :
     playerSock = TCPConnect_Chat(nbplayer)
 
     loup = False
+    fille = False
 
     while True : 
         
         if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
+            textModifier("role.txt", "w", "")
+        if textModifier("role.txt", "r") == "2" and not fille:
+            fille = True
+            print("--------------------------------------\nVous êtes la fille !! \nVous entenderez les messages de loups !\n--------------------------------------")
             textModifier("role.txt", "w", "")
         
 
@@ -75,6 +80,9 @@ def hostChatServer() :
                 command = i[i.find("€")+1:i.find("§")]
                 
                 if command == "loup" and not loup :
+                    continue
+                elif command == "loup" and fille :
+                    print(f"{name[:5]} : {text}")
                     continue
                 print(f"{name} : {text}")
 
