@@ -53,6 +53,8 @@ class Player:
         elif self.card.name == "Petite fille" : # if the player is the little girl, write permission to see in the private chat of wearwolf in a file
             if self.IsHost :
                 textModifier("role.txt", "w", "2")
+            else : 
+                useful_functions.HostSendMessage(self.id, "⌈⌈fille", False)
 
     def __str__(self):
         """ Return the string representation of the player
