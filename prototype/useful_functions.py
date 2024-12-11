@@ -128,9 +128,10 @@ def HostSendMessage(client_socket, message, expect_reply=True):
 
 
 def playerWithMostVote(tabPlayer, listOfPlayers):
-    """ return the player with the most from a list of players
+    """ return the player with the most vote from a list of players
     Arg :
-        - :tabPlayer: lst of Player object, list of all players partiping at the vote
+        - :tabPlayer: lst of Player object, list of all players participating at the vote
+        - :listOfPlayers: lst of Player object, list of all players
     Out : 
         - :maxVotePlayer: Player object, player with the most vote or random player if draw
     """
