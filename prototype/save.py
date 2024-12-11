@@ -115,6 +115,7 @@ def reloadGame():
         for elem in listOfPlayersSaved: # we add the host as the first player of the list to not have conflict 
             if elem.IsHost == True:
                 elem.id = None
+                elem.setRole(elem.card)
                 elem.card.id = elem
                 listOfPlayersSaved.remove(elem)
                 listOfPlayers.append(elem)
@@ -138,7 +139,7 @@ def reloadGame():
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
-            player.card=elem.card
+            player.setRole(elem.card)
             player.card.id = elem
             listOfPlayers.append(player)
             name.remove(name[namechoice-cpt])
