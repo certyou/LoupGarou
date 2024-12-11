@@ -80,9 +80,8 @@ def hostChatServer() :
                 command = i[i.find("€")+1:i.find("§")]
                 
                 if command == "loup" and not loup :
-                    continue
-                if command == "loup" and fille :
-                    print(f"{name[:5]} : {text}")
+                    if fille :
+                        print(f"{name[:5]} : {text}")
                     continue
                 print(f"{name} : {text}")
 
