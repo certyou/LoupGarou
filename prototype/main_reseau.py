@@ -47,6 +47,8 @@ def host():
         reload = s.reloadGame()
         # Updtate of the listOfPlayers and tabPlayerInLife
         listOfPlayers = reload[0]
+        for elem in listOfPlayers:
+            elem.setRole(elem.card)
         new_Game = Game(listOfPlayers)
         new_Game.tabPlayerInLife = listOfPlayers
         
@@ -67,6 +69,9 @@ def host():
         new_Game.lovers = reload[3]
 
         # Launch the game loop
+        for i in range(0, len(new_Game.listOfPlayers)):
+                message=f"\n\n {new_Game.listOfPlayers[i].card.ascii} \n\n Vous êtes {new_Game.listOfPlayers[i].card.name}\n"
+                utils.HostSendMessage(new_Game.listOfPlayers[i].id, message, False)
         new_Game.GameLoop()
             
         

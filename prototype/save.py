@@ -67,10 +67,7 @@ def load(saveName):
         elif elem["card"]["role"] == "Voleur":
             elem["card"]=Thief(elem["card"]["id"])
         player = Player(elem["id"],elem["name"],elem["IsHost"])
-        if player.IsHost :
-            player.setRole(elem["card"])
-        else:
-            player.card=elem["card"]
+        player.card=elem["card"]
         tabPlayerInLife.append(player)
     save.append(tabPlayerInLife) # We then recreate every attribute of Game that are important and add them to a list that will be returned
     save.append(data[f"{saveName}"]["mayor"])
