@@ -139,6 +139,7 @@ def reloadGame():
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
             player.card=elem.card
+            player.card.id = elem
             listOfPlayers.append(player)
             name.remove(name[namechoice-cpt])
             cpt+=1
