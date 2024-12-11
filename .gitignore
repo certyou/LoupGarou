@@ -6,5 +6,6 @@ prototype/chat/HostChat.txt
 prototype/chat/role.txt
 prototype/chat/playerNumber.txt
 *.pyc
+*.txt
 *.json
 test/
