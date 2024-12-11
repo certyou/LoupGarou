@@ -81,7 +81,7 @@ def hostChatServer() :
                 
                 if command == "loup" and not loup :
                     continue
-                elif command == "loup" and fille :
+                if command == "loup" and fille :
                     print(f"{name[:5]} : {text}")
                     continue
                 print(f"{name} : {text}")

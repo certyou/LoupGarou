@@ -81,7 +81,7 @@ def chat():
             if command == "loup" and not loup :
                     continue
                     #skip the loop to not display the message
-            elif command == "loup" and fille :
+            if command == "loup" and fille :
                 print(f"{name[:5]} : {text}")
                 continue
 
