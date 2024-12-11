@@ -19,7 +19,7 @@ def main() :
 
 def launchHostChat() :
     # launch the input and the server chat of the host
-    chat_path = os.path.join(os.path.dirname(__file__), 'hostChatServer.py')
+    chat_path = os.path.join(os.path.dirname(__file__), 'hostChatServer.py') 
     chatInputPath = os.path.join(os.path.dirname(__file__), 'hostChatInput.py')
     open_new_console(chatInputPath)
     open_new_console(chat_path)
