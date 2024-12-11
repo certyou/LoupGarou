@@ -170,7 +170,7 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, "---------------- Tour de la Voyante ----------------\n"+utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                     # making seer vote for the player he want to see the role
                     target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                     # send the result to the seer
@@ -354,7 +354,7 @@ class Game:
         # If the player is the Hunter
         if isHunter != None:
             utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainer un joueur avec lui dans la mort!",self.listOfPlayers)
-            utils.HostSendMessage(isHunter.id,f"---------------- Choix du chasseur ----------------\n{self.PrintPlayerInLife()}", False)
+            utils.HostSendMessage(isHunter.id,f"---------------- Choix du chasseur ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}", False)
             victim3 = isHunter.card.actionHunter(self.tabPlayerInLife)
             voteResult = f"\n{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
