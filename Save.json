@@ -33,23 +33,23 @@
         "nbTurn": 2,
         "lovers": []
     },
-    "s3": {
+    "s9": {
         "tabPlayerInLife": [
             {
                 "id": "None",
                 "name": "marceau",
                 "card": {
-                    "role": "Sorci\u00e8re",
+                    "role": "Loup garou",
                     "id": "marceau"
                 },
                 "IsHost": true
             },
             {
-                "id": "<socket.socket fd=508, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 65200)>",
-                "name": "ewen",
+                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('192.168.243.56', 50000), raddr=('192.168.243.56', 55708)>",
+                "name": "Ewen",
                 "card": {
-                    "role": "Loup garou",
-                    "id": "ewen"
+                    "role": "Voleur",
+                    "id": "Ewen"
                 },
                 "IsHost": false
             }
