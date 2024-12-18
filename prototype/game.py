@@ -290,6 +290,8 @@ class Game:
             if not player.isHost:
                 disconnect = "END_GAME/fin de la partie"
                 player.id.sendall(disconnect.encode('utf-8'))
+            else:
+                print("fin de la partie")
     
 
     def killPlayer(self, victim, killer=None):
