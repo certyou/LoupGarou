@@ -223,11 +223,9 @@ class Game:
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         # Exchange card if the thief has played
         if thief:
-            tmpCard = thief.card
-            thief.card.id = targetOfThief
             thief.card =  targetOfThief.card
-            targetOfThief.card.id = thief
-            targetOfThief.card = tmpCard
+            thief.card.id = thief
+            targetOfThief.card = Villager(targetOfThief)
             utils.hostSendMessage(thief.id, messageThief2, False)
             utils.hostSendMessage(targetOfThief.id, messageVictim, False)
 
