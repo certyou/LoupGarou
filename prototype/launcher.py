@@ -3,7 +3,7 @@ import sys
 import os
 
 # Function to launch a Python script in a new console
-def open_new_console(script_name):
+def openNewConsole(script_name):
     try:
         # Use 'start' to open a new console on Windows
         subprocess.Popen(['start', 'cmd', '/K', sys.executable, script_name], shell=True)
@@ -14,22 +14,22 @@ def open_new_console(script_name):
 def main() :
     # launch the game
     gamePath = os.path.join(os.path.dirname(__file__), 'main_reseau.py')
-    open_new_console(gamePath)  # open the game in a new console
+    openNewConsole(gamePath)  # open the game in a new console
 
 
 def launchHostChat() :
     # launch the input and the server chat of the host
     chatPath = os.path.join(os.path.dirname(__file__), 'chat/hostChatServer.py') 
     chatInputPath = os.path.join(os.path.dirname(__file__), 'chat/hostChatInput.py')
-    open_new_console(chatInputPath)
-    open_new_console(chatPath)
+    openNewConsole(chatInputPath)
+    openNewConsole(chatPath)
 
 def launchClientChat() :
     # launch the input and the client chat
     chatPath = os.path.join(os.path.dirname(__file__), 'chat/chat.py')
     chatInputPath = os.path.join(os.path.dirname(__file__), 'chat/chatInput.py')
-    open_new_console(chatInputPath)
-    open_new_console(chatPath)
+    openNewConsole(chatInputPath)
+    openNewConsole(chatPath)
 
 if __name__ == '__main__':
     main()
