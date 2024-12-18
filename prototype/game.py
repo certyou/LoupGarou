@@ -249,9 +249,9 @@ class Game:
                 countOfWerewolf += 1
             else:
                 countOfVillager += 1
-        if len(self.tabPlayerInLife) <= countOfWerewolf: # if the number of werewolf is greater than the number of villager, the werewolf win
+        if countOfVillager <= countOfWerewolf: # if the number of werewolf is greater than the number of villager, the werewolf win
             return True, "Loup garou"
-        elif countOfWerewolf == 0: # if there is no more villager in life, the village win
+        elif countOfWerewolf == 0: # if there is no more werewolf in life, the village win
             return True, "Villageois"
         elif len(self.tabPlayerInLife) == len(self.lovers) == 2: # if lovers are the only one remainings then they win
             return True, "Amoureux"
