@@ -3,6 +3,7 @@ import socket
 import time
 from chat.chatInput import textModifier
 
+
 def playerChoice(prompt, expectedResults, local=True, player=None):
     """ this function ask any player for a choice from expected results (in local or not)
     Arg :
@@ -24,14 +25,15 @@ def playerChoice(prompt, expectedResults, local=True, player=None):
                 break
     else:
         # request the player for a choice
-        choice = HostSendMessage(player.id, prompt, True)
+        choice = hostSendMessage(player.id, prompt, True)
         while True: # check if the choice is valid
             if choice not in expectedResults:
-                HostSendMessage(player.id, "Choix invalide\n", False)
-                choice = HostSendMessage(player.id, prompt, True)
+                hostSendMessage(player.id, "Choix invalide\n", False)
+                choice = hostSendMessage(player.id, prompt, True)
             else:
                 break
     return choice
+
 
 def broadcastMessage(message, players):
     """ This function take a message and send it to all players
@@ -42,12 +44,13 @@ def broadcastMessage(message, players):
         /
     """
     for player in players:
-        if player.IsHost: # if the player is the host, print it
+        if player.isHost: # if the player is the host, print it
             print(message, end="")
         else: # else send it to all players
-            HostSendMessage(player.id, message, False)
+            hostSendMessage(player.id, message, False)
 
-def ClientSendMessage(server_socket):
+
+def clientSendMessage(server_socket):
     """ The client receive a message from the host and determine if a respond is needed
     Arg:
         - :server_socket: socket, socket of the host
@@ -69,8 +72,11 @@ def ClientSendMessage(server_socket):
         # get the instruction and the message
         instruction, message = parts
         
+        # if the message is a role, write the permission in a file
         if instruction == "NO_REPLY" and message == "⌈⌈loup" :
             textModifier("role.txt", "w", "1")
+        if instruction == "NO_REPLY" and message == "⌈⌈fille" :
+            textModifier("role.txt", "w", "2")
         # check if a response is needed
         elif instruction == "REPLY":
             print(message, end="")
@@ -87,7 +93,8 @@ def ClientSendMessage(server_socket):
     except socket.error as e:
         print(f"Erreur de communication avec l'hôte : {e}")
 
-def HostSendMessage(client_socket, message, expect_reply=True):
+
+def hostSendMessage(client_socket, message, expectReply=True):
     """ The host send a message to the client, with or without a response expected
     Arg:
         - :client_socket: socket, client socket to send the message to.
@@ -103,14 +110,14 @@ def HostSendMessage(client_socket, message, expect_reply=True):
     else:
         try:
             # determine the instruction to send
-            instruction = "REPLY" if expect_reply else "NO_REPLY"
+            instruction = "REPLY" if expectReply else "NO_REPLY"
             
             # prepare the message to send
-            full_message = f"{instruction}/{message}"
-            client_socket.sendall(full_message.encode('utf-8'))
+            fullMessage = f"{instruction}/{message}"
+            client_socket.sendall(fullMessage.encode('utf-8'))
             
             # if a response is needed, receive it
-            if expect_reply:
+            if expectReply:
                 response = client_socket.recv(655336).decode('utf-8')
                 return response
             # else, nothing to wait for
@@ -119,10 +126,12 @@ def HostSendMessage(client_socket, message, expect_reply=True):
             print(f"Erreur de communication avec le client : {e}")
             return None
 
+
 def playerWithMostVote(tabPlayer, listOfPlayers):
-    """ return the player with the most from a list of players
+    """ return the player with the most vote from a list of players
     Arg :
-        - :tabPlayer: lst of Player object, list of all players partiping at the vote
+        - :tabPlayer: lst of Player object, list of all players participating at the vote
+        - :listOfPlayers: lst of Player object, list of all players
     Out : 
         - :maxVotePlayer: Player object, player with the most vote or random player if draw
     """
@@ -140,7 +149,8 @@ def playerWithMostVote(tabPlayer, listOfPlayers):
         player.resetVote() # reset the vote for the next round
     return maxVotePlayer
 
-def PrintPlayerInLife(tabPlayerInLife):
+
+def printPlayerInLife(tabPlayerInLife):
         """ return a str with all the player in life with a number associate with their name
         Arg :
             - :tabPlayerInLife: lst of Player object, list of all players in life

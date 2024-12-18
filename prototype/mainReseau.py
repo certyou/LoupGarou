@@ -3,8 +3,8 @@ from client import Client
 from host import Host
 from game import Game
 from player import Player
-import useful_functions as utils
-from ascii_art import *
+import prototype.usefulFunctions as utils
+from prototype.asciiArt import *
 import save as s
 import os
 import chat.launcher as launcher
@@ -22,52 +22,61 @@ def host():
         /
     """
     # Ask the number of players expected
-    NbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
+    nbOfPlayers = int(utils.playerChoice("Nombre de joueurs attendus : ", [str(x) for x in range(MIN_PLAYER, MAX_PLAYER)])) - 1
 
-    textModifier("playerNumber.txt", 'w', str(NbOfPlayers)) # Save the number of player in a file to use it in the chat
+    textModifier("playerNumber.txt", 'w', str(nbOfPlayers)) # Save the number of player in a file to use it in the chat
 
-    choice=2
+    choice = 2
     with open("Save.json", "r") as file: # check if a save exist
         if len(file.read()) != 0:
-            choice=int(utils.playerChoice("\nVoulez-vous chargez une sauvegarde ?\n-1 : Oui \n-2 : Non\nVotre choix : ",["1","2"]))
+            choice = int(utils.playerChoice("\nVoulez-vous chargez une sauvegarde ?\n-1 : Oui \n-2 : Non\nVotre choix : ",["1","2"]))
     if choice == 2:
-        GameHost = Host()
-        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers,), daemon=True)
-        BroadcastThread.start()
-        GameHost.TCPConnect(NbOfPlayers)
-        ListOfPlayers = [Player(None, input("votre nom : "), True)]
-        for i in range(NbOfPlayers):
-            ListOfPlayers.append(Player(GameHost.IPList[i], utils.HostSendMessage(GameHost.IPList[i], "votre nom : "), False))
+        saveName = input("\nQuel nom voulez vous donner a votre sauvegarde ? : \n")
+        gameHost = Host()
+        broadcastThread = threading.Thread(target=gameHost.IPBroadcaster, args=(nbOfPlayers,), daemon=True)
+        broadcastThread.start()
+        gameHost.TCPConnect(nbOfPlayers)
+        listOfPlayers = [Player(None, input("votre nom : "), True)]
+        for i in range(nbOfPlayers):
+            listOfPlayers.append(Player(gameHost.IPList[i], utils.hostSendMessage(gameHost.IPList[i], "votre nom : "), False))
 
-        new_game = Game(ListOfPlayers)
-        new_game.GameInit()
+        newGame = Game(listOfPlayers)
+        newGame.gameInit()
         launcher.launchHostChat()
-        new_game.GameLoop()
+        newGame.gameLoop()
     else: # If the user wants to load a save we upload all the data from the save to recrate a game object from them
         reload = s.reloadGame()
         # Updtate of the listOfPlayers and tabPlayerInLife
         listOfPlayers = reload[0]
-        new_Game = Game(listOfPlayers)
-        new_Game.tabPlayerInLife = listOfPlayers
+        for elem in listOfPlayers:
+            elem.setRole(elem.card)
+        newGame = Game(listOfPlayers)
+        newGame.tabPlayerInLife = listOfPlayers
         
         # associate mayor to the right player
         for elem in listOfPlayers:
             if elem.name == reload[1]:
-                new_Game.mayor = elem
+                newGame.mayor = elem
 
         # Update the listOfRole
         listOfRole = [elem.card for elem in listOfPlayers]
-        new_Game.listOfRole = listOfRole
+        newGame.listOfRole = listOfRole
 
+        # Update the name of the game
+        newGame.saveName=reload[-1]
+        
         # Launch the chat
         launcher.launchHostChat()
 
         # Update the number of turn, and the lovers
-        new_Game.nbTurn = reload[2]-1
-        new_Game.lovers = reload[3]
+        newGame.nbTurn = reload[2]-1
+        newGame.lovers = reload[3]
 
         # Launch the game loop
-        new_Game.GameLoop()
+        for i in range(0, len(newGame.listOfPlayers)):
+                message=f"\n\n {newGame.listOfPlayers[i].card.ascii} \n\n Vous êtes {newGame.listOfPlayers[i].card.name}\n"
+                utils.HostSendMessage(newGame.listOfPlayers[i].id, message, False)
+        newGame.GameLoop()
             
         
 
@@ -80,11 +89,11 @@ def client():
     launch the client side, and wait for message from the host
     """
     You = Client()
-    host_socket = You.WithHostConnection()
-    utils.ClientSendMessage(host_socket) # response for pseudo
+    hostSocket = You.withHostConnection()
+    utils.clientSendMessage(hostSocket) # response for pseudo
     launcher.launchClientChat()
     while True: # loop to wait for message from the host
-        utils.ClientSendMessage(host_socket)
+        utils.clientSendMessage(hostSocket)
 
 def main():
     """ launch the main menu, and ask the player if he wants to be the host or the client

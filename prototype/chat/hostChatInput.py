@@ -2,6 +2,7 @@ from time import sleep
 import os
 from chatInput import textModifier
 
+
 def main() :
     """Programme principale d'écriture du message sous forme d'une frame contenant des informations ordonnée
     frame générique : {Name€Command€text}

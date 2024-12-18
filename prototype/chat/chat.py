@@ -3,8 +3,8 @@ import time
 import socket
 import select
 import os
-
 from time import sleep
+
 
 def chat():
 
@@ -34,6 +34,7 @@ def chat():
     socket = TCPToHostConnect()
 
     loup = False
+    fille = False
 
     while True:
 
@@ -41,6 +42,10 @@ def chat():
         if textModifier("role.txt", "r") == "1" and not loup:
             loup = True
             print("--------------------------------------\nVous êtes un loup garou !! \nutilisez la commande /loup pour envoyer un message au autres loups\n--------------------------------------")
+            textModifier("role.txt", "w", "")
+        if textModifier("role.txt", "r") == "2" and not fille:
+            fille = True
+            print("--------------------------------------\nVous êtes la fille !! \nVous entenderez les messages de loups !\n--------------------------------------")
             textModifier("role.txt", "w", "")
         
         #processing input from the other console
@@ -74,8 +79,10 @@ def chat():
             
             #if the command is loup and the player is not a loup, we skip the loop to not display the message
             if command == "loup" and not loup :
-                    continue
-                    #skip the loop to not display the message
+                if fille :
+                    print(f"{name[:4]} : {text}")
+                #skip the loop to not display the message
+                continue
 
             # general display printing
             print(f"{name} : {text}")

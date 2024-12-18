@@ -1,5 +1,5 @@
 from chat.chatInput import textModifier
-import useful_functions
+import prototype.usefulFunctions as usefulFunctions
 
 
 class Player:
@@ -16,7 +16,7 @@ class Player:
         self.name = name
         self.card = None
         self.vote = 0
-        self.IsHost = isHost
+        self.isHost = isHost
         self.mayor = False
 
     def addVote(self, increment=1):
@@ -46,13 +46,15 @@ class Player:
         """
         self.card = role
         if self.card.name == "Loup garou" : # if the player is a werewolf, write permission to discuss in the private chat of wearwolf in a file
-            if self.IsHost :
+            if self.isHost :
                 textModifier("role.txt", "w", "1")
             else :
-                useful_functions.HostSendMessage(self.id, "⌈⌈loup", False)
+                usefulFunctions.HostSendMessage(self.id, "⌈⌈loup", False)
         elif self.card.name == "Petite fille" : # if the player is the little girl, write permission to see in the private chat of wearwolf in a file
-            if self.IsHost :
+            if self.isHost :
                 textModifier("role.txt", "w", "2")
+            else : 
+                usefulFunctions.HostSendMessage(self.id, "⌈⌈fille", False)
 
     def __str__(self):
         """ Return the string representation of the player

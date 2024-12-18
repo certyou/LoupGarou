@@ -82,5 +82,48 @@
         "mayor": null,
         "nbTurn": 1,
         "lovers": []
+    },
+    "Test": {
+        "tabPlayerInLife": [
+            {
+                "id": "None",
+                "name": "Marc",
+                "card": {
+                    "role": "Voyante",
+                    "id": "Marc"
+                },
+                "IsHost": true
+            },
+            {
+                "id": "<socket.socket fd=432, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49848)>",
+                "name": "E",
+                "card": {
+                    "role": "Loup garou",
+                    "id": "E"
+                },
+                "IsHost": false
+            },
+            {
+                "id": "<socket.socket fd=440, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49849)>",
+                "name": "N",
+                "card": {
+                    "role": "Chasseur",
+                    "id": "N"
+                },
+                "IsHost": false
+            },
+            {
+                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49850)>",
+                "name": "H",
+                "card": {
+                    "role": "Voleur",
+                    "id": "H"
+                },
+                "IsHost": false
+            }
+        ],
+        "mayor": null,
+        "nbTurn": 1,
+        "lovers": []
     }
 }

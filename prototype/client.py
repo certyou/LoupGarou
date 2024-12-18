@@ -6,36 +6,37 @@ class Client:
     def __init__(self):
         pass
 
-    def WithHostConnection(self) :
-        BroadcastRecv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        BroadcastRecv.bind(('', 65000))
-        Buffer = BroadcastRecv.recvfrom(1024)[0].decode()
-        HostIp = Buffer[1:Buffer.find(',')]
-        HostPort = int(Buffer[Buffer.find(',')+1:-1])
-
-        textModifier("HostIp.txt", "w", str(HostIp))
-
-        ToHostConnect = socket.socket()
-        ToHostConnect.connect((HostIp, HostPort))
-        print(f"Connected to Host <--> {ToHostConnect.getpeername()}")
-        return ToHostConnect
-    
-    def WithIpConnection(self) :
-        Ip = input("Enter the Host IP: ")
-        Port = 50000 # port défini par convention
-        ToHostConnect = socket.socket()
-        ToHostConnect.connect((Ip, Port))
-        print(f"Conneced to Host <--> {ToHostConnect.getpeername()}")
-        return ToHostConnect
-    
-    def SendResponse(self, socket, message=""):
-        """
-        Arg :
-            - :socket: socket, socket use to send the message
-            - :message: str, the message displayed to the host player
-        Out : 
+    def withHostConnection(self) :
+        """ Connect to the host and return the socket
+        Args :
             /
+        Out :
+            - :ToHostConnect: socket, socket connected to the host
         """
-        host_request = socket.recv(1024).decode()
-        print(host_request)
-        socket.sendall(input("votre rep :").encode())
+        broadcastRecv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        broadcastRecv.bind(('', 65000))
+        buffer = broadcastRecv.recvfrom(1024)[0].decode()
+        hostIp = buffer[1:buffer.find(',')]
+        hostPort = int(buffer[buffer.find(',')+1:-1])
+
+        # Save the Host IP in a file for the chat
+        textModifier("HostIp.txt", "w", str(hostIp))
+
+        toHostConnect = socket.socket()
+        toHostConnect.connect((hostIp, hostPort))
+        print(f"Connected to Host <--> {toHostConnect.getpeername()}")
+        return toHostConnect
+    
+    def withIpConnection(self) :
+        """ ask for the IP address, connect with the host and then return the socket
+        Args :
+            /
+        Out :
+            - :ToHostConnect: socket, socket connected to the host
+        """
+        ip = input("Enter the Host IP: ")
+        port = 50000 # port défini par convention
+        toHostConnect = socket.socket()
+        toHostConnect.connect((ip, port))
+        print(f"Conneced to Host <--> {toHostConnect.getpeername()}")
+        return toHostConnect
