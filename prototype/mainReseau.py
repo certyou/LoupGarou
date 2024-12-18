@@ -11,7 +11,7 @@ import chat.launcher as launcher
 from chat.chatInput import textModifier
 
 
-MAX_PLAYER = 16
+MAX_PLAYER = 8
 MIN_PLAYER = 1
 
 def host():
