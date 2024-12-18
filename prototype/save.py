@@ -101,10 +101,10 @@ def reloadGame():
         choice = int(utils.playerChoice("Votre choix : ", saveList))
         save = load(saves[choice-1])
         nbOfPlayers = len(save[0])
-        print("\nnombre de joueurs attendu :"+str(nbOfPlayers)+"\n")
+        print("\nNombre de joueurs attendu :"+str(nbOfPlayers)+"\n")
 
         # connection to the host
-        gameHost = Host() 
+        gameHost = Host()
         broadcastThread = threading.Thread(target=gameHost.IPBroadcaster, args=(nbOfPlayers-1,), daemon=True)
         broadcastThread.start()
         gameHost.TCPConnect(nbOfPlayers-1)
@@ -133,7 +133,7 @@ def reloadGame():
             utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
 
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
-            namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie  ? :\n ", nameExpected , False, elem))
+            namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie ? :\n ", nameExpected , False, elem))
             player=Player(elem.id, name[namechoice-cpt], False)
             player.card=elem.card
             player.card.id = elem

@@ -68,7 +68,7 @@ class Game:
         if self.nbTurn == 2: # if it's the second day, the mayor is elected
             utils.broadcastMessage("---------------- Vote du maire ----------------\n", self.listOfPlayers)
             self.mayorVote()
-            utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote comptera double à partir de maintenant.\n\n", self.listOfPlayers)
+            utils.broadcastMessage(f"\n{self.mayor.name} a été élu(e) nouveau maire du village.\nSon vote comptera double à partir de maintenant.\n\n", self.listOfPlayers)
 
         # ----------- Vote ------------------
         strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.printPlayerInLife(self.tabPlayerInLife)}"
@@ -97,11 +97,11 @@ class Game:
             /
         """
         tabOfParticipant = []
-        txtVote = "\nQui voulez-vous élire ?  :\n"
+        txtVote = "\nQui voulez-vous élire ? :\n"
         nbParticipant = 1
         for i in range(len(self.tabPlayerInLife)):
             player = self.tabPlayerInLife[i]
-            choiceParticipation = int(playerChoice("Voulez-vous vous présenter aux élections du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.isHost, player))
+            choiceParticipation = int(playerChoice("Voulez-vous vous présenter aux élections du maire:\n    -1 : Oui\n  -2 : Non\nChoix: ", ["1","2"], player.isHost, player))
             if choiceParticipation == 1: # if the player want to participate, add him to the list of participant
                 tabOfParticipant.append(player)
                 txtVote += f" -{nbParticipant} : {player.name}\n"
@@ -146,8 +146,8 @@ class Game:
                         self.lovers.append(self.tabPlayerInLife[target[0]])
                         self.lovers.append(self.tabPlayerInLife[target[1]])
                         # send the result to the lovers
-                        messageLover1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
-                        messageLover2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
+                        messageLover1 = f"Vous êtes tombé fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
+                        messageLover2 = f"Vous êtes tombé fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
                         utils.hostSendMessage(self.tabPlayerInLife[target[0]].id, messageLover1, False)
                         utils.hostSendMessage(self.tabPlayerInLife[target[1]].id, messageLover2, False)
 
@@ -163,7 +163,7 @@ class Game:
                         targetOfThief = player.card.actionThief(self.tabPlayerInLife, player.name)
                         messageThief1 = f"Vous prendrez connaissance de votre nouveau rôle au lever du jour.\n"
                         messageThief2 = f"Vous êtes désormais {targetOfThief.card.name}\n"
-                        messageVictim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
+                        messageVictim = "Vous avez été volé ! Vous êtes désormais un villageois\n"
                         utils.hostSendMessage(player.id, messageThief1, False)
                         break
 
@@ -252,7 +252,7 @@ class Game:
         if len(self.tabPlayerInLife) <= countOfWerewolf: # if the number of werewolf is greater than the number of villager, the werewolf win
             return True, "Loup garou"
         elif countOfWerewolf == 0: # if there is no more villager in life, the village win
-            return True, "Villageoi"
+            return True, "Villageois"
         elif len(self.tabPlayerInLife) == len(self.lovers) == 2: # if lovers are the only one remainings then they win
             return True, "Amoureux"
         else:
@@ -309,23 +309,23 @@ class Game:
 
         if killer == None: # if there are no killer, this is the village's vote
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
-            utils.hostSendMessage(victim.id, f"\n\nLe village a décidé de vous éliminer et leur sentence est irrévocable!\n\n {MORT}", False)
+            utils.hostSendMessage(victim.id, f"\n\nLe village a décidé de vous éliminer et leur sentence est irrévocable !\n\n {MORT}", False)
 
 
         elif killer == "Loup garou": # if the killer's role is werewolf
-            voteResult = f"{victim.name} a été dévoré par les loups garou !"
-            utils.hostSendMessage(victim.id, f"\n\nLes loups garou vous ont dévoré!\n\n {MORT}", False)
+            voteResult = f"{victim.name} a été dévoré par les loups-garous !"
+            utils.hostSendMessage(victim.id, f"\n\nLes loups-garou vous ont dévoré !\n\n {MORT}", False)
 
 
         elif killer == "Sorcière": # if the killer's role is witch
-            voteResult = f"La sorcière a décider de vaporiser {victim.name}"
-            utils.hostSendMessage(victim.id, f"\n\nLa sorcière a décider de vous vaporiser!\n\n {MORT}", False)
+            voteResult = f"La sorcière a décidé de vaporiser {victim.name}"
+            utils.hostSendMessage(victim.id, f"\n\nLa sorcière a décidé de vous vaporiser !\n\n {MORT}", False)
 
 
         if victim.card.name =="Chasseur": # if the victim is the Hunter
             isHunter = victim
         else:
-            voteResult += f"\n{victim.name} étais {victim.card.name}\n\n"
+            voteResult += f"\n{victim.name} était {victim.card.name}\n\n"
 
         # broadcast the result of the vote
         utils.broadcastMessage(voteResult, self.listOfPlayers)
@@ -336,31 +336,31 @@ class Game:
             victim2 = self.lovers[0]
             if victim2 == self.mayor: # if the lover is the mayor, he can choose a new mayor
                 isMayor = victim2
-            voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
-            if victim.card.name =="Hunter": # if the lover is the Hunter
+            voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est mort de chagrin..."
+            if victim.card.name == "Chasseur": # if the lover is the Hunter
                 isHunter = victim
             else:
                 voteResult += f"\n{victim2.name} étais {victim2.card.name}\n\n"
             
             # broadcast the result of the vote
             utils.broadcastMessage(voteResult, self.listOfPlayers)
-            utils.hostSendMessage(victim2.id, f"\n\nVous êtes mort de chagrin... !\n\n {MORT}", False)
+            utils.hostSendMessage(victim2.id, f"\n\nVous êtes mort de chagrin !\n\n {MORT}", False)
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
         # If the player is the Hunter
         if isHunter != None:
-            utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainer un joueur avec lui dans la mort!",self.listOfPlayers)
+            utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entraîner un joueur avec lui dans la mort !",self.listOfPlayers)
             utils.hostSendMessage(isHunter.id,f"---------------- Choix du chasseur ----------------\n{utils.printPlayerInLife(self.tabPlayerInLife)}", False)
             victim3 = isHunter.card.actionHunter(self.tabPlayerInLife)
-            voteResult = f"\n{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
+            voteResult = f"\n{victim3.name} a été abattu(e) par le chasseur.\n{victim3.name} était {victim3.card.name}"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
             utils.hostSendMessage(victim3.id, f"\n\nVous avez été tué par le chasseur !\n\n {MORT}", False)
             self.tabPlayerInLife.remove(victim3)
          
         # If one of the players is the mayor
         if isMayor != None:
-            utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
+            utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir son successeur.",self.listOfPlayers)
             message = self.printPlayerInLife()
             if isMayor.id == None:
                 print(message)
@@ -368,7 +368,7 @@ class Game:
                 utils.SendRequest(isMayor.id, message, False)
             # making the mayor choose a new mayor
             expectedResultsVote = [str(i+1) for i in range(len(self.tabPlayerInLife))]
-            choice = int(playerChoice("\nEntrez le numero de la personne qui sera votre successeur : ", expectedResultsVote, isMayor.isHost, isMayor))
+            choice = int(playerChoice("\nEntrez le numéro de la personne qui sera votre successeur : ", expectedResultsVote, isMayor.isHost, isMayor))
             self.mayor = self.tabPlayerInLife[choice-1]
             utils.broadcastMessage(f"\nLe nouveau maire désigné est {self.mayor.name}. Son vote compte à présent double",self.listOfPlayers)
 

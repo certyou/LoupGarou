@@ -81,12 +81,11 @@ def host():
         
 
 def client():
-    """
+    """ launch the client side, and wait for message from the host
     Args :
         /
     Out :
         /
-    launch the client side, and wait for message from the host
     """
     You = Client()
     hostSocket = You.withHostConnection()

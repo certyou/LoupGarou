@@ -45,7 +45,7 @@ def chat():
             textModifier("role.txt", "w", "")
         if textModifier("role.txt", "r") == "2" and not fille:
             fille = True
-            print("--------------------------------------\nVous êtes la fille !! \nVous entenderez les messages de loups !\n--------------------------------------")
+            print("--------------------------------------\nVous êtes la petite fille !! \nVous entenderez les messages de loups !\n--------------------------------------")
             textModifier("role.txt", "w", "")
         
         #processing input from the other console

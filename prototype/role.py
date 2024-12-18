@@ -22,7 +22,7 @@ class Villager:
         Out:
             - /
         """
-        self.name = "Villageoi"
+        self.name = "Villageois"
         self.ascii = asciiArt.VILLAGER
         self.id = id
     
@@ -46,9 +46,9 @@ class Seer:
             - :str, return the role of the player
         """
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
-        choicePlayer = int(playerChoice("Entrez le numéro du joueur dont vous souhaitez voir la carte: ", expectedResults, self.id.isHost, self.id))
+        choicePlayer = int(playerChoice("\nEntrez le numéro du joueur dont vous souhaitez voir la carte : ", expectedResults, self.id.isHost, self.id))
         playerVoted = tabPlayerInLife[choicePlayer-1]
-        return f"Le rôle de {playerVoted.name} est: {playerVoted.card.name}"
+        return f"Le rôle de {playerVoted.name} est {playerVoted.card.name}"
     
 class Thief:
     def __init__(self, id=None):
@@ -71,7 +71,7 @@ class Thief:
             - :Player object, return the player selected by the thief
         """
         expectedResults = [str(i) for i in range(1, len(tabPlayerInLife) + 1) if tabPlayerInLife[i-1].name != thiefName]
-        choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec le quel vous voulez échanger votre carte: ", expectedResults, self.id.isHost, self.id))
+        choicePlayer = int(playerChoice("\nEntrez le numéro du joueur avec lequel vous voulez échanger votre carte : ", expectedResults, self.id.isHost, self.id))
         return tabPlayerInLife[choicePlayer-1]
 
 
@@ -94,7 +94,7 @@ class Hunter:
         Out:
             - :Player object, return the player selected by the hunter
         """
-        prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n "
+        prompt = "\nEntrez le numéro du joueur que vous souhaitez éliminer: \n "
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.id))
         return tabPlayerInLife[choiceKillPlayer-1]
@@ -126,22 +126,22 @@ class Witch:
 
         # if the witch has both potions
         if self.lifePotion == True and self.potionPoison == True :
-            prompt = f"\n Sorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n 2: utiliser la potion de mort \n 3: utiliser les deux potions \n \n"
+            prompt = f"\nSorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n 2: utiliser la potion de mort \n 3: utiliser les deux potions \n \n"
             expectedResults = [str(i) for i in range(4)]
 
         # if the witch has only the life potion
         elif self.lifePotion == True and self.potionPoison == False:
-            prompt = f"\n Sorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n \n "
+            prompt = f"\nSorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de vie \n \n "
             expectedResults = ["0","1"]
 
         # if the witch has only the death potion
         elif self.lifePotion == False and self.potionPoison == True:
-            prompt = f"\n Sorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de mort \n \n "
+            prompt = f"\nSorcière, {player.name} va mourrir si vous ne faites rien. Vous avez plusieurs choix :\n 0: ne rien faire \n 1: utiliser la potion de mort \n \n "
             expectedResults = ["0","1"]
 
         # if the witch has no potions
         else:
-            hostSendMessage(self.id.id, "\n Sorcière, vous n'avez plus de potions \n \n", False)
+            hostSendMessage(self.id.id, "\nSorcière, vous n'avez plus de potions \n \n", False)
             whatToDo = 0
 
         # if the witch has at least one potion
@@ -162,7 +162,7 @@ class Witch:
         # if the witch want to kill a player
         elif (whatToDo == 1 and self.potionPoison == True) or (whatToDo == 2):
             choiceToSave=True
-            prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
+            prompt = "\nEntrez le numéro du joueur que vous souhaitez éliminer : \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
             choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.id))
             self.potionPoison = False
@@ -170,7 +170,7 @@ class Witch:
         # if the witch want to save and kill a player
         else:
             choiceToSave=True
-            prompt = "\n Entrez le numéro du joueur que vous souhaitez éliminer: \n \n"
+            prompt = "\nEntrez le numéro du joueur que vous souhaitez éliminer : \n \n"
             expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
             choiceKillPlayer = int(playerChoice(prompt, expectedResults, self.id.isHost, self.id))
             self.lifePotion = False
@@ -199,11 +199,11 @@ class Cupidon :
             - :tuple: tuple with the index of the two players selected by Cupidon
         """
         secondPlayerToLink = 0
-        prompt = "\nentrez le numéro de la première personne à lier : "
+        prompt = "\nEntrez le numéro de la première personne à lier : "
         expectedResults = [str(i) for i in range(1,len(tabPlayerInLife)+1)]
         firstPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.isHost, self.id))
 
-        prompt = "\nentrez le numéro de la deuxième personne à lier : "
+        prompt = "\nEntrez le numéro de la deuxième personne à lier : "
         while secondPlayerToLink == 0 or secondPlayerToLink == firstPlayerToLink:
             secondPlayerToLink = int(playerChoice(prompt, expectedResults, self.id.isHost, self.id))
         
