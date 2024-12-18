@@ -22,10 +22,10 @@ def save(game, saveName):
             role = {"role":elem.card.name, "id":elem.name}
         else:
             role = {"role":elem.card.name, "id":elem.name, "lifePotion":elem.card.lifePotion, "potionPoison":elem.card.potionPoison}
-        if elem.IsHost:
-            player = {"id":str(elem.id) , "name":elem.name , "card":role, "IsHost":True}
+        if elem.isHost:
+            player = {"id":str(elem.id) , "name":elem.name , "card":role, "isHost":True}
         else:    
-            player = {"id":str(elem.id) , "name":elem.name , "card":role, "IsHost":False}
+            player = {"id":str(elem.id) , "name":elem.name , "card":role, "isHost":False}
         dict[f"{saveName}"]["tabPlayerInLife"].append(player)
     saved=dict[f"{saveName}"]
 
@@ -69,7 +69,7 @@ def load(saveName):
             elem["card"]=Seer(elem["card"]["id"])
         elif elem["card"]["role"] == "Voleur":
             elem["card"]=Thief(elem["card"]["id"])
-        player = Player(elem["id"],elem["name"],elem["IsHost"])
+        player = Player(elem["id"],elem["name"],elem["isHost"])
         player.card=elem["card"]
         tabPlayerInLife.append(player)
     save.append(tabPlayerInLife) # We then recreate every attribute of Game that are important and add them to a list that will be returned
@@ -100,20 +100,20 @@ def reloadGame():
 
         choice = int(utils.playerChoice("Votre choix : ", saveList))
         save = load(saves[choice-1])
-        NbOfPlayers = len(save[0])
-        print("\nnombre de joueurs attendu :"+str(NbOfPlayers)+"\n")
+        nbOfPlayers = len(save[0])
+        print("\nnombre de joueurs attendu :"+str(nbOfPlayers)+"\n")
 
         # connection to the host
-        GameHost = Host() 
-        BroadcastThread = threading.Thread(target=GameHost.IPBroadcaster, args=(NbOfPlayers-1,), daemon=True)
-        BroadcastThread.start()
-        GameHost.TCPConnect(NbOfPlayers-1)
+        gameHost = Host() 
+        broadcastThread = threading.Thread(target=gameHost.IPBroadcaster, args=(nbOfPlayers-1,), daemon=True)
+        broadcastThread.start()
+        gameHost.TCPConnect(nbOfPlayers-1)
 
         listOfPlayersSaved = save[0]
         listOfPlayers = []
 
         for elem in listOfPlayersSaved: # we add the host as the first player of the list to not have conflict 
-            if elem.IsHost == True:
+            if elem.isHost == True:
                 elem.id = None
                 elem.card.id = elem
                 listOfPlayersSaved.remove(elem)
@@ -126,7 +126,7 @@ def reloadGame():
         cpt = 1
 
         for i in range(len(listOfPlayersSaved)):
-            listOfPlayersSaved[i].id=GameHost.IPList[i]
+            listOfPlayersSaved[i].id=gameHost.IPList[i]
             savedNames = "\nLes différents noms de la dernière partie sont : \n"
             for j in range(len(name)):
                 savedNames += f"{j+1} - {name[j]}\n"

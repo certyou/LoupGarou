@@ -1,7 +1,7 @@
 from random import randint
 from role import *
-import useful_functions as utils
-from ascii_art import *
+import prototype.usefulFunctions as utils
+from prototype.asciiArt import *
 import save as s
 
 
@@ -33,7 +33,7 @@ class Game:
         }
 
 
-    def GameInit(self):
+    def gameInit(self):
         """ Distrib role in random order to all players
         Args:
             - self: Game object
@@ -53,7 +53,7 @@ class Game:
         self.listOfRole = [self.tabPlayerInLife[x].card for x in range(self.nbPlayer)]
         for i in range(0, len(self.listOfPlayers)):
                 message=f"\n\n {self.listOfPlayers[i].card.ascii} \n\n Vous êtes {self.listOfPlayers[i].card.name}\n"
-                utils.HostSendMessage(self.listOfPlayers[i].id, message, False)
+                utils.hostSendMessage(self.listOfPlayers[i].id, message, False)
 
 
     def day(self):
@@ -71,12 +71,12 @@ class Game:
             utils.broadcastMessage(f"\nVous avez élu(e) {self.mayor.name} en tant que nouveau maire du village.\nSon vote comptera double à partir de maintenant.\n\n", self.listOfPlayers)
 
         # ----------- Vote ------------------
-        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
+        strlistOfPlayer = f"---------------- Vote du Village ----------------\n{utils.printPlayerInLife(self.tabPlayerInLife)}"
         # send the list of players in life
         utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
         for player in self.tabPlayerInLife:
             # making players vote
-            vote = int(utils.playerChoice("\nQuel joueur voulez-vous éliminer : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            vote = int(utils.playerChoice("\nQuel joueur voulez-vous éliminer : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.isHost, player))-1
             if player == self.mayor: # if the player is the mayor, his vote count double
                 self.tabPlayerInLife[vote].addVote(2)
             else:
@@ -86,7 +86,7 @@ class Game:
         maxVotedPlayer = {"player":maxVotePlayer, "nbVote":maxVotePlayer.vote}
         
         # displaying results
-        self.KillPlayer(maxVotedPlayer['player'])
+        self.killPlayer(maxVotedPlayer['player'])
 
 
     def mayorVote(self):
@@ -101,7 +101,7 @@ class Game:
         nbParticipant = 1
         for i in range(len(self.tabPlayerInLife)):
             player = self.tabPlayerInLife[i]
-            choiceParticipation = int(playerChoice("Voulez-vous vous présenter aux élections du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.IsHost, player))
+            choiceParticipation = int(playerChoice("Voulez-vous vous présenter aux élections du maire:\n -1 : Oui\n -2 : Non\nChoix: ", ["1","2"], player.isHost, player))
             if choiceParticipation == 1: # if the player want to participate, add him to the list of participant
                 tabOfParticipant.append(player)
                 txtVote += f" -{nbParticipant} : {player.name}\n"
@@ -112,7 +112,7 @@ class Game:
 
         # making players vote
         for player in self.tabPlayerInLife:
-            choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.IsHost, player))
+            choiceMayor = int(playerChoice(txtVote, expectedResultsVote, player.isHost, player))
             tabOfParticipant[choiceMayor-1].addVote()
 
         # counting and reseting vote
@@ -140,16 +140,16 @@ class Game:
                 for player in self.tabPlayerInLife:
                     if player.card.name == "Cupidon":
                         # send the list of players in life
-                        utils.HostSendMessage(player.id, "---------------- Tour de Cupidon ----------------\n" +utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.hostSendMessage(player.id, "---------------- Tour de Cupidon ----------------\n" +utils.PrintPlayerInLife(self.tabPlayerInLife), False)
                         # making cupidon vote for the lovers
                         target = player.card.actionCupidon(self.tabPlayerInLife)
                         self.lovers.append(self.tabPlayerInLife[target[0]])
                         self.lovers.append(self.tabPlayerInLife[target[1]])
                         # send the result to the lovers
-                        Message1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
-                        Message2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
-                        utils.HostSendMessage(self.tabPlayerInLife[target[0]].id, Message2, False)
-                        utils.HostSendMessage(self.tabPlayerInLife[target[1]].id, Message1, False)
+                        messageLover1 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[0]].name}, qui est {self.tabPlayerInLife[target[0]].card.name}\n\n"
+                        messageLover2 = f"Vous êtes tomber fou amoureux de {self.tabPlayerInLife[target[1]].name}, qui est {self.tabPlayerInLife[target[1]].card.name}\n\n"
+                        utils.hostSendMessage(self.tabPlayerInLife[target[0]].id, messageLover1, False)
+                        utils.hostSendMessage(self.tabPlayerInLife[target[1]].id, messageLover2, False)
 
             # ------------------ THIEF ------------------
             if any(isinstance(role, Thief) for role in self.listOfRole):
@@ -159,12 +159,12 @@ class Game:
                     if player.card.name == "Voleur":
                         # making thief vote for the role he want to steal
                         thief = player
-                        utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                        utils.hostSendMessage(player.id, utils.printPlayerInLife(self.tabPlayerInLife), False)
                         targetOfThief = player.card.actionThief(self.tabPlayerInLife, player.name)
-                        msg_to_thief1 = f"Vous prendrez connaissance de votre nouveau rôle au lever du jour.\n"
-                        msg_to_thief2 = f"Vous êtes désormais {targetOfThief.card.name}\n"
-                        msg_to_victim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
-                        utils.HostSendMessage(player.id, msg_to_thief1, False)
+                        messageThief1 = f"Vous prendrez connaissance de votre nouveau rôle au lever du jour.\n"
+                        messageThief2 = f"Vous êtes désormais {targetOfThief.card.name}\n"
+                        messageVictim = "Vous avez été volé ! Vous êtes désormais le Vilageois\n"
+                        utils.hostSendMessage(player.id, messageThief1, False)
                         break
 
         # ------------------ SEER ------------------
@@ -174,28 +174,28 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Voyante":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.hostSendMessage(player.id, utils.printPlayerInLife(self.tabPlayerInLife), False)
                     # making seer vote for the player he want to see the role
                     target = player.card.actionSeer(self.tabPlayerInLife) + "\n"
                     # send the result to the seer
-                    utils.HostSendMessage(player.id, target, False)
+                    utils.hostSendMessage(player.id, target, False)
 
         # ------------------ WEARWOLF ------------------
         if any(isinstance(role, Wearwolf) for role in self.listOfRole): # if there is a Wearwolf in the game
-            WearwolfInLife = []
+            wearwolfInLife = []
             for player in self.tabPlayerInLife:
                 if player.card.name == "Loup garou":
-                    WearwolfInLife.append(player)
+                    wearwolfInLife.append(player)
             # send the list of players in life
             strlistOfPlayer = f"\n---------------- Vote des Loups Garous ----------------\n"
-            lgMessage = f"{utils.PrintPlayerInLife(self.tabPlayerInLife)}"
+            messageLoupGarou = f"{utils.printPlayerInLife(self.tabPlayerInLife)}"
             utils.broadcastMessage(strlistOfPlayer, self.listOfPlayers)
-            utils.broadcastMessage(lgMessage, WearwolfInLife)
-            for player in WearwolfInLife: # making wearwolves vote for a victim
-                vote = int(utils.playerChoice("\nQui souhaitez-vous dévorer ce soir : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.IsHost, player))-1
+            utils.broadcastMessage(messageLoupGarou, wearwolfInLife)
+            for player in wearwolfInLife: # making wearwolves vote for a victim
+                vote = int(utils.playerChoice("\nQui souhaitez-vous dévorer ce soir : ", [str(x+1) for x in range(len(self.tabPlayerInLife))], player.isHost, player))-1
                 self.tabPlayerInLife[vote].addVote()
             # counting and reseting vote
-            victim = utils.playerWithMostVote(self.tabPlayerInLife, WearwolfInLife)
+            victim = utils.playerWithMostVote(self.tabPlayerInLife, wearwolfInLife)
             # add the victim to the dead dict
             dead["Loup garou"] = victim
         
@@ -206,11 +206,11 @@ class Game:
             for player in self.tabPlayerInLife:
                 if player.card.name == "Sorcière":
                     # send the list of players in life
-                    utils.HostSendMessage(player.id, utils.PrintPlayerInLife(self.tabPlayerInLife), False)
+                    utils.hostSendMessage(player.id, utils.printPlayerInLife(self.tabPlayerInLife), False)
                     # making witch vote for the victim to kill or save
                     choice = player.card.actionWitch(self.tabPlayerInLife, victim)
                     # send the result to the witch
-                    utils.HostSendMessage(player.id, choice, False)
+                    utils.hostSendMessage(player.id, choice, False)
             if choice[0] != None and choice[1]: # if the witch decide to save the victim and kill someone else
                 dead = {"Sorcière" : choice[0]}
             elif choice[0] != None: # if the witch decide to kill someone
@@ -228,15 +228,15 @@ class Game:
             thief.card =  targetOfThief.card
             targetOfThief.card.id = thief
             targetOfThief.card = tmpCard
-            utils.HostSendMessage(thief.id, msg_to_thief2, False)
-            utils.HostSendMessage(targetOfThief.id, msg_to_victim, False)
+            utils.hostSendMessage(thief.id, messageThief2, False)
+            utils.hostSendMessage(targetOfThief.id, messageVictim, False)
 
         # kill players at the end of the night
         for key in dead:
-            self.KillPlayer(dead[key], key)
+            self.killPlayer(dead[key], key)
 
 
-    def IsWin(self):
+    def isWin(self):
         """ check if someone win the game
         Args:
             - self : Game object
@@ -261,7 +261,7 @@ class Game:
             return False, "No one"
 
 
-    def GameLoop(self):
+    def gameLoop(self):
         """ This function is the main loop of the game
         Args:
             - self: Game object
@@ -276,25 +276,25 @@ class Game:
             utils.broadcastMessage("\nLa partie a été sauvegardée\n\n", self.listOfPlayers)
             # night part
             self.night()
-            isWin = self.IsWin()
+            isWin = self.isWin()
             if isWin[0]: # if someone win the game, break the loop
                 break
             utils.broadcastMessage("\nLe jour se lève\n\n"+LEVER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             # day part
             self.day()
-            isWin = self.IsWin()
+            isWin = self.isWin()
             if isWin[0]: # if someone win the game, break the loop
                 break
         # display the winner
         utils.broadcastMessage(f"\nLes {isWin[1]} ont gagnés !!!\n\n", self.listOfPlayers)
         # disconnect all players
         for player in self.listOfPlayers:
-            if not player.IsHost:
+            if not player.isHost:
                 disconnect = "END_GAME/fin de la partie"
                 player.id.sendall(disconnect.encode('utf-8'))
     
 
-    def KillPlayer(self, victim, killer=None):
+    def killPlayer(self, victim, killer=None):
         """ This function handle the death of a player
         Args:
             - self: Game object
@@ -311,17 +311,17 @@ class Game:
 
         if killer == None: # if there are no killer, this is the village's vote
             voteResult = f"Le village a décidé d'éliminer {victim.name}, et leur sentence est irrévocable.\n"
-            utils.HostSendMessage(victim.id, f"\n\nLe village a décidé de vous éliminer et leur sentence est irrévocable!\n\n {MORT}", False)
+            utils.hostSendMessage(victim.id, f"\n\nLe village a décidé de vous éliminer et leur sentence est irrévocable!\n\n {MORT}", False)
 
 
         elif killer == "Loup garou": # if the killer's role is werewolf
             voteResult = f"{victim.name} a été dévoré par les loups garou !"
-            utils.HostSendMessage(victim.id, f"\n\nLes loups garou vous ont dévoré!\n\n {MORT}", False)
+            utils.hostSendMessage(victim.id, f"\n\nLes loups garou vous ont dévoré!\n\n {MORT}", False)
 
 
         elif killer == "Sorcière": # if the killer's role is witch
             voteResult = f"La sorcière a décider de vaporiser {victim.name}"
-            utils.HostSendMessage(victim.id, f"\n\nLa sorcière a décider de vous vaporiser!\n\n {MORT}", False)
+            utils.hostSendMessage(victim.id, f"\n\nLa sorcière a décider de vous vaporiser!\n\n {MORT}", False)
 
 
         if victim.card.name =="Chasseur": # if the victim is the Hunter
@@ -346,31 +346,31 @@ class Game:
             
             # broadcast the result of the vote
             utils.broadcastMessage(voteResult, self.listOfPlayers)
-            utils.HostSendMessage(victim2.id, f"\n\nVous êtes mort de chagrin... !\n\n {MORT}", False)
+            utils.hostSendMessage(victim2.id, f"\n\nVous êtes mort de chagrin... !\n\n {MORT}", False)
             self.tabPlayerInLife.remove(victim2)
             self.lovers = []
 
         # If the player is the Hunter
         if isHunter != None:
             utils.broadcastMessage(f"{isHunter.name} était le chasseur et va donc entrainer un joueur avec lui dans la mort!",self.listOfPlayers)
-            utils.HostSendMessage(isHunter.id,f"---------------- Choix du chasseur ----------------\n{utils.PrintPlayerInLife(self.tabPlayerInLife)}", False)
+            utils.hostSendMessage(isHunter.id,f"---------------- Choix du chasseur ----------------\n{utils.printPlayerInLife(self.tabPlayerInLife)}", False)
             victim3 = isHunter.card.actionHunter(self.tabPlayerInLife)
             voteResult = f"\n{victim3.name} à étais abatu(e) par le chasseur.\n{victim3.name} étais {victim3.card.name}"
             utils.broadcastMessage(voteResult, self.listOfPlayers)
-            utils.HostSendMessage(victim3.id, f"\n\nVous avez été tué par le chasseur !\n\n {MORT}", False)
+            utils.hostSendMessage(victim3.id, f"\n\nVous avez été tué par le chasseur !\n\n {MORT}", False)
             self.tabPlayerInLife.remove(victim3)
          
         # If one of the players is the mayor
         if isMayor != None:
             utils.broadcastMessage(f"{isMayor.name} était le maire et doit donc choisir un successeur.",self.listOfPlayers)
-            message = self.PrintPlayerInLife()
+            message = self.printPlayerInLife()
             if isMayor.id == None:
                 print(message)
             else:
                 utils.SendRequest(isMayor.id, message, False)
             # making the mayor choose a new mayor
             expectedResultsVote = [str(i+1) for i in range(len(self.tabPlayerInLife))]
-            choice = int(playerChoice("\nEntrez le numero de la personne qui sera votre successeur : ", expectedResultsVote, isMayor.IsHost, isMayor))
+            choice = int(playerChoice("\nEntrez le numero de la personne qui sera votre successeur : ", expectedResultsVote, isMayor.isHost, isMayor))
             self.mayor = self.tabPlayerInLife[choice-1]
             utils.broadcastMessage(f"\nLe nouveau maire désigné est {self.mayor.name}. Son vote compte à présent double",self.listOfPlayers)
 
