@@ -13,23 +13,23 @@ def open_new_console(script_name):
 
 def main() :
     # launch the game
-    game_path = os.path.join(os.path.dirname(__file__), 'main_reseau.py')
-    open_new_console(game_path)  # open the game in a new console
+    gamePath = os.path.join(os.path.dirname(__file__), 'main_reseau.py')
+    open_new_console(gamePath)  # open the game in a new console
 
 
 def launchHostChat() :
     # launch the input and the server chat of the host
-    chat_path = os.path.join(os.path.dirname(__file__), 'chat/hostChatServer.py') 
+    chatPath = os.path.join(os.path.dirname(__file__), 'chat/hostChatServer.py') 
     chatInputPath = os.path.join(os.path.dirname(__file__), 'chat/hostChatInput.py')
     open_new_console(chatInputPath)
-    open_new_console(chat_path)
+    open_new_console(chatPath)
 
 def launchClientChat() :
     # launch the input and the client chat
-    chat_path = os.path.join(os.path.dirname(__file__), 'chat/chat.py')
+    chatPath = os.path.join(os.path.dirname(__file__), 'chat/chat.py')
     chatInputPath = os.path.join(os.path.dirname(__file__), 'chat/chatInput.py')
     open_new_console(chatInputPath)
-    open_new_console(chat_path)
+    open_new_console(chatPath)
 
 if __name__ == '__main__':
     main()
