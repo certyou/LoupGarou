@@ -141,4 +141,4 @@ def reloadGame():
             name.remove(name[namechoice-cpt])
             cpt+=1
 
-        return [listOfPlayers,save[1],save[2],save[3]]
+        return [listOfPlayers,save[1],save[2],save[3],saves[choice-1]]

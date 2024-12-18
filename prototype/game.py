@@ -17,6 +17,7 @@ class Game:
         self.listOfRole = []
         self.nbPlayer = len(listOfPlayers)
         self.tabPlayerInLife = []
+        self.saveName=""
         self.mayor = None
         self.nbTurn = 0
         self.lovers = []
@@ -270,14 +271,9 @@ class Game:
         while True:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
-            save=int(playerChoice(("\n\n voulez-vous sauvegarder la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
-            if save == 1: # if the host want to save the game
-                saveName = input("Quel nom voulez vous donner a votre sauvegarde ? : ")
-                s.save(self,saveName)
-                quit=int(playerChoice(("\n\n voulez vous quitter la partie ? :\n -1 : Oui\n -2 : Non\nChoix: "),["1","2"]))
-                if quit == 1: # if the host want to quit the game
-                    utils.broadcastMessage("\nl'hôte a décidé de sauvegarder et quitter la partie. Vous allez être déconnecté.\n\n", self.listOfPlayers)
-                    return None
+            # Save the game
+            s.save(self,self.saveName)
+            utils.broadcastMessage("\nLa partie a été sauvegardée\n\n", self.listOfPlayers)
             # night part
             self.night()
             isWin = self.IsWin()
