@@ -1,5 +1,5 @@
-from prototype.usefulFunctions import *
-import prototype.asciiArt as asciiArt
+from usefulFunctions import *
+import asciiArt as asciiArt
 
 
 class Wearwolf:

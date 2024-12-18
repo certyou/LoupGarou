@@ -13,7 +13,7 @@ def openNewConsole(script_name):
 
 def main() :
     # launch the game
-    gamePath = os.path.join(os.path.dirname(__file__), 'main_reseau.py')
+    gamePath = os.path.join(os.path.dirname(__file__), 'mainReseau.py')
     openNewConsole(gamePath)  # open the game in a new console
 
 
