@@ -1,5 +1,5 @@
 from chat.chatInput import textModifier
-import prototype.usefulFunctions as usefulFunctions
+import usefulFunctions as usefulFunctions
 
 
 class Player:

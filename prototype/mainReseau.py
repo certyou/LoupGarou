@@ -3,8 +3,8 @@ from client import Client
 from host import Host
 from game import Game
 from player import Player
-import prototype.usefulFunctions as utils
-from prototype.asciiArt import *
+import usefulFunctions as utils
+from asciiArt import *
 import save as s
 import os
 import chat.launcher as launcher

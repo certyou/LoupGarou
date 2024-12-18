@@ -1,7 +1,7 @@
 from random import randint
 from role import *
-import prototype.usefulFunctions as utils
-from prototype.asciiArt import *
+import usefulFunctions as utils
+from asciiArt import *
 import save as s
 
 
