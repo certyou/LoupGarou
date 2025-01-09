@@ -270,7 +270,7 @@ class Game:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             # Save the game
-            s.save(self,self.saveName)
+            s.save(self)
             utils.broadcastMessage("\nLa partie a été sauvegardée\n\n", self.listOfPlayers)
             # night part
             self.night()
@@ -337,7 +337,7 @@ class Game:
             if victim2 == self.mayor: # if the lover is the mayor, he can choose a new mayor
                 isMayor = victim2
             voteResult = f"De plus {victim.name} et {victim2.name} était amoureux. {victim2.name} est donc mort de chagrin..."
-            if victim.card.name =="Hunter": # if the lover is the Hunter
+            if victim.card.name =="Chasseur": # if the lover is the Hunter
                 isHunter = victim
             else:
                 voteResult += f"\n{victim2.name} étais {victim2.card.name}\n\n"

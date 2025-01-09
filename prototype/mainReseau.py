@@ -31,7 +31,7 @@ def host():
         if len(file.read()) != 0:
             choice = int(utils.playerChoice("\nVoulez-vous chargez une sauvegarde ?\n-1 : Oui \n-2 : Non\nVotre choix : ",["1","2"]))
     if choice == 2:
-        saveName = input("\nQuel nom voulez vous donner a votre sauvegarde ? : \n")
+        saveName = input("\nQuel nom voulez vous donner a votre partie ? : \n")
         gameHost = Host()
         broadcastThread = threading.Thread(target=gameHost.IPBroadcaster, args=(nbOfPlayers,), daemon=True)
         broadcastThread.start()
@@ -41,6 +41,7 @@ def host():
             listOfPlayers.append(Player(gameHost.IPList[i], utils.hostSendMessage(gameHost.IPList[i], "votre nom : "), False))
 
         newGame = Game(listOfPlayers)
+        newGame.saveName = saveName
         newGame.gameInit()
         launcher.launchHostChat()
         newGame.gameLoop()
@@ -75,8 +76,8 @@ def host():
         # Launch the game loop
         for i in range(0, len(newGame.listOfPlayers)):
                 message=f"\n\n {newGame.listOfPlayers[i].card.ascii} \n\n Vous êtes {newGame.listOfPlayers[i].card.name}\n"
-                utils.HostSendMessage(newGame.listOfPlayers[i].id, message, False)
-        newGame.GameLoop()
+                utils.hostSendMessage(newGame.listOfPlayers[i].id, message, False)
+        newGame.gameLoop()
             
         
 
