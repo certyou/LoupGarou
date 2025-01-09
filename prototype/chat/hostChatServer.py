@@ -129,7 +129,7 @@ def receve(sockets) :
     Arg:
         - :sockets: list, list of sockets of every player
     Out:
-        - :list, list of messages received
+        - :list: list, list of messages received
     """
     messages = list()
     for i in sockets :
