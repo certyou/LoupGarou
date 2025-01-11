@@ -6,13 +6,12 @@ from player import Player
 import usefulFunctions as utils
 from asciiArt import *
 import save as s
-import os
 import chat.launcher as launcher
 from chat.chatInput import textModifier
 
 
 MAX_PLAYER = 8
-MIN_PLAYER = 1
+MIN_PLAYER = 2
 
 def host():
     """ launch the host side, and wait for the number of players expected
