@@ -6,17 +6,16 @@ from host import Host
 import threading
 
 
-def save(game, saveName):
+def save(game):
     """ Save the data in the Save.json file as a dictionnary
     Args:
         - :game: Game object, game to save
-        - :saveName: str, name of the save
     Out:
         - /
     """
-    dict = {f"{saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}} # creation of a dictionary that will contain every saved game and element to be saved
+    dict = {f"{game.saveName}":{"tabPlayerInLife":[], "mayor": None, "nbTurn":game.nbTurn, "lovers":game.lovers}} # creation of a dictionary that will contain every saved game and element to be saved
     if game.mayor != None:
-        dict[f"{saveName}"]["mayor"] = game.mayor.name
+        dict[f"{game.saveName}"]["mayor"] = game.mayor.name
     for elem in game.tabPlayerInLife: # Save of every player attributes because we can't save object in json
         if elem.card.name != "Sorciere":
             role = {"role":elem.card.name, "id":elem.name}
@@ -26,20 +25,21 @@ def save(game, saveName):
             player = {"id":str(elem.id) , "name":elem.name , "card":role, "isHost":True}
         else:    
             player = {"id":str(elem.id) , "name":elem.name , "card":role, "isHost":False}
-        dict[f"{saveName}"]["tabPlayerInLife"].append(player)
-    saved=dict[f"{saveName}"]
+        dict[f"{game.saveName}"]["tabPlayerInLife"].append(player)
+    saved=dict[f"{game.saveName}"]
 
     with open("Save.json", "r") as f: # we check if the file is empty or not to know if we need to add or if it's the first saved to be write
         if len(f.read()) == 0:
             f.close()
-            with open("Save.json", "r+") as f:
+            with open("Save.json", "w") as f:
                 json.dump(dict, f, indent=4)
         else:
             with open("Save.json", "r+") as f: # we read the file in r+ to be able to add things
                 data=json.load(f)
-                data[f"{saveName}"]=saved
+                data[f"{game.saveName}"]=saved
                 f.seek(0)
                 json.dump(data, f, indent=4)
+                f.truncate()
     f.close()
 
 
@@ -130,7 +130,7 @@ def reloadGame():
             savedNames = "\nLes différents noms de la dernière partie sont : \n"
             for j in range(len(name)):
                 savedNames += f"{j+1} - {name[j]}\n"
-            utils.HostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
+            utils.hostSendMessage(listOfPlayersSaved[i].id, savedNames, False)
 
         for elem in listOfPlayersSaved: # we ask the name of the player to the player so we can associate the good player to the good role with the good id
             namechoice=int(utils.playerChoice("\nQuel est votre nom de la dernière partie ? :\n ", nameExpected , False, elem))

@@ -270,7 +270,7 @@ class Game:
             self.nbTurn += 1
             utils.broadcastMessage("\nle village s'endort\n\n"+COUCHER_DE_SOLEIL+"\n\n", self.listOfPlayers)
             # Save the game
-            s.save(self,self.saveName)
+            s.save(self)
             utils.broadcastMessage("\nLa partie a été sauvegardée\n\n", self.listOfPlayers)
             # night part
             self.night()

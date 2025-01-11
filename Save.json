@@ -1,125 +1,48 @@
 {
-    "s1": {
+    "Test": {
         "tabPlayerInLife": [
             {
-                "id": "None",
-                "name": "m",
-                "card": {
-                    "role": "Villageoi",
-                    "id": "m"
-                },
-                "IsHost": true
-            },
-            {
-                "id": "<socket.socket fd=552, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 49976)>",
-                "name": "n",
+                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('192.168.1.14', 50000), raddr=('192.168.1.14', 60633)>",
+                "name": "E",
                 "card": {
                     "role": "Loup garou",
-                    "id": "n"
+                    "id": "E"
                 },
-                "IsHost": false
+                "isHost": false
             },
             {
-                "id": "<socket.socket fd=376, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('192.168.56.1', 50000), raddr=('192.168.56.1', 50012)>",
-                "name": "h",
+                "id": "<socket.socket fd=448, family=2, type=1, proto=0, laddr=('192.168.1.14', 50000), raddr=('192.168.1.14', 60637)>",
+                "name": "H",
                 "card": {
-                    "role": "Villageoi",
-                    "id": "h"
+                    "role": "Chasseur",
+                    "id": "H"
                 },
-                "IsHost": false
+                "isHost": false
             }
         ],
         "mayor": null,
         "nbTurn": 2,
         "lovers": []
     },
-    "s9": {
+    "marc": {
         "tabPlayerInLife": [
             {
                 "id": "None",
-                "name": "marceau",
-                "card": {
-                    "role": "Loup garou",
-                    "id": "marceau"
-                },
-                "IsHost": true
-            },
-            {
-                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('192.168.243.56', 50000), raddr=('192.168.243.56', 55708)>",
-                "name": "Ewen",
-                "card": {
-                    "role": "Voleur",
-                    "id": "Ewen"
-                },
-                "IsHost": false
-            }
-        ],
-        "mayor": null,
-        "nbTurn": 1,
-        "lovers": []
-    },
-    "2": {
-        "tabPlayerInLife": [
-            {
-                "id": "None",
-                "name": "ewen",
-                "card": {
-                    "role": "Loup garou",
-                    "id": "ewen"
-                },
-                "IsHost": true
-            },
-            {
-                "id": "<socket.socket fd=8, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 50000), raddr=('127.0.0.1', 50721)>",
-                "name": "noah",
-                "card": {
-                    "role": "Voleur",
-                    "id": "noah"
-                },
-                "IsHost": false
-            }
-        ],
-        "mayor": null,
-        "nbTurn": 1,
-        "lovers": []
-    },
-    "Test": {
-        "tabPlayerInLife": [
-            {
-                "id": "None",
-                "name": "Marc",
-                "card": {
-                    "role": "Voyante",
-                    "id": "Marc"
-                },
-                "IsHost": true
-            },
-            {
-                "id": "<socket.socket fd=432, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49848)>",
                 "name": "E",
                 "card": {
                     "role": "Loup garou",
                     "id": "E"
                 },
-                "IsHost": false
+                "isHost": true
             },
             {
-                "id": "<socket.socket fd=440, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49849)>",
-                "name": "N",
-                "card": {
-                    "role": "Chasseur",
-                    "id": "N"
-                },
-                "IsHost": false
-            },
-            {
-                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('10.2.189.219', 50000), raddr=('10.2.189.219', 49850)>",
-                "name": "H",
+                "id": "<socket.socket fd=444, family=2, type=1, proto=0, laddr=('192.168.1.14', 50000), raddr=('192.168.1.14', 60229)>",
+                "name": "M",
                 "card": {
                     "role": "Voleur",
-                    "id": "H"
+                    "id": "M"
                 },
-                "IsHost": false
+                "isHost": false
             }
         ],
         "mayor": null,
