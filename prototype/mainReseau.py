@@ -6,7 +6,7 @@ from player import Player
 import usefulFunctions as utils
 from asciiArt import *
 import save as s
-import chat.launcher as launcher
+import launcher as launcher
 from chat.chatInput import textModifier
 
 
