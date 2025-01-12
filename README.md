@@ -1,6 +1,8 @@
-# Loup-Garou : Règles de Base
+# Introduction
+Ce projet est un projet étudiant conçu pour être joué en LAN. Il vise à recréer l'expérience du jeu de société Loup-Garou dans un environnement numérique, tout en respectant les règles classiques.
 
-## Introduction
+---
+# Loup-Garou : Règles de Base
 Le Loup-Garou est un jeu de rôle et de stratégie qui se joue à plusieurs. Chaque joueur incarne un rôle spécifique avec des objectifs différents. Le but est simple : survivre et atteindre les objectifs de son camp.
 
 ## Configuration
@@ -59,4 +61,4 @@ La partie se termine lorsque :
 ---
 
 ## Lancement d'une partie
-Lancer le fichier nommer launcher.py et suivez les instructions et que le meilleur camp gagne ! 🐺🌙
+Lancer le fichier nommer ```launcher.py``` et suivez les instructions et que le meilleur camp gagne ! 🐺🌙
