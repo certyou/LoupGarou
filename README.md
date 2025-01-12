@@ -1,5 +1,6 @@
 # Introduction
 Ce projet est un projet étudiant conçu pour être joué en LAN. Il vise à recréer l'expérience du jeu de société Loup-Garou dans un environnement numérique, tout en respectant les règles classiques.
+lien de la documentation : https://univubs-my.sharepoint.com/:o:/g/personal/mahe_e2301740_etud_univ-ubs_fr/Eq71Gkscgz1ClCIyf8mTMv8BhnTDrKhCqxhlp7POaTV8WA?e=ajdjZS
 
 ---
 # Loup-Garou : Règles de Base
